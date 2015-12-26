@@ -3,12 +3,47 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootswatch/spacelab/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <title>@ViewBag.Title</title>
 </head>
 <body>
-<a asp-controller="home" asp-action="contact">Contact</a>
-    <div>
+    <header>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+
+                    </li>
+                </ul>
+                <a asp-controller="home" asp-action="index" class="navbar-brand" >Club</a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid" id="main">
         @RenderBody()
     </div>
+    <footer>
+        <div id="footer" class="container-fluid">
+            <div class="nav navbar-inverse navbar-fixed-bottom">
+                <h4 class="text-center">
+                    Hola mundo
+                </h4>
+            </div>
+        </div>
+    </footer>
+
+    @* Scripts *@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    @RenderSection("Scripts", false)
+
 </body>
 </html>
