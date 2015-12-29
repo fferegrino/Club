@@ -1,0 +1,29 @@
+﻿@day-width: 14.2857%;
+@gutter: 5px;
+
+.calendar {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/*-- our cleafix hack -- */
+.week:before,
+.week:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+[class*='day'] {
+    float: left;
+    min-height: 1px;
+    width: @day-width;
+    /*-- our gutter --*/
+    padding: @gutter;
+
+    div {
+
+    }
+}
+
+

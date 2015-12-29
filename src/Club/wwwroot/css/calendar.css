@@ -1,0 +1,18 @@
+﻿.calendar {
+  width: 100%;
+  max-width: 1200px;
+}
+/*-- our cleafix hack -- */
+.week:before,
+.week:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+[class*='day'] {
+  float: left;
+  min-height: 1px;
+  width: 14.2857%;
+  /*-- our gutter --*/
+  padding: 5px;
+}

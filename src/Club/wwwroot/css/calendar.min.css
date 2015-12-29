@@ -1,0 +1,1 @@
+﻿.calendar{width:100%;max-width:1200px;}.week:before,.week:after{content:"";display:table;clear:both;}[class*='day']{float:left;min-height:1px;width:14.2857%;padding:5px;}

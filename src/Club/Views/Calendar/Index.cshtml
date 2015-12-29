@@ -1,0 +1,48 @@
+﻿@{
+    int year = (int)ViewBag.Year;
+    int month = (int)ViewBag.Month;
+    int daysInMonth = DateTime.DaysInMonth(year, month);
+    var startingDayOfMonth = new DateTime(year, month, 1).DayOfWeek;
+
+    var validMonth = false;
+
+    int day, daysCount = 1;
+}
+<div class="calendar">
+    <div class="week week-1">
+        @for (day = 0; day < 7; day++)
+        {
+            validMonth = day >= (int)startingDayOfMonth;
+            <div class="day day-@day">
+                <div class="@(validMonth ? "valid" : "invalid")">
+                    @if (validMonth)
+                    {
+                        @(daysCount++)
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    @for (int week = 2; week < (5 + 1); week++)
+    {
+        <div class="week week-@week">
+            @for (day = 0; day < 7; day++)
+            {
+                validMonth = daysCount <= daysInMonth;
+                <div class="day day-@day">
+                    <div class="@(validMonth ? "valid" : "invalid")">
+                        @if (validMonth)
+                        {
+                            @(daysCount++)
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Styles {
+    <link href="~/css/calendar.min.css" rel="stylesheet" />
+}
