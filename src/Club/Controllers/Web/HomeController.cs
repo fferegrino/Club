@@ -5,7 +5,7 @@ using Club.Services;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Club.Controllers
+namespace Club.Controllers.Web
 {
     public class HomeController : Controller
     {
