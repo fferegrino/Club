@@ -21,7 +21,11 @@
   },
 
   "frameworks": {
-    "dnx451": { },
+    "dnx451": {
+      "dependencies": {
+        "Humanizer": "1.37.7"
+      }
+    },
     "dnxcore50": { }
   },
 
