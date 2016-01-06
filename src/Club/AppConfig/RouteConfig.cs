@@ -16,7 +16,13 @@ namespace Club.AppConfig
                 template: "calendar/{year:int?}/{month:int?}",
                 defaults: new { controller = "calendar", action = "index" }
                 );
-            
+
+            routes.MapRoute(
+                name: "Events routes",
+                template: "events/{action}/{id?}",
+                defaults: new { controller = "events", action = "detail" }
+                );
+
             routes.MapRoute(
                 name: "Default",
                 template: "{controller}/{action}/{id?}",

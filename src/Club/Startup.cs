@@ -10,6 +10,7 @@ using Club.AppConfig;
 using Club.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.PlatformAbstractions;
+using Club.Models;
 
 namespace Club
 {
@@ -33,17 +34,27 @@ namespace Club
         {
             services.AddMvc();
 
+            services.AddEntityFramework()
+                .AddSqlServer()
+                .AddDbContext<ClubContext>();
+
 #if DEBUG
             services.AddScoped<IMailService, DebugMailService>();
 #endif
+
+            services.AddScoped<IClubRepository, ClubRepository>();
+
+            services.AddTransient<ClubContextSeedData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app,  ClubContextSeedData seeder)
         {
             //app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvc(RouteConfig.Configure);
+
+            seeder.EnsureSeedData();
         }
 
         // Entry point for the application.

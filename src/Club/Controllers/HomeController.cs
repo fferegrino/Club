@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.AspNet.Mvc;
-using Club.Models.ViewModels;
+using Club.ViewModels;
 using Club.Services;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860

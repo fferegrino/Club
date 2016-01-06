@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Club.Models.ViewModels
+namespace Club.ViewModels
 {
     public class ContactViewModel
     {
