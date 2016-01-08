@@ -42,6 +42,8 @@ namespace Club
             services.AddScoped<IMailService, DebugMailService>();
 #endif
 
+            MappingConfig.Configure(services);
+
             services.AddScoped<IClubRepository, ClubRepository>();
 
             services.AddTransient<ClubContextSeedData>();
