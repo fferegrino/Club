@@ -1,8 +1,10 @@
-﻿using Microsoft.Data.Entity;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Storage;
 
 namespace Club.Models
 {
-    public class ClubContext : DbContext
+    public class ClubContext : IdentityDbContext<ClubUser>
     {
 
         public ClubContext()

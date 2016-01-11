@@ -11,6 +11,7 @@ using Club.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.PlatformAbstractions;
 using Club.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Club
 {
@@ -34,6 +35,14 @@ namespace Club
         {
             services.AddMvc();
 
+            services.AddIdentity<ClubUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;
+                config.Cookies.ApplicationCookie.LoginPath = "/account/login";
+            })
+            .AddEntityFrameworkStores<ClubContext>();
+
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<ClubContext>();
@@ -50,13 +59,16 @@ namespace Club
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app,  ClubContextSeedData seeder)
+        public async void Configure(IApplicationBuilder app,  ClubContextSeedData seeder)
         {
             //app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseIdentity();
+
             app.UseMvc(RouteConfig.Configure);
 
-            seeder.EnsureSeedData();
+            await seeder.EnsureSeedData();
         }
 
         // Entry point for the application.
