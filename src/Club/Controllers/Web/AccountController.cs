@@ -54,5 +54,10 @@ namespace Club.Controllers.Web
             }
             return RedirectToAction("index", "home");
         }
+
+        public IActionResult SignUp()
+        {
+            return View();
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace Club.Models
 {
     public class ClubUser : IdentityUser
     {
+        public bool Accepted { get; set; }
+
     }
 }
