@@ -1,0 +1,32 @@
+﻿@model Club.ViewModels.EventViewModel
+
+@{
+    ViewBag.Title = "Nuevo evento";
+}
+
+<h2>Nuevo evento</h2>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <form method="post" novalidate>
+            <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsPrivate"></label>
+                <input asp-for="IsPrivate"  class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Acceder" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>

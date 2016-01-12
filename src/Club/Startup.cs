@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
@@ -11,7 +12,9 @@ using Club.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.PlatformAbstractions;
 using Club.Models;
+using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
 namespace Club
 {
@@ -40,6 +43,26 @@ namespace Club
                 config.User.RequireUniqueEmail = true;
                 config.Password.RequiredLength = 8;
                 config.Cookies.ApplicationCookie.LoginPath = "/account/login";
+                config.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToLogin = ctx =>
+                    {
+                        if (ctx.Request.Path.StartsWithSegments("/api") &&
+                            ctx.Response.StatusCode == (int) HttpStatusCode.OK)
+                        {
+                            ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                        }
+                        else
+                        {
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+
+                        return Task.FromResult(0);
+                    }
+                };
+
+                //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+
             })
             .AddEntityFrameworkStores<ClubContext>();
 
@@ -64,9 +87,19 @@ namespace Club
             //app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            app.UseIdentity()
+                .UseF (options =>
+                {
+                    options.Scope.Add("email");
+                }); ;
 
             app.UseMvc(RouteConfig.Configure);
+            
+
+
+            //app.UseIdentity().UseFacebookAuthentication(
+            //   appId: "",
+            //   appSecret: "");
 
             await seeder.EnsureSeedData();
         }

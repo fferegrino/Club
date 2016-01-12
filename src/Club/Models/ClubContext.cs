@@ -12,6 +12,7 @@ namespace Club.Models
             Database.EnsureCreated();
         }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
