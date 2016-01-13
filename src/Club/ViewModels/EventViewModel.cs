@@ -28,5 +28,11 @@ namespace Club.ViewModels
         [Required]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime End { get; set; }
+
+        public string EventCode { get; set; }
+
+        public string EventCodeUrl { get; set; }
+
+        public string Duration { get; set; }
     }
 }

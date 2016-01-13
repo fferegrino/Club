@@ -16,6 +16,7 @@ using Club.Models.Repositories;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
+using Club.Common;
 
 namespace Club
 {
@@ -72,6 +73,7 @@ namespace Club
 #if DEBUG
             services.AddScoped<IMailService, DebugMailService>();
 #endif
+            services.AddSingleton<IEventCodeGenerator, DummyCodeGenerator>();
 
             //services.Configure<MvcOptions>(options =>
             //{
