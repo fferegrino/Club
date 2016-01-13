@@ -19,7 +19,7 @@ namespace Club.AppConfig
 
             routes.MapRoute(
                 name: "Events routes",
-                template: "events/{action}/{id?}",
+                template: "events/{eventId:int}",
                 defaults: new { controller = "events", action = "detail" }
                 );
 

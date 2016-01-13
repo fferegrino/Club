@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Club.Models
+namespace Club.Models.Repositories
 {
     public interface IClubRepository
     {
-        IEnumerable<Event> GetAllEvents();
     }
 }

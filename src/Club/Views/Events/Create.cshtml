@@ -4,29 +4,74 @@
     ViewBag.Title = "Nuevo evento";
 }
 
-<h2>Nuevo evento</h2>
 
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
+        <h2>Crear evento</h2>
         <form method="post" novalidate>
             <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name"></span>
+            <div class="row">
+                <div class="form-group col-md-9">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name"></span>
+                </div>
+                <div class="form-group  col-md-3">
+                    <label asp-for="IsPrivate"></label>
+                    <input asp-for="IsPrivate" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description"></span>
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description"></span>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="IsPrivate"></label>
-                <input asp-for="IsPrivate"  class="form-control" />
+
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Start"></label>
+                    <input asp-for="Start" class="form-control" />
+                    <span asp-validation-for="Start"></span>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label asp-for="End"></label>
+                    <input asp-for="End" class="form-control" />
+                    <span asp-validation-for="End"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Acceder" class="btn btn-success" />
-            </div>
-        </form>
+
+                <div class="form-group">
+                    <input type="submit" value="Crear" class="btn btn-success" />
+                </div>
+</form>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="~/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(function () {
+            $('#Start').datetimepicker({
+                locale: 'es',
+                stepping: 15
+            });
+            $('#End').datetimepicker({
+                locale: 'es',
+                stepping: 15
+            });
+        });
+    </script>
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+}

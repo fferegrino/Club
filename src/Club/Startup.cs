@@ -82,6 +82,7 @@ namespace Club
 
             services.AddScoped<IClubRepository, ClubRepository>();
             services.AddScoped<IClubUsersRepository, ClubUsersRepository>();
+            services.AddScoped<IEventsRepository, EventsRepository>();
 
             services.AddTransient<ClubContextSeedData>();
         }

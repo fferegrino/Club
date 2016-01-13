@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Club.Models
+namespace Club.Models.Repositories
 {
     public class ClubRepository : IClubRepository
     {
-        private readonly ClubContext _context;
+        internal readonly ClubContext _context;
 
         public ClubRepository(ClubContext context)
         {
             _context = context;
         }
-
-        public IEnumerable<Event> GetAllEvents()
-        {
-            return _context.Events.ToList();
-        }
+        
     }
 }

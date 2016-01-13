@@ -14,6 +14,7 @@ namespace Club.ViewModels
         public string Name { get; set; }
 
         [Required]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         public string Host { get; set; }
@@ -21,9 +22,11 @@ namespace Club.ViewModels
         public bool IsPrivate { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime Start { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime End { get; set; }
     }
 }
