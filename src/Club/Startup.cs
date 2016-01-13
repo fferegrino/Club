@@ -12,9 +12,10 @@ using Club.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.PlatformAbstractions;
 using Club.Models;
+using Club.Models.Repositories;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
 
 namespace Club
 {
@@ -37,7 +38,6 @@ namespace Club
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
             services.AddIdentity<ClubUser, IdentityRole>(config =>
             {
                 config.User.RequireUniqueEmail = true;
@@ -60,8 +60,7 @@ namespace Club
                         return Task.FromResult(0);
                     }
                 };
-
-                //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+                
 
             })
             .AddEntityFrameworkStores<ClubContext>();
@@ -74,29 +73,32 @@ namespace Club
             services.AddScoped<IMailService, DebugMailService>();
 #endif
 
+            //services.Configure<MvcOptions>(options =>
+            //{
+            //    options.Filters.Add(new RequireHttpsAttribute());
+            //});
+
             MappingConfig.Configure(services);
 
             services.AddScoped<IClubRepository, ClubRepository>();
+            services.AddScoped<IClubUsersRepository, ClubUsersRepository>();
 
             services.AddTransient<ClubContextSeedData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app,  ClubContextSeedData seeder)
+        public async void Configure(IApplicationBuilder app, ClubContextSeedData seeder)
         {
             //app.UseDefaultFiles();
             app.UseStaticFiles();
+            
+            app.UseIdentity();
 
-            app.UseIdentity()
-                .UseF (options =>
-                {
-                    options.Scope.Add("email");
-                }); ;
 
             app.UseMvc(RouteConfig.Configure);
             
 
-
+            
             //app.UseIdentity().UseFacebookAuthentication(
             //   appId: "",
             //   appSecret: "");

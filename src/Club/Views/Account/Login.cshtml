@@ -9,16 +9,17 @@
             <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
             <div class="form-group">
                 <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control"/>
+                <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" type="password" class="form-control"/>
+                <input asp-for="Password" type="password" class="form-control" />
                 <span asp-validation-for="Password"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Acceder" class="btn btn-success"/>
+                <input type="submit" value="Acceder" class="btn btn-success" />
+                <a asp-action="signup" class="btn btn-link">Crear una cuenta</a>
             </div>
         </form>
     </div>

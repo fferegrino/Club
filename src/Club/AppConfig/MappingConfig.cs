@@ -26,6 +26,8 @@ namespace Club.AppConfig
 
             services.AddSingleton<IAutoMapperTypeConfigurator, AnnouncementsMapperTypeConfigurator>();
             services.AddSingleton<IAutoMapperTypeConfigurator, EventsMapperTypeConfigurator>();
+            services.AddSingleton<IAutoMapperTypeConfigurator, SignUpToClubUserTypeConfigurator>();
+            services.AddSingleton<IAutoMapperTypeConfigurator, ClubUserToSimpleUserTypeConfigurator>();
 
             var serviceProvider = services.BuildServiceProvider();
             var configurators = serviceProvider.GetServices<IAutoMapperTypeConfigurator>();

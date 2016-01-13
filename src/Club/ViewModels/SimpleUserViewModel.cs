@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Club.Models
+namespace Club.ViewModels
 {
-    public class ClubUser : IdentityUser
+    public class SimpleUserViewModel
     {
-        public bool Accepted { get; set; }
-        public bool IsActive { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
+        public string Username { get; set; }
     }
 }
