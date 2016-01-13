@@ -4,16 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Club.Common.TypeMapping;
 using Club.Models.Repositories;
+using Club.ViewModels;
 using Microsoft.AspNet.Mvc;
 
 namespace Club.Controllers.Web
 {
-    public class BoardController : Controller
+    public class DashboardController : Controller
     {
         private readonly IClubUsersRepository _clubUsersRepository;
         private readonly IAutoMapper _mapper;
 
-        public BoardController(IClubUsersRepository clubUsersRepository,
+        public DashboardController(IClubUsersRepository clubUsersRepository,
             IAutoMapper mapper)
         {
             _clubUsersRepository = clubUsersRepository;
@@ -22,9 +23,10 @@ namespace Club.Controllers.Web
 
         public IActionResult Index()
         {
+            var userDashboard = new DashboardViewModel();
             var n = _clubUsersRepository.GetAllUnAcceptedUsers();
-            var notAcceptedUsers = _mapper.Map<IEnumerable<ViewModels.SimpleUserViewModel>>(n);
-            return View(notAcceptedUsers);
+            userDashboard.UsersAwaitingApproval = _mapper.Map<IEnumerable<ViewModels.SimpleUserViewModel>>(n);
+            return View(userDashboard);
         }
     }
 }

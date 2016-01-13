@@ -1,0 +1,49 @@
+﻿@model Club.ViewModels.DashboardViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="list-group">
+                    <a href="#" class="list-group-item">
+                        <span class="badge">@Model.UpcomingEventsCount</span> 
+                        Calendario
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">@Model.RecentAnnouncements?.Count()</span> 
+                        Avisos
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">@Model.UsersAwaitingApprovalCount</span> 
+                        Usuarios pendientes de aprobaci[on]
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 col-lg-offset-1">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        Usuarios pendientes de aprobación
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        @foreach (var user in Model.UsersAwaitingApproval)
+                        {
+                            <tr>
+                                <td>@user.Username</td>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
