@@ -1,0 +1,21 @@
+﻿@model Club.ViewModels.SimpleUserViewModel
+@{
+    ViewBag.Title = "Solicitud pendiente";
+    var accepted = (bool)ViewBag.Accepted;
+}
+
+@if (!accepted)
+{
+    <div class="jumbotron">
+        <h1>Solicitud pendiente</h1>
+        <p>Hola @Model.Username, tu solicitud está pendiente de aprobación, espera un poco más o ponte en contacto con el administrador del club para saber más.</p>
+    </div>
+}
+else
+{
+    <div class="jumbotron">
+        <h1>Solicitud aprobada</h1>
+        <p>Hola @Model.Username, tu solicitud ha sido aceptada.</p>
+    </div>
+}
+

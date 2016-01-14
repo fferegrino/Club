@@ -21,7 +21,7 @@ namespace Club.Models
         {
             if (await _userManager.FindByEmailAsync("antonio.feregrino@pokemon.com") == null)
             {
-                var newUser = new ClubUser { UserName = "fferegrino", Email = "antonio.feregrino@pokemon.com" };
+                var newUser = new ClubUser { UserName = "fferegrino", Accepted = true,Email = "antonio.feregrino@pokemon.com" };
                 await _userManager.CreateAsync(newUser, "P@sword1");
             }
 

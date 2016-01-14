@@ -1,29 +1,26 @@
 ﻿@model Club.ViewModels.AnnouncementViewModel
 @{
 }
+
+@if (Model.IsPrivate)
+{
+    <div class="alert alert-warning" role="alert">
+        <strong>Este es un anuncio privado</strong>, lo cual significa que solo es visible para los miembros
+    </div>
+}
 <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        @if (Model.IsPrivate)
-        {
-            <div class="alert alert-warning" role="alert">
-                <strong>Este es un anuncio privado</strong>, lo cual significa que solo es visible para los miembros
-            </div>
-        }
-        <div class="row">
-            <div class="col-md-8 ">
-                <h1>@Model.Name</h1>
-                <p class="lead">@Model.Text</p>
-                <p class="lead">
-                    <i class="fa fa-calendar"></i> @Model.DueDate
-                </p>
-                <p class="lead">
-                    <span><i class="fa fa-clock-o"></i> @Model.HumanizedDueDate</span>
-                </p>
-                <p class="lead"><i class="fa fa-user"></i> @Model.Creator</p>
-            </div>
-            <div class="col-md-3 col">
-                <img class="img-responsive img-thumbnail" src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=Hello%20world&choe=UTF-8" />
-            </div>
-        </div>
+    <div class="col-md-8 ">
+        <h1>@Model.Name</h1>
+        <p class="lead">@Model.Text</p>
+        <p class="lead">
+            <i class="fa fa-calendar"></i> @Model.DueDate
+        </p>
+        <p class="lead">
+            <span><i class="fa fa-clock-o"></i> @Model.HumanizedDueDate</span>
+        </p>
+        <p class="lead"><i class="fa fa-user"></i> @Model.Creator</p>
+    </div>
+    <div class="col-md-3 col">
+        <img class="img-responsive img-thumbnail" src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=Hello%20world&choe=UTF-8" />
     </div>
 </div>

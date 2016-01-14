@@ -18,7 +18,7 @@
 
                     </li>
                 </ul>
-                <a asp-controller="home" asp-action="index" class="navbar-brand" >Club</a>
+                <a asp-controller="home" asp-action="index" class="navbar-brand">Club</a>
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -34,11 +34,14 @@
     </header>
 
     <div class="container-fluid" id="main">
-        @RenderBody()
+
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                @RenderBody()
+            </div>
+        </div>
     </div>
-<footer>
-    
-</footer>
+    <footer></footer>
 
     @* Scripts *@
     <script src="~/lib/jquery/dist/jquery.js"></script>

@@ -9,6 +9,7 @@ namespace Club.Models.Repositories
     public interface IClubUsersRepository
     {
         IEnumerable<ClubUser> GetAllUnAcceptedUsers();
+        ClubUser GetUserByUserName(string username);
     }
 
     public class ClubUsersRepository : IClubUsersRepository
@@ -25,6 +26,11 @@ namespace Club.Models.Repositories
         public IEnumerable<ClubUser> GetAllUnAcceptedUsers()
         {
             return _context.Users.Where(user => user.Accepted == false).ToList();
+        }
+
+        public ClubUser GetUserByUserName(string username)
+        {
+            return _context.Users.FirstOrDefault(user => user.UserName == username);
         }
     }
 }

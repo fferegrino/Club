@@ -56,7 +56,9 @@ namespace Club
             services.AddIdentity<ClubUser, IdentityRole>(config =>
             {
                 config.User.RequireUniqueEmail = true;
-                config.Password.RequiredLength = 8;
+                
+                config.Password.RequiredLength = 6;
+                config.Password.RequireNonLetterOrDigit = false;
                 config.Cookies.ApplicationCookie.LoginPath = "/account/login";
                 config.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents
                 {
