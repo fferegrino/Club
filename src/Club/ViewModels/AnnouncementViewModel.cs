@@ -11,6 +11,7 @@ namespace Club.ViewModels
         public string Name { get; set; }
         public string Creator { get; set; }
         public bool IsPrivate { get; set; }
+        public DateTime DueDate { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

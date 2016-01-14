@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Club.Common;
 
 namespace Club.Models.Repositories
 {
@@ -13,10 +14,12 @@ namespace Club.Models.Repositories
     public class ClubUsersRepository : IClubUsersRepository
     {
         private readonly ClubContext _context;
+        private readonly IDateTime _date;
 
-        public ClubUsersRepository(ClubContext context)
+        public ClubUsersRepository(ClubContext context, IDateTime date)
         {
             _context = context;
+            _date = date;
         }
 
         public IEnumerable<ClubUser> GetAllUnAcceptedUsers()

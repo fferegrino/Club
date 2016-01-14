@@ -57,15 +57,13 @@ namespace Club.Controllers.Web
         public IActionResult Create(EventViewModel viewModel)
         {
             var eventEntity = _mapper.Map<Models.Event>(viewModel);
-            var generador = new DefaultEventCodeGenerator();
-            //viewModel.EventCode = _eventCodeGenerator.GetCode();
-            viewModel.EventCode = generador.GetCode();
-            viewModel.Host = User.Identity.Name;
+            eventEntity.EventCode = _eventCodeGenerator.GetCode();
+            eventEntity.Host = User.Identity.Name;
             _eventsRepository.AddEvent(eventEntity);
 
             _eventsRepository.SaveAll();
 
-            return RedirectToAction("detail", new { eventId = eventEntity.Id });
+            return RedirectToAction("detail", new { announcementId = eventEntity.Id });
         }
     }
 }

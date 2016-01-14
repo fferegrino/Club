@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Club.Common;
 
 namespace Club.Models.Repositories
 {
     public class EventsRepository : IEventsRepository
     {
         private readonly ClubContext _context;
+        private readonly IDateTime _date;
 
-        public EventsRepository(ClubContext context)
+        public EventsRepository(ClubContext context, IDateTime date)
         {
             _context = context;
+            _date = date;
         }
+
         public IEnumerable<Event> GetAllEvents()
         {
             return _context.Events.ToList();
@@ -25,6 +29,7 @@ namespace Club.Models.Repositories
 
         public void AddEvent(Event item)
         {
+            item.CreatedOn = _date.UtcNow;
             _context.Add(item);
         }
 

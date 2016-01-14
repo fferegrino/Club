@@ -34,5 +34,7 @@ namespace Club.ViewModels
         public string EventCodeUrl { get; set; }
 
         public string Duration { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

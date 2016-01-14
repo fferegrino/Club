@@ -73,7 +73,7 @@ namespace Club
 #if DEBUG
             services.AddScoped<IMailService, DebugMailService>();
 #endif
-            services.AddSingleton<IEventCodeGenerator, DummyCodeGenerator>();
+            services.AddSingleton<IEventCodeGenerator, DefaultEventCodeGenerator>();
 
             //services.Configure<MvcOptions>(options =>
             //{
@@ -85,6 +85,8 @@ namespace Club
             services.AddScoped<IClubRepository, ClubRepository>();
             services.AddScoped<IClubUsersRepository, ClubUsersRepository>();
             services.AddScoped<IEventsRepository, EventsRepository>();
+
+            services.AddScoped<IDateTime, DateTimeAdapter>();
 
             services.AddTransient<ClubContextSeedData>();
         }
