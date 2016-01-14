@@ -12,13 +12,14 @@ namespace Club.Controllers.Web
 {
     public class AnnouncementsController : Controller
     {
-        private readonly IAnnouncementsRepository _eventsRepository;
+        private readonly IAnnouncementsRepository _announcementsRepository;
         private readonly IAutoMapper _mapper;
 
-        public AnnouncementsController(IAutoMapper mapper, IAnnouncementsRepository eventsRepository)
+        public AnnouncementsController(IAutoMapper mapper, 
+IAnnouncementsRepository announcementsRepository)
         {
             _mapper = mapper;
-            _eventsRepository = eventsRepository;
+            _announcementsRepository = announcementsRepository;
         }
 
         [Authorize]
@@ -32,11 +33,27 @@ namespace Club.Controllers.Web
         public IActionResult Create(AnnouncementViewModel viewModel)
         {
             var model = _mapper.Map<Models.Announcement>(viewModel);
-            _eventsRepository.AddAnnouncement(model);
+            model.Creator = User.Identity.Name;
+            _announcementsRepository.AddAnnouncement(model);
 
-            _eventsRepository.SaveAll();
+            _announcementsRepository.SaveAll();
 
-            return RedirectToAction("detail", new { announcementId = model.Id });
+            return RedirectToAction("detail", new { id = model.Id });
+        }
+
+
+        public IActionResult Detail(int id)
+        {
+            var queriedEvent = _announcementsRepository.GetAnnouncementById(id);
+            if (queriedEvent != null
+                && queriedEvent.IsPrivate 
+                && !User.Identity.IsAuthenticated)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var eventViewModel = _mapper.Map<ViewModels.AnnouncementViewModel>(queriedEvent);
+            return View(eventViewModel);
         }
     }
 }

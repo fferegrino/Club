@@ -22,6 +22,25 @@ namespace Club.Models.Repositories
             return _context.Events.ToList();
         }
 
+        public IEnumerable<Event> GetEventsForMonth(int year, int month, bool showPrivate)
+        {
+            DateTime start = new DateTime(year, month, 1);
+            DateTime end = start.AddMonths(1);
+
+            var betweenBoundsEvent = _context.Events.Where(
+                    evnt => ((start < evnt.Start && evnt.Start < end) || (start < evnt.End && evnt.End < end))
+                );
+
+
+            if (showPrivate)
+            {
+                return betweenBoundsEvent.ToList();
+            }
+
+            return betweenBoundsEvent.Where(evt => evt.IsPrivate == false).ToList();
+
+        }
+
         public Event GetEventById(int eventId)
         {
             return _context.Events.Where(evnt => evnt.Id == eventId).FirstOrDefault();

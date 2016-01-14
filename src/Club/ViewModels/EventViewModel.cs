@@ -18,6 +18,7 @@ namespace Club.ViewModels
         public string Description { get; set; }
 
         public string Host { get; set; }
+        public string Location { get; set; }
 
         public bool IsPrivate { get; set; }
 

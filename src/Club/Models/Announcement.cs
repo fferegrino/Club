@@ -9,6 +9,7 @@ namespace Club.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Text { get; set; }
         public string Creator { get; set; }
         public bool IsPrivate { get; set; }
         public DateTime DueDate { get; set; }

@@ -17,6 +17,9 @@ using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
 using Club.Common;
+using Microsoft.AspNet.Mvc.Formatters;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Club
 {
@@ -39,6 +42,17 @@ namespace Club
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+
+            services.Configure<MvcOptions>(options =>
+            {
+                var formatter = options.OutputFormatters.First(f => f is JsonOutputFormatter) as JsonOutputFormatter;
+
+                formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                formatter.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
+                formatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
             services.AddIdentity<ClubUser, IdentityRole>(config =>
             {
                 config.User.RequireUniqueEmail = true;
@@ -85,6 +99,7 @@ namespace Club
             services.AddScoped<IClubRepository, ClubRepository>();
             services.AddScoped<IClubUsersRepository, ClubUsersRepository>();
             services.AddScoped<IEventsRepository, EventsRepository>();
+            services.AddScoped<IAnnouncementsRepository, AnnouncementsRepository>();
 
             services.AddScoped<IDateTime, DateTimeAdapter>();
 

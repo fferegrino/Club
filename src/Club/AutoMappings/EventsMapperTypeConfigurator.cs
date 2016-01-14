@@ -15,10 +15,7 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.Models.Event, Club.ViewModels.EventViewModel>()
                 .ForMember(vm => vm.EventCodeUrl, opt => opt.Ignore())
                 .ForMember(vm => vm.Duration, opt => opt.ResolveUsing(
-                    (r,model)=>
-                    {
-                        return (model.End - model.Start).Humanize(15,maxUnit: Humanizer.Localisation.TimeUnit.Hour);
-                    }))
+                    (r,model)=> (model.End - model.Start).Humanize(15,maxUnit: Humanizer.Localisation.TimeUnit.Hour)))
                 ;
 
 

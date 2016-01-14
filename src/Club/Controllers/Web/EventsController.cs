@@ -32,9 +32,9 @@ namespace Club.Controllers.Web
             return RedirectToAction("index", "calendar");
         }
 
-        public IActionResult Detail(int eventId)
+        public IActionResult Detail(int id)
         {
-            var queriedEvent = _eventsRepository.GetEventById(eventId);
+            var queriedEvent = _eventsRepository.GetEventById(id);
             if (queriedEvent != null
                 && queriedEvent.IsPrivate 
                 && !User.Identity.IsAuthenticated)
@@ -57,13 +57,17 @@ namespace Club.Controllers.Web
         public IActionResult Create(EventViewModel viewModel)
         {
             var eventEntity = _mapper.Map<Models.Event>(viewModel);
+
+            Models.Event event1 = new Event();
+            
+
             eventEntity.EventCode = _eventCodeGenerator.GetCode();
             eventEntity.Host = User.Identity.Name;
             _eventsRepository.AddEvent(eventEntity);
 
             _eventsRepository.SaveAll();
 
-            return RedirectToAction("detail", new { announcementId = eventEntity.Id });
+            return RedirectToAction("detail", new { id = eventEntity.Id });
         }
     }
 }

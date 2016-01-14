@@ -11,6 +11,7 @@ namespace Club.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Host { get; set; }
+        public string Location { get; set; }
         public bool IsPrivate { get; set; }
         public string EventCode { get; set; }
         public DateTime Start { get; set; }

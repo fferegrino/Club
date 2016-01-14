@@ -24,24 +24,12 @@
                 </div>
             </div>
             <div class="col-lg-5 col-lg-offset-1">
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="panel-heading">
-                        Usuarios pendientes de aprobación
-                    </div>
-
-                    <!-- Table -->
-                    <table class="table">
-                        @foreach (var user in Model.UsersAwaitingApproval)
-                        {
-                            <tr>
-                                <td>@user.Username</td>
-                                <td>@user.FirstName</td>
-                                <td>@user.LastName</td>
-                            </tr>
-                        }
-                    </table>
-                </div>
+                <a asp-controller="events" asp-action="create" class="btn btn-default btn-lg">
+                    <i class="fa fa-calendar-plus-o"></i> Evento
+                </a>
+                <a asp-controller="announcements" asp-action="create" class="btn btn-default btn-lg">
+                    <i class="fa fa-exclamation-circle"></i> Aviso
+                </a>
             </div>
         </div>
 

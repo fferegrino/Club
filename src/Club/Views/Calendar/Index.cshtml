@@ -1,48 +1,51 @@
 ﻿@{
     int year = (int)ViewBag.Year;
     int month = (int)ViewBag.Month;
-    int daysInMonth = DateTime.DaysInMonth(year, month);
-    var startingDayOfMonth = new DateTime(year, month, 1).DayOfWeek;
-
-    var validMonth = false;
-
-    int day, daysCount = 1;
 }
-<div class="calendar">
-    <div class="week week-1">
-        @for (day = 0; day < 7; day++)
-        {
-            validMonth = day >= (int)startingDayOfMonth;
-            <div class="day day-@day">
-                <div class="@(validMonth ? "valid" : "invalid")">
-                    @if (validMonth)
-                    {
-                        @(daysCount++)
-                    }
-                </div>
-            </div>
-        }
-    </div>
 
-    @for (int week = 2; week < (5 + 1); week++)
-    {
-        <div class="week week-@week">
-            @for (day = 0; day < 7; day++)
-            {
-                validMonth = daysCount <= daysInMonth;
-                <div class="day day-@day">
-                    <div class="@(validMonth ? "valid" : "invalid")">
-                        @if (validMonth)
-                        {
-                            @(daysCount++)
-                        }
-                    </div>
-                </div>
-            }
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div id="calendar" class="calendar">
         </div>
-    }
+    </div>
 </div>
 
+
+@section Scripts {
+    <script src="~/lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="~/lib/fullcalendar/dist/fullcalendar.js"></script>
+    <script src="~/lib/fullcalendar/dist/lang/es.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // page is now ready, initialize the calendar...
+
+            $('#calendar').fullCalendar({
+                defaultDate: '@($"{year}-{month:D2}")',
+                timezone: 'America/Mexico_City',
+                events: {
+                    url: '/api/calendar',
+                    type: 'GET',
+                    success: function (a, b, c) {
+                        console.log(a);
+                        console.log(b);
+                        console.log(c);
+                    },
+                    error: function(a, b, c) {
+                        alert('there was an error while fetching events!');
+                    }
+                },
+                loading : function (isLoading, view) {
+                    console.log(isLoading);
+                }
+            });
+
+        });
+    </script>
+}
 @section Styles {
-    <link href="~/css/calendar.min.css" rel="stylesheet" />
+
+    <link href="~/lib/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
+
 }
