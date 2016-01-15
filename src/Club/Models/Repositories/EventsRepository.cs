@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Club.Common;
+using Club.Models.Entities;
 
 namespace Club.Models.Repositories
 {
@@ -41,9 +42,14 @@ namespace Club.Models.Repositories
 
         }
 
+        public Event GetNextEvent()
+        {
+            return _context.Events.FirstOrDefault(evt => evt.Start > _date.UtcNow);
+        }
+
         public Event GetEventById(int eventId)
         {
-            return _context.Events.Where(evnt => evnt.Id == eventId).FirstOrDefault();
+            return _context.Events.FirstOrDefault(evnt => evnt.Id == eventId);
         }
 
         public void AddEvent(Event item)

@@ -17,6 +17,8 @@ using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
 using Club.Common;
+using Club.Models.Context;
+using Club.Models.Entities;
 using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -104,6 +106,8 @@ namespace Club
             services.AddScoped<IAnnouncementsRepository, AnnouncementsRepository>();
 
             services.AddScoped<IDateTime, DateTimeAdapter>();
+
+            services.AddSingleton<IPagedDataRequestFactory,PagedDataRequestFactory>();
 
             services.AddTransient<ClubContextSeedData>();
         }

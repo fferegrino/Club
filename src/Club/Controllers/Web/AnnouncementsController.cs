@@ -32,7 +32,7 @@ IAnnouncementsRepository announcementsRepository)
         [Authorize]
         public IActionResult Create(AnnouncementViewModel viewModel)
         {
-            var model = _mapper.Map<Models.Announcement>(viewModel);
+            var model = _mapper.Map<Models.Entities.Announcement>(viewModel);
             model.Creator = User.Identity.Name;
             _announcementsRepository.AddAnnouncement(model);
 

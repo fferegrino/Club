@@ -6,6 +6,7 @@ using Microsoft.AspNet.Mvc;
 using Club.ViewModels;
 using Club.Models.Repositories;
 using Club.Common;
+using Club.Models.Entities;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -56,11 +57,8 @@ namespace Club.Controllers.Web
         [Authorize]
         public IActionResult Create(EventViewModel viewModel)
         {
-            var eventEntity = _mapper.Map<Models.Event>(viewModel);
-
-            Models.Event event1 = new Event();
+            var eventEntity = _mapper.Map<Models.Entities.Event>(viewModel);
             
-
             eventEntity.EventCode = _eventCodeGenerator.GetCode();
             eventEntity.Host = User.Identity.Name;
             _eventsRepository.AddEvent(eventEntity);

@@ -11,7 +11,7 @@ namespace Club.AutoMappings
     {
         public void Config()
         {
-            Mapper.CreateMap<Club.Models.Event,Club.ViewModels.CalendarEventViewModel>()
+            Mapper.CreateMap<Club.Models.Entities.Event,Club.ViewModels.CalendarEventViewModel>()
                 .ForMember(vm => vm.Title, options => options.MapFrom(m => m.Name))
                 .ForMember(vm => vm.Start, options => options.MapFrom(m => m.Start.ToString("o")))
                 .ForMember(vm => vm.End, options => options.MapFrom(m => m.End.ToString("o")))

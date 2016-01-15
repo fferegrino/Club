@@ -11,7 +11,7 @@ namespace Club.AutoMappings
     {
         public void Config()
         {
-            Mapper.CreateMap<Club.Models.ClubUser,Club.ViewModels.SimpleUserViewModel>()
+            Mapper.CreateMap<Club.Models.Entities.ClubUser,Club.ViewModels.SimpleUserViewModel>()
                 .ForMember(model => model.Username, options => options.MapFrom(viewModel => viewModel.UserName))
                 ;
         }

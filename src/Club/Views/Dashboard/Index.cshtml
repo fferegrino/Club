@@ -4,29 +4,67 @@
     ViewBag.Title = "Dashboard";
 }
 
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="list-group">
-                    <a href="#" class="list-group-item">
-                        <span class="badge">@Model.UpcomingEventsCount</span> 
-                        Calendario
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <span class="badge">@Model.RecentAnnouncements?.Count()</span> 
-                        Avisos
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <span class="badge">@Model.UsersAwaitingApprovalCount</span> 
-                        Usuarios pendientes de aprobaci[on]
-                    </a>
-                </div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="list-group">
+            <a href="#" class="list-group-item">
+                <span class="badge">@Model.UpcomingEventsCount</span>
+                Calendario
+            </a>
+            <a href="#" class="list-group-item">
+                <span class="badge">@Model.RecentAnnouncements?.Count()</span>
+                Avisos
+            </a>
+            <a href="#" class="list-group-item">
+                <span class="badge">@Model.UsersAwaitingApprovalCount</span>
+                Usuarios pendientes de aprobación
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Usuarios pendientes de aprobación</h3>
             </div>
-            <div class="col-lg-5 col-lg-offset-1">
-                <a asp-controller="events" asp-action="create" class="btn btn-default btn-lg">
-                    <i class="fa fa-calendar-plus-o"></i> Evento
-                </a>
-                <a asp-controller="announcements" asp-action="create" class="btn btn-default btn-lg">
-                    <i class="fa fa-exclamation-circle"></i> Aviso
-                </a>
+            <div class="panel-body">
+                @if (Model.UsersAwaitingApproval.Any())
+                {
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var usuario in Model.UsersAwaitingApproval)
+                        {
+                            <tr>
+                                <td>@usuario.Username</td>
+                                <td>@usuario.FirstName</td>
+                                <td>@usuario.LastName</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <span>Vaya, parece que no hay usuarios esperando ser aprobados</span>
+                }
+            </div>
+            <div class="panel-footer">
+                <a asp-action="unapproved" asp-controller="users">Ver más</a>
             </div>
         </div>
+    </div>
+    <div class="col-lg-5 col-lg-offset-1">
+        <a asp-controller="events" asp-action="create" class="btn btn-default btn-lg">
+            <i class="fa fa-calendar-plus-o"></i> Evento
+        </a>
+        <a asp-controller="announcements" asp-action="create" class="btn btn-default btn-lg">
+            <i class="fa fa-exclamation-circle"></i> Aviso
+        </a>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Club.Common.TypeMapping;
 using Club.Models;
+using Club.Models.Entities;
 using Club.Models.Repositories;
 using Club.ViewModels;
 using Microsoft.AspNet.Authorization;
@@ -53,7 +54,7 @@ namespace Club.Controllers.Web
                 {
                     var loggedInUser = _clubUsersRepository.GetUserByUserName(vm.Username);
 
-                    if (!loggedInUser.Accepted)
+                    if (!loggedInUser.Approved)
                     {
                         await _signInManager.SignOutAsync();
                         return RedirectToAction("pendingapproval", new { username = loggedInUser.UserName });
@@ -87,7 +88,7 @@ namespace Club.Controllers.Web
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpViewModel viewModel)
         {
-            var userModel = _mapper.Map<Models.ClubUser>(viewModel);
+            var userModel = _mapper.Map<Models.Entities.ClubUser>(viewModel);
 
             var result = await _userManager.CreateAsync(userModel, viewModel.Password);
 
@@ -103,7 +104,7 @@ namespace Club.Controllers.Web
         {
             var model = _clubUsersRepository.GetUserByUserName(username);
             var viewModel = _mapper.Map<ViewModels.SimpleUserViewModel>(model);
-            ViewBag.Accepted = model.Accepted;
+            ViewBag.Approved = model.Approved;
             return View(viewModel);
         }
     }

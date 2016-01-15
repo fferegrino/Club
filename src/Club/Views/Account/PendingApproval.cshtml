@@ -1,10 +1,10 @@
 ﻿@model Club.ViewModels.SimpleUserViewModel
 @{
     ViewBag.Title = "Solicitud pendiente";
-    var accepted = (bool)ViewBag.Accepted;
+    var approved = (bool)ViewBag.Approved;
 }
 
-@if (!accepted)
+@if (!approved)
 {
     <div class="jumbotron">
         <h1>Solicitud pendiente</h1>

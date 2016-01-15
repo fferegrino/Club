@@ -11,7 +11,7 @@ namespace Club.AutoMappings
     {
         public void Config()
         {
-            Mapper.CreateMap<Club.ViewModels.SignUpViewModel, Club.Models.ClubUser>()
+            Mapper.CreateMap<Club.ViewModels.SignUpViewModel, Club.Models.Entities.ClubUser>()
                 .IgnoreAllUnmapped()
                 .ForMember(model => model.UserName, options => options.MapFrom(viewModel => viewModel.Username))
                 .ForMember(model => model.LastName, options => options.MapFrom(viewModel => viewModel.LastName))

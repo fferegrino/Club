@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Club.Models.Entities;
+
 
 namespace Club.Models.Repositories
 {
@@ -8,6 +10,8 @@ namespace Club.Models.Repositories
         IEnumerable<Event> GetAllEvents();
 
         IEnumerable<Event> GetEventsForMonth(int year, int month, bool showPrivate);
+
+        Event GetNextEvent();
 
         Event GetEventById(int eventId);
         bool SaveAll();

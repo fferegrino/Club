@@ -12,10 +12,10 @@ namespace Club.AutoMappings
     {
         public void Config()
         {
-            Mapper.CreateMap<Club.Models.Announcement, Club.ViewModels.AnnouncementViewModel>()
+            Mapper.CreateMap<Club.Models.Entities.Announcement, Club.ViewModels.AnnouncementViewModel>()
                 .ForMember(vm => vm.HumanizedDueDate, opt => opt.ResolveUsing(
                     (r, model) => (model.DueDate - DateTime.Now).Humanize(15, maxUnit: Humanizer.Localisation.TimeUnit.Hour)));
-            Mapper.CreateMap<Club.ViewModels.AnnouncementViewModel, Club.Models.Announcement>();
+            Mapper.CreateMap<Club.ViewModels.AnnouncementViewModel, Club.Models.Entities.Announcement>();
         }
     }
 }
