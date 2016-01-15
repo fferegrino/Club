@@ -2,4 +2,43 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    <div ng-app="app-unapproved-users">
+        <div ng-controller="unapprovedUsersController as vm">
+
+
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in vm.queriedUsers">
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.lastName }}</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-success btn-sm">
+                                    <span class="fa fa-check" aria-hidden="true"></span>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm">
+                                    <span class="fa fa-ban" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button ng-click="vm.load();" type="button" class="btn btn-default">Left</button>
+        </div>
+    </div>
+}
+@section Scripts{
+    <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/js/controllers/app-unapproved-users.js"></script>
+    <script src="~/js/controllers/unapprovedUsersController.js"></script>
 }
