@@ -17,6 +17,13 @@ namespace Club.AppConfig
                 defaults: new { controller = "calendar", action = "index" }
                 );
 
+
+            routes.MapRoute(
+                name: "Attend event route",
+                template: "events/attend/{*eventCode}",
+                defaults: new { controller = "events", action = "attend" }
+                );
+
             routes.MapRoute(
                 name: "Detail routes",
                 template: "{controller}/{id:int}",

@@ -61,6 +61,7 @@ namespace Club.Models.Repositories
         {
             item.CreatedOn = _date.UtcNow;
             item.ClubUserHostId = _user.Id;
+            
             _context.Add(item);
         }
 

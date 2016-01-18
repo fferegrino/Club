@@ -18,8 +18,8 @@ namespace Club.Models.Context
 
         public ClubContextSeedData(ClubContext context,
             UserManager<ClubUser> userManager,
-            RoleManager<IdentityRole> roleManager, 
-            IEventCodeGenerator eventCodeGenerator, 
+            RoleManager<IdentityRole> roleManager,
+            IEventCodeGenerator eventCodeGenerator,
             IDateTime dateTime)
         {
             _context = context;
@@ -47,20 +47,8 @@ namespace Club.Models.Context
                 var roleresult = await _roleManager.CreateAsync(memberRole);
             }
 
-            var admin = await _userManager.FindByEmailAsync("antonio.feregrino@pokemon.com");
-            if ( admin == null)
-            {
-                admin = new ClubUser { UserName = "fferegrino", Approved = true, Email = "antonio.feregrino@pokemon.com" };
-
-                await _userManager.CreateAsync(admin, "P@sword1");
-
-
-                var rolesForUser = await _userManager.GetRolesAsync(admin);
-                if (!rolesForUser.Contains(adminRole.Name))
-                {
-                    var result = await _userManager.AddToRoleAsync(admin, adminRoleName);
-                }
-            }
+            var admin = await GetOrCreateAdmin(adminRole);
+            await CreateAditionalUsers(memberRole);
 
 
             if (!_context.Events.Any())
@@ -85,6 +73,43 @@ namespace Club.Models.Context
                 });
 
                 _context.SaveChanges();
+            }
+        }
+
+        private async Task<ClubUser> GetOrCreateAdmin(IdentityRole adminRole)
+        {
+
+            var admin = await _userManager.FindByEmailAsync("antonio.feregrino@pokemon.com");
+            if (admin == null)
+            {
+                admin = new ClubUser
+                {
+                    UserName = "fferegrino",
+                    FirstName = "Antonio",
+                    LastName = "Feregrino",
+                    Approved = true,
+                    Email = "antonio.feregrino@pokemon.com"
+                };
+
+                await _userManager.CreateAsync(admin, "P@sword1");
+
+
+                var rolesForUser = await _userManager.GetRolesAsync(admin);
+                if (!rolesForUser.Contains(adminRole.Name))
+                {
+                    var result = await _userManager.AddToRoleAsync(admin, adminRole.Name);
+                }
+            }
+            return admin;
+        }
+
+        private async Task CreateAditionalUsers(IdentityRole memberRole)
+        {
+            const string defaultPassword = "@Abc1234";
+            foreach (var sampleUser in SampleData.SampleClubUsers)
+            {
+                await _userManager.CreateAsync(sampleUser, defaultPassword);
+                await _userManager.AddToRoleAsync(sampleUser, memberRole.Name);
             }
         }
     }
