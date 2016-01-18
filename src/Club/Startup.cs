@@ -55,6 +55,8 @@ namespace Club
                 formatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
+            
+
             services.AddIdentity<ClubUser, IdentityRole>(config =>
             {
                 config.User.RequireUniqueEmail = true;
@@ -121,13 +123,16 @@ namespace Club
             app.UseIdentity();
 
 
-            app.UseMvc(RouteConfig.Configure);
-            
+            app.UseStatusCodePages();
 
-            
-            //app.UseIdentity().UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseMvc(RouteConfig.Configure);
+
+
+            app.UseFacebookAuthentication(new FacebookOptions
+            {
+                AppId = "X",
+                AppSecret = "X"
+            });
 
             await seeder.EnsureSeedData();
         }

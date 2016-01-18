@@ -28,7 +28,7 @@ namespace Club.Controllers.Api
             _mapper = mapper;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("unapproved")]
         public JsonResult GetUnapprovedUsers()
         {
@@ -38,7 +38,7 @@ namespace Club.Controllers.Api
             return Json(resp);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPut("approve")]
         public void Put([FromBody]SimpleUserApiModel user)
         {
