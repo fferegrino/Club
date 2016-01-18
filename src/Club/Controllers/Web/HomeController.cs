@@ -1,4 +1,5 @@
 ﻿using System;
+using Club.Common.Security;
 using Microsoft.AspNet.Mvc;
 using Club.ViewModels;
 using Club.Services;
@@ -9,15 +10,20 @@ namespace Club.Controllers.Web
 {
     public class HomeController : Controller
     {
-        IMailService _mailService;
+        readonly IMailService _mailService;
+        private readonly IWebUserSession _userSession;
 
-        public HomeController(IMailService mailService)
+        public HomeController(IMailService mailService, IWebUserSession userSession)
         {
             _mailService = mailService;
+            _userSession = userSession;
         }
 
         public IActionResult Index()
         {
+            string user = "";
+            if (User.Identity.IsAuthenticated)
+                user = _userSession.Id;
             return View();
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Club.Common;
 using Club.Models.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -12,14 +13,20 @@ namespace Club.Models.Context
         private readonly ClubContext _context;
         private readonly UserManager<ClubUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IDateTime _dateTime;
+        private readonly IEventCodeGenerator _eventCodeGenerator;
 
         public ClubContextSeedData(ClubContext context,
             UserManager<ClubUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, 
+            IEventCodeGenerator eventCodeGenerator, 
+            IDateTime dateTime)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _eventCodeGenerator = eventCodeGenerator;
+            _dateTime = dateTime;
         }
 
         public async Task EnsureSeedData()
@@ -40,34 +47,39 @@ namespace Club.Models.Context
                 var roleresult = await _roleManager.CreateAsync(memberRole);
             }
 
-            if (await _userManager.FindByEmailAsync("antonio.feregrino@pokemon.com") == null)
+            var admin = await _userManager.FindByEmailAsync("antonio.feregrino@pokemon.com");
+            if ( admin == null)
             {
-                var newUser = new ClubUser { UserName = "fferegrino", Approved = true, Email = "antonio.feregrino@pokemon.com" };
+                admin = new ClubUser { UserName = "fferegrino", Approved = true, Email = "antonio.feregrino@pokemon.com" };
 
-                await _userManager.CreateAsync(newUser, "P@sword1");
+                await _userManager.CreateAsync(admin, "P@sword1");
 
 
-                var rolesForUser = await _userManager.GetRolesAsync(newUser);
+                var rolesForUser = await _userManager.GetRolesAsync(admin);
                 if (!rolesForUser.Contains(adminRole.Name))
                 {
-                    var result = await _userManager.AddToRoleAsync(newUser, adminRoleName);
+                    var result = await _userManager.AddToRoleAsync(admin, adminRoleName);
                 }
             }
 
 
-            if (!Queryable.Any<Event>(_context.Events))
+            if (!_context.Events.Any())
             {
                 _context.Add(new Event()
                 {
                     Name = "Concurso 1",
-                    Host = "fferegrino",
+                    ClubUserHostId = admin.Id,
+                    CreatedOn = _dateTime.UtcNow,
+                    EventCode = _eventCodeGenerator.GetCode(),
                     Start = DateTime.Now,
                     End = DateTime.Now.AddHours(2)
                 });
                 _context.Add(new Event()
                 {
                     Name = "Concurso 2",
-                    Host = "fferegrino",
+                    ClubUserHostId = admin.Id,
+                    CreatedOn = _dateTime.UtcNow,
+                    EventCode = _eventCodeGenerator.GetCode(),
                     Start = DateTime.Now.AddDays(3),
                     End = DateTime.Now.AddDays(3).AddHours(2)
                 });

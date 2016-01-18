@@ -15,8 +15,6 @@ namespace Club.Models
         public DbSet<Event> Events { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
 
-        public DbSet<SignUpRequest> SignUpRequests { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = Startup.Configuration["Data:ClubContextConnection"];

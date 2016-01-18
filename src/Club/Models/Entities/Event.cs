@@ -7,7 +7,8 @@ namespace Club.Models.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Host { get; set; }
+        public string ClubUserHostId { get; set; }
+        public ClubUser ClubUserHost { get; set; }
         public string Location { get; set; }
         public bool IsPrivate { get; set; }
         public string EventCode { get; set; }

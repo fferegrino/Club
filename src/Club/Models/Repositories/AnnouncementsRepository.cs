@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Club.Common;
+using Club.Common.Security;
 using Club.Models.Entities;
+using Microsoft.Data.Entity;
 
 namespace Club.Models.Repositories
 {
@@ -19,11 +21,14 @@ namespace Club.Models.Repositories
     {
         private readonly ClubContext _context;
         private readonly IDateTime _date;
+        private readonly IUserSession _user;
 
-        public AnnouncementsRepository(IDateTime date, ClubContext context)
+        public AnnouncementsRepository(IDateTime date, 
+            ClubContext context, IUserSession user)
         {
             _date = date;
             _context = context;
+            _user = user;
         }
 
 
@@ -34,12 +39,13 @@ namespace Club.Models.Repositories
 
         public Announcement GetAnnouncementById(int announcementId)
         {
-            return _context.Announcements.FirstOrDefault(ann => ann.Id == announcementId);
+            return _context.Announcements.Include(evt => evt.ClubUserCreator).FirstOrDefault(ann => ann.Id == announcementId);
         }
 
         public void AddAnnouncement(Announcement item)
         {
             item.CreatedOn = _date.UtcNow;
+            item.ClubUserCreatorId = _user.Id;
             _context.Add(item);
         }
 

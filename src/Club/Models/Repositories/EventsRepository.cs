@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Club.Common;
+using Club.Common.Security;
 using Club.Models.Entities;
+using Microsoft.Data.Entity;
 
 namespace Club.Models.Repositories
 {
@@ -11,11 +13,13 @@ namespace Club.Models.Repositories
     {
         private readonly ClubContext _context;
         private readonly IDateTime _date;
+        private readonly IUserSession _user;
 
-        public EventsRepository(ClubContext context, IDateTime date)
+        public EventsRepository(ClubContext context, IDateTime date, IUserSession user)
         {
             _context = context;
             _date = date;
+            _user = user;
         }
 
         public IEnumerable<Event> GetAllEvents()
@@ -28,33 +32,35 @@ namespace Club.Models.Repositories
             DateTime start = new DateTime(year, month, 1);
             DateTime end = start.AddMonths(1);
 
-            var betweenBoundsEvent = _context.Events.Where(
+            var betweenBoundsEvents = _context.Events.Include(evt => evt.ClubUserHost)
+                .Where(
                     evnt => ((start < evnt.Start && evnt.Start < end) || (start < evnt.End && evnt.End < end))
                 );
 
 
             if (showPrivate)
             {
-                return betweenBoundsEvent.ToList();
+                return betweenBoundsEvents.ToList();
             }
 
-            return betweenBoundsEvent.Where(evt => evt.IsPrivate == false).ToList();
+            return betweenBoundsEvents.Where(evt => evt.IsPrivate == false).ToList();
 
         }
 
         public Event GetNextEvent()
         {
-            return _context.Events.FirstOrDefault(evt => evt.Start > _date.UtcNow);
+            return _context.Events.Include(evt => evt.ClubUserHost).FirstOrDefault(evt => evt.Start > _date.UtcNow);
         }
 
         public Event GetEventById(int eventId)
         {
-            return _context.Events.FirstOrDefault(evnt => evnt.Id == eventId);
+            return _context.Events.Include(evt => evt.ClubUserHost).FirstOrDefault(evnt => evnt.Id == eventId);
         }
 
         public void AddEvent(Event item)
         {
             item.CreatedOn = _date.UtcNow;
+            item.ClubUserHostId = _user.Id;
             _context.Add(item);
         }
 

@@ -4,8 +4,6 @@
 @{
     <div ng-app="app-unapproved-users">
         <div ng-controller="unapprovedUsersController as vm">
-
-
             <table class="table table-responsive">
                 <thead>
                     <tr>
@@ -16,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="user in vm.queriedUsers" >
+                    <tr ng-repeat="user in vm.queriedUsers">
                         <td>{{ user.username }}</td>
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.lastName }}</td>
@@ -25,7 +23,7 @@
                                 <button type="button" ng-click="vm.approveUser(user.id,true)" class="btn btn-success btn-sm">
                                     <span class="fa fa-check" aria-hidden="true"></span>
                                 </button>
-                                <button type="button"  ng-click="vm.approveUser(user.id,false)" class="btn btn-danger btn-sm">
+                                <button type="button" ng-click="vm.approveUser(user.id,false)" class="btn btn-danger btn-sm">
                                     <span class="fa fa-ban" aria-hidden="true"></span>
                                 </button>
                             </div>

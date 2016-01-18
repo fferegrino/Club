@@ -17,8 +17,10 @@ using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
 using Club.Common;
+using Club.Common.Security;
 using Club.Models.Context;
 using Club.Models.Entities;
+using Microsoft.AspNet.Authentication.Facebook;
 using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -95,10 +97,8 @@ namespace Club
 #endif
             services.AddSingleton<IEventCodeGenerator, DefaultEventCodeGenerator>();
 
-            //services.Configure<MvcOptions>(options =>
-            //{
-            //    options.Filters.Add(new RequireHttpsAttribute());
-            //});
+            services.AddScoped<IUserSession, UserSession>();
+            services.AddScoped<IWebUserSession, UserSession>();
 
             MappingConfig.Configure(services);
 

@@ -13,13 +13,16 @@ namespace Club.AutoMappings
         public void Config()
         {
             Mapper.CreateMap<Club.Models.Entities.Event, Club.ViewModels.EventViewModel>()
+                .ForMember(vm=> vm.Host, opt => opt.ResolveUsing(m=> m.ClubUserHost.UserName))
                 .ForMember(vm => vm.EventCodeUrl, opt => opt.Ignore())
                 .ForMember(vm => vm.Duration, opt => opt.ResolveUsing(
                     (r,model)=> (model.End - model.Start).Humanize(15,maxUnit: Humanizer.Localisation.TimeUnit.Hour)))
                 ;
 
 
-            Mapper.CreateMap<Club.ViewModels.EventViewModel, Club.Models.Entities.Event>();
+            Mapper.CreateMap<Club.ViewModels.EventViewModel, Club.Models.Entities.Event>()
+                .ForMember(m => m.ClubUserHost, opt => opt.Ignore())
+                .ForMember(m => m.ClubUserHostId, opt => opt.Ignore());
         }
     }
 }

@@ -60,7 +60,7 @@ namespace Club.Controllers.Web
             var eventEntity = _mapper.Map<Models.Entities.Event>(viewModel);
             
             eventEntity.EventCode = _eventCodeGenerator.GetCode();
-            eventEntity.Host = User.Identity.Name;
+            eventEntity.ClubUserHostId = User.Identity.Name;
             _eventsRepository.AddEvent(eventEntity);
 
             _eventsRepository.SaveAll();

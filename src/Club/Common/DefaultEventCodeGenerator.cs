@@ -9,7 +9,20 @@ namespace Club.Common
     {
         public string GetCode()
         {
-            return Guid.NewGuid().ToString("N");
+            return GetFixedLengthEventCode(7);
+        }
+
+        private static readonly Random Random = new Random();
+
+        public string GetFixedLengthEventCode(int length)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var result = new string(
+                Enumerable.Repeat(chars, length)
+                          .Select(s => s[Random.Next(s.Length)])
+                          .ToArray());
+
+            return result;
         }
     }
 
