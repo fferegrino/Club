@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Club.Common;
 using Club.Models.Entities;
+using Microsoft.AspNet.Identity;
 
 namespace Club.Models.Repositories
 {
@@ -12,9 +13,11 @@ namespace Club.Models.Repositories
         QueryResult<ClubUser> GetPagedUnapprovedUsers(PagedDataRequest request);
         IEnumerable<ClubUser> GetUnapprovedUsers(int count = 0);
         ClubUser GetUserByUserName(string username);
+        ClubUser GetUserById(string id);
         void UpdateApprovedStatus(string userId, bool approved);
         bool SaveAll();
         int CountUnaccepted();
+        void AttendEvent(string id, Event attendedEvent);
     }
 
     public class ClubUsersRepository : IClubUsersRepository
@@ -22,7 +25,7 @@ namespace Club.Models.Repositories
         private readonly ClubContext _context;
         private readonly IDateTime _date;
 
-        public ClubUsersRepository(ClubContext context, IDateTime date)
+        public ClubUsersRepository(ClubContext context, IDateTime date, UserManager<ClubUser> userManager)
         {
             _context = context;
             _date = date;
@@ -50,7 +53,7 @@ namespace Club.Models.Repositories
             var totalItemCount = users.Count();
             var startIndex = ResultsPagingUtility.CalculateStartIndex(request.PageNumber, request.PageSize);
             var toReturnUsers = users.Skip(startIndex).Take(request.PageSize).ToList();
-            return new QueryResult<ClubUser>(request.PageSize,totalItemCount, toReturnUsers);
+            return new QueryResult<ClubUser>(request.PageSize, totalItemCount, toReturnUsers);
         }
 
         public IEnumerable<ClubUser> GetUnapprovedUsers(int count = 0)
@@ -67,6 +70,32 @@ namespace Club.Models.Repositories
         public ClubUser GetUserByUserName(string username)
         {
             return _context.Users.FirstOrDefault(user => user.UserName == username);
+        }
+
+        public ClubUser GetUserById(string id)
+        {
+            return _context.Users.FirstOrDefault(user => user.Id == id);
+        }
+
+        public void AttendEvent(string username, Event attendedEvent)
+        {
+            var user = _context.Users.FirstOrDefault(usr => usr.UserName == username);
+            var hasAttendance =
+                _context.EventAttendance.Any(
+                    attendance =>
+                    attendance.ClubUserId == user.Id
+                    && attendance.EventId == attendedEvent.Id);
+
+            if (!hasAttendance)
+            {
+                var eventAttendance = new EventAttendance()
+                {
+                    EventId = attendedEvent.Id,
+                    ClubUserId = user.Id,
+                    AttendedOn = _date.UtcNow
+                };
+                user.EventsAttended.Add(eventAttendance);
+            }
         }
     }
 }

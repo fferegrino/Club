@@ -13,6 +13,7 @@ namespace Club.Models
             Database.EnsureCreated();
         }
         public DbSet<Event> Events { get; set; }
+        public DbSet<EventAttendance> EventAttendance { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -20,6 +21,25 @@ namespace Club.Models
             var connectionString = Startup.Configuration["Data:ClubContextConnection"];
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<EventAttendance>()
+                .HasKey(t => new { t.ClubUserId, t.EventId });
+
+            modelBuilder.Entity<EventAttendance>()
+                .HasOne(pt => pt.Event)
+                .WithMany(p => p.UsersAttending)
+                .HasForeignKey(pt => pt.EventId);
+
+            modelBuilder.Entity<EventAttendance>()
+                .HasOne(pt => pt.ClubUser)
+                .WithMany(t => t.EventsAttended)
+                .HasForeignKey(pt => pt.ClubUserId);
         }
     }
 }

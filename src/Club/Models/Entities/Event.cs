@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Club.Models.Entities
 {
@@ -15,5 +16,11 @@ namespace Club.Models.Entities
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public DateTime CreatedOn { get; set; }
+        public ICollection<EventAttendance> UsersAttending { get; set; }
+        public Event()
+        {
+            UsersAttending = new HashSet<EventAttendance>();
+        }
+
     }
 }

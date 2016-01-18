@@ -14,6 +14,9 @@ namespace Club.Models.Repositories
         Event GetNextEvent();
 
         Event GetEventById(int eventId);
+
+        Event GetEventByEventCode(string eventCode);
+
         bool SaveAll();
     }
 }

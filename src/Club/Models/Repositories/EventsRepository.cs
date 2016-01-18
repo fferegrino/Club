@@ -57,6 +57,11 @@ namespace Club.Models.Repositories
             return _context.Events.Include(evt => evt.ClubUserHost).FirstOrDefault(evnt => evnt.Id == eventId);
         }
 
+        public Event GetEventByEventCode(string eventCode)
+        {
+            return _context.Events.FirstOrDefault(evnt => evnt.EventCode == eventCode);
+        }
+
         public void AddEvent(Event item)
         {
             item.CreatedOn = _date.UtcNow;

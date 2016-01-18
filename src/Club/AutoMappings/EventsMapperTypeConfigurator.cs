@@ -21,6 +21,7 @@ namespace Club.AutoMappings
 
 
             Mapper.CreateMap<Club.ViewModels.EventViewModel, Club.Models.Entities.Event>()
+                .ForMember(m => m.UsersAttending, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHost, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHostId, opt => opt.Ignore());
         }
