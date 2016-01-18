@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Club.Common.TypeMapping;
 using Club.Models;
 using Microsoft.AspNet.Authorization;
@@ -21,19 +22,23 @@ namespace Club.Controllers.Web
         private readonly IEventsRepository _eventsRepository;
         private readonly IClubUsersRepository _usersRepository;
         private readonly IEventCodeGenerator _eventCodeGenerator;
-        private readonly IWebUserSession _userSession;
+        private readonly IWebUserSession _webSession;
+        private readonly IQrCodeApi _qrCodeApi;
         private readonly IAutoMapper _mapper;
 
 
         public EventsController(IEventsRepository eventsRepository,
             IAutoMapper mapper,
-            IEventCodeGenerator eventCodeGenerator, IClubUsersRepository usersRepository, IWebUserSession userSession)
+            IEventCodeGenerator eventCodeGenerator,
+            IClubUsersRepository usersRepository,
+            IQrCodeApi qrCodeApi, IWebUserSession webSession)
         {
             _mapper = mapper;
             _eventsRepository = eventsRepository;
             _eventCodeGenerator = eventCodeGenerator;
             _usersRepository = usersRepository;
-            _userSession = userSession;
+            _qrCodeApi = qrCodeApi;
+            _webSession = webSession;
         }
 
         public IActionResult Index()
@@ -46,15 +51,29 @@ namespace Club.Controllers.Web
 
 
             var queriedEvent = _eventsRepository.GetEventById(id);
-            if (queriedEvent != null
-                && queriedEvent.IsPrivate
-                && !User.Identity.IsAuthenticated)
+            if (queriedEvent == null 
+                || (queriedEvent.IsPrivate
+                && !User.Identity.IsAuthenticated))
             {
                 return new HttpNotFoundResult();
             }
 
             var eventViewModel = _mapper.Map<ViewModels.EventViewModel>(queriedEvent);
-            eventViewModel.EventCodeUrl = Url.Action("attend", new { eventCode = eventViewModel.EventCode });
+            string attendanceUrl = Url.Action("attend", new { eventCode = eventViewModel.EventCode });
+            var requestUri = Request.ToUri();
+            var uri = new UriBuilder
+            {
+                Scheme = Request.Scheme,
+                Host =requestUri.Host,
+                Path = Request.PathBase + attendanceUrl,
+                Port = requestUri.Port
+            };
+
+            eventViewModel.EventCodeUrl = User.IsInRole("Admin") ? 
+                _qrCodeApi.GetQrUrl(uri.ToString(), 300) 
+                : "/img/defaults/eventcode.png";
+
+
             return View(eventViewModel);
         }
 

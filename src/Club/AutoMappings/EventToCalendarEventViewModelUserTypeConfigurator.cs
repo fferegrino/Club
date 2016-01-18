@@ -16,6 +16,7 @@ namespace Club.AutoMappings
                 .ForMember(vm => vm.Start, options => options.MapFrom(m => m.Start.ToString("o")))
                 .ForMember(vm => vm.End, options => options.MapFrom(m => m.End.ToString("o")))
                 .ForMember(vm => vm.ClassName, options => options.Ignore())
+                .ForMember(vm => vm.Url, options => options.Ignore())
                 .ForMember(vm => vm.Color, options => options.Ignore())
                 ;
         }

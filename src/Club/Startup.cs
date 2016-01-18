@@ -96,6 +96,7 @@ namespace Club
             services.AddScoped<IMailService, DebugMailService>();
 #endif
             services.AddSingleton<IEventCodeGenerator, DefaultEventCodeGenerator>();
+            services.AddSingleton<IQrCodeApi, GoQrApi>();
 
             services.AddScoped<IUserSession, UserSession>();
             services.AddScoped<IWebUserSession, UserSession>();

@@ -24,16 +24,15 @@
                     url: '/api/calendar',
                     type: 'GET',
                     success: function (a, b, c) {
-                        console.log(a);
-                        console.log(b);
-                        console.log(c);
                     },
                     error: function(a, b, c) {
-                        alert('there was an error while fetching events!');
                     }
                 },
-                loading : function (isLoading, view) {
-                    console.log(isLoading);
+                eventClick: function(event) {
+                    if (event.url) {
+                        window.open(event.url);
+                        return false;
+                    }
                 }
             });
 

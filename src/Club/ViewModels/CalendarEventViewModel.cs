@@ -15,5 +15,6 @@ namespace Club.ViewModels
         public string End { get; set; }
         public string ClassName { get; set; }
         public string Color { get; set; }
+        public string Url { get; set; }
     }
 }
