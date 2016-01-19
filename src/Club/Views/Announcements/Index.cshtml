@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Club.ViewModels.AnnouncementViewModel>
+@{
+    ViewBag.Title = "Avisos";
+}
+<h2>@ViewBag.Title</h2>
+@foreach (var announcement in Model)
+{
+    <div class="panel panel-@announcement.Type">
+        <div class="panel-heading">
+            <h1 class="panel-title">@announcement.Name</h1>
+        </div>
+        <div class="panel-body">
+            <p class="lead">@announcement.Text</p>
+        </div>
+        <div class="panel-footer">
+            <span title="@announcement.DueDate">Vencimiento en @announcement.HumanizedDueDate</span> por <i class="fa fa-user"></i> @announcement.Creator
+        </div>
+    </div>
+}

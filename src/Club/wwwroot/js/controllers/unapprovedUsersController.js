@@ -11,17 +11,32 @@
 
         vm.currentPage = 1;
         vm.pageSize = 5;
-        vm.pageNumber = 1;
+        vm.totalPages = 0;
 
         vm.load = function fetchNewData() {
-            var url = "/api/users/unapproved?pageSize=" + vm.pageSize + "&pageNumber=" + vm.pageNumber;
+            var url = "/api/users/unapproved?pageSize=" + vm.pageSize + "&pageNumber=" + vm.currentPage;
             $http.get(url)
                 .then(function (response) {
+                    //console.log(response.data);
                     angular.copy(response.data.items, vm.queriedUsers);
+                    vm.totalPages = response.data.totalPages;
                 },
                 function () {
 
                 });
+        }
+
+        vm.nextPage = function() {
+            if (vm.currentPage < vm.totalPages) {
+                vm.currentPage++;
+                vm.load();
+            }
+        }
+        vm.previousPage = function () {
+            if (vm.currentPage > 1) {
+                vm.currentPage--;
+                vm.load();
+            }
         }
 
         vm.approveUser = function (id, approved) {
@@ -32,6 +47,9 @@
                 url: url,
                 data: data
             }).then(function successCallback(response) {
+                $("#" + id).animate({
+                    opacity: 0.3
+                });
             }, function errorCallback(response) {
             });
         };

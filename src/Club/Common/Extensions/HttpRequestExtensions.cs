@@ -8,6 +8,11 @@ namespace Club.Common.Extensions
 {
     public static class HttpRequestExtensions
     {
+        public static string GetBaseUrl(this HttpRequest request)
+        {
+            return "";
+        }
+
         public static Uri ToUri(this HttpRequest request)
         {
             var hostComponents = request.Host.ToUriComponent().Split(':');

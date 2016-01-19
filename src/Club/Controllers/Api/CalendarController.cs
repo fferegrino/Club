@@ -14,16 +14,19 @@ namespace Club.Controllers.Api
     public class CalendarController : Controller
     {
 
+        private readonly IAnnouncementsRepository _announcementsRepository;
         private readonly IEventsRepository _eventsRepository;
         private readonly IWebUserSession _userSession;
         private readonly IAutoMapper _mapper;
 
         public CalendarController(IEventsRepository eventsRepository,
             IAutoMapper mapper,
-            IWebUserSession userSession)
+            IWebUserSession userSession, 
+            IAnnouncementsRepository announcementsRepository)
         {
             _eventsRepository = eventsRepository;
             _userSession = userSession;
+            _announcementsRepository = announcementsRepository;
             _mapper = mapper;
 
         }
@@ -41,11 +44,17 @@ namespace Club.Controllers.Api
                 result = new DateTime(year, month, 1)
                     .AddMonths(day == 1 ? 0 : 1);
             }
+
+            var announcements = _announcementsRepository.GetAnnouncementsForMonth(result.Year, result.Month,
+                User.Identity.IsAuthenticated);
+            var calendarAnnouncements = (_mapper.Map<IEnumerable<ApiModels.CalendarEntryApiModel>>(announcements)).ToList();
+            calendarAnnouncements.ForEach(a => a.Url = Request.GetBaseUrl() + Url.Action("detail", "announcements", new { id = a.Id }));
+
             var events = _eventsRepository.GetEventsForMonth(result.Year, result.Month, User.Identity.IsAuthenticated);
+            var calendarEvents = (_mapper.Map<IEnumerable<ApiModels.CalendarEntryApiModel>>(events)).ToList();
+            calendarEvents.ForEach(a => a.Url = Request.GetBaseUrl() + Url.Action("detail", "events", new { id = a.Id }));
 
-            var calendarEvents = (_mapper.Map<IEnumerable<ViewModels.CalendarEventViewModel>>(events)).ToList();
-
-            calendarEvents.ForEach(a => a.Url = _userSession.RequestUri.GetBaseUri() + Url.Action("detail", "events", new { id = a.Id }));
+            calendarEvents.AddRange(calendarAnnouncements);
 
             return Json(calendarEvents);
         }

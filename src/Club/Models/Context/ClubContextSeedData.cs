@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.Internal;
 using Club.Common;
 using Club.Models.Entities;
 using Microsoft.AspNet.Identity;
@@ -16,6 +17,8 @@ namespace Club.Models.Context
         private readonly IDateTime _dateTime;
         private readonly IEventCodeGenerator _eventCodeGenerator;
 
+        private readonly Random Random;
+
         public ClubContextSeedData(ClubContext context,
             UserManager<ClubUser> userManager,
             RoleManager<IdentityRole> roleManager,
@@ -27,6 +30,7 @@ namespace Club.Models.Context
             _roleManager = roleManager;
             _eventCodeGenerator = eventCodeGenerator;
             _dateTime = dateTime;
+            Random = new Random();
         }
 
         public async Task EnsureSeedData()
@@ -51,6 +55,11 @@ namespace Club.Models.Context
             await CreateAditionalUsers(memberRole);
 
 
+            if (!_context.Announcements.Any())
+            {
+                AddEvents(admin);
+            }
+
             if (!_context.Events.Any())
             {
                 _context.Add(new Event()
@@ -74,6 +83,22 @@ namespace Club.Models.Context
 
                 _context.SaveChanges();
             }
+        }
+
+        private void AddEvents(ClubUser creator)
+        {
+            foreach (var announcement in SampleData.SampleAnnouncements)
+            {
+                int r = Random.Next(1, 65465465) % 365;
+                announcement.ClubUserCreatorId = creator.Id;
+                announcement.Type = (announcement.DueDate.Ticks % ((long)10) == ((long)0))
+                    ? "info"
+                    : announcement.IsPrivate ? "warning" : "danger";
+                announcement.CreatedOn = DateTime.Now.AddDays(r);
+                announcement.DueDate = announcement.DueDate.AddDays(r);
+                _context.Add(announcement);
+            }
+            _context.SaveChanges();
         }
 
         private async Task<ClubUser> GetOrCreateAdmin(IdentityRole adminRole)

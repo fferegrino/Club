@@ -9,6 +9,7 @@ namespace Club.Models.Entities
         public string Text { get; set; }
         public string ClubUserCreatorId { get; set; }
         public ClubUser ClubUserCreator { get; set; }
+        public string Type { get; set; }
         public bool IsPrivate { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime CreatedOn { get; set; }

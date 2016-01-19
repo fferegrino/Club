@@ -37,5 +37,8 @@ namespace Club.ViewModels
         public string Duration { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public bool Repeat { get; set; }
+        public DateTime? RepeatUntil { get; set; }
     }
 }

@@ -102,6 +102,19 @@ namespace Club.Controllers.Web
 
             eventEntity.EventCode = _eventCodeGenerator.GetCode();
             _eventsRepository.AddEvent(eventEntity);
+            
+            if (viewModel.Repeat && viewModel.RepeatUntil.HasValue)
+            {
+                var eventDuration = eventEntity.End - eventEntity.Start;
+                for (var start = eventEntity.Start.AddDays(7); start < viewModel.RepeatUntil; start = start.AddDays(7))
+                {
+                    var repeatedEvent=  _mapper.Map<Models.Entities.Event>(viewModel);
+                    repeatedEvent.Start = start;
+                    repeatedEvent.End = start + eventDuration;
+                    repeatedEvent.EventCode = _eventCodeGenerator.GetCode();
+                    _eventsRepository.AddEvent(repeatedEvent);
+                }
+            }
 
             _eventsRepository.SaveAll();
 

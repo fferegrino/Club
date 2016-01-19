@@ -7,19 +7,26 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="list-group">
-            <a href="#" class="list-group-item">
+            <a asp-controller="calendar" asp-action="index" class="list-group-item">
                 <span class="badge">@Model.UpcomingEventsCount</span>
                 Calendario
             </a>
-            <a href="#" class="list-group-item">
+            <a asp-controller="announcements" asp-action="index"  class="list-group-item">
                 <span class="badge">@Model.RecentAnnouncements?.Count()</span>
                 Avisos
             </a>
-            <a href="#" class="list-group-item">
+            <a asp-action="unapproved" asp-controller="users" class="list-group-item">
                 <span class="badge">@Model.UsersAwaitingApprovalCount</span>
                 Usuarios pendientes de aprobación
             </a>
         </div>
+
+        <a asp-controller="events" asp-action="create" class="btn btn-primary btn-lg btn-block">
+            <i class="fa fa-calendar-plus-o"></i> Evento
+        </a>
+        <a asp-controller="announcements" asp-action="create" class="btn btn-primary btn-lg btn-block">
+            <i class="fa fa-exclamation-circle"></i> Aviso
+        </a>
     </div>
     <div class="col-lg-8">
         <div class="panel panel-default">
@@ -58,13 +65,5 @@
                 <a asp-action="unapproved" asp-controller="users">Ver más</a>
             </div>
         </div>
-    </div>
-    <div class="col-lg-5 col-lg-offset-1">
-        <a asp-controller="events" asp-action="create" class="btn btn-default btn-lg">
-            <i class="fa fa-calendar-plus-o"></i> Evento
-        </a>
-        <a asp-controller="announcements" asp-action="create" class="btn btn-default btn-lg">
-            <i class="fa fa-exclamation-circle"></i> Aviso
-        </a>
     </div>
 </div>

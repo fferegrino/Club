@@ -2,6 +2,9 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewBag.Title = "Usuarios pendientes de aprobación";
+}
+<h2>@ViewBag.Title</h2>
     <div ng-app="app-unapproved-users">
         <div ng-controller="unapprovedUsersController as vm">
             <table class="table table-responsive">
@@ -14,29 +17,45 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="user in vm.queriedUsers">
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.firstName }}</td>
-                        <td>{{ user.lastName }}</td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="...">
-                                <button type="button" ng-click="vm.approveUser(user.id,true)" class="btn btn-success btn-sm">
-                                    <span class="fa fa-check" aria-hidden="true"></span>
-                                </button>
-                                <button type="button" ng-click="vm.approveUser(user.id,false)" class="btn btn-danger btn-sm">
-                                    <span class="fa fa-ban" aria-hidden="true"></span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                <tr ng-repeat="user in vm.queriedUsers" id="{{ user.id }}">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button type="button" ng-click="vm.approveUser(user.id,true)" class="btn btn-success btn-sm">
+                                <span class="fa fa-check" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" ng-click="vm.approveUser(user.id,false)" class="btn btn-danger btn-sm">
+                                <span class="fa fa-ban" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button ng-click="vm.previousPage();" class="btn btn-default" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                {{ vm.currentPage }} / {{ vm.totalPages }}
+                            </button>
+                            <button ng-click="vm.nextPage();" class="btn btn-default" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </button>
+                        </div>
+
+                    </td>
+                </tr>
+                </tfoot>
             </table>
-            <button ng-click="vm.load();" type="button" class="btn btn-default">Left</button>
         </div>
     </div>
-}
-@section Scripts{
-    <script src="~/lib/angular/angular.min.js"></script>
-    <script src="~/js/controllers/app-unapproved-users.js"></script>
-    <script src="~/js/controllers/unapprovedUsersController.js"></script>
-}
+    @section Scripts{
+        <script src="~/lib/angular/angular.min.js"></script>
+        <script src="~/js/controllers/app-unapproved-users.js"></script>
+        <script src="~/js/controllers/unapprovedUsersController.js"></script>
+    }

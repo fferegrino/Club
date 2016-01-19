@@ -15,8 +15,10 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.Models.Entities.Event, Club.ViewModels.EventViewModel>()
                 .ForMember(vm=> vm.Host, opt => opt.ResolveUsing(m=> m.ClubUserHost.UserName))
                 .ForMember(vm => vm.EventCodeUrl, opt => opt.Ignore())
+                .ForMember(vm => vm.Repeat, opt => opt.Ignore())
+                .ForMember(vm => vm.RepeatUntil, opt => opt.Ignore())
                 .ForMember(vm => vm.Duration, opt => opt.ResolveUsing(
-                    (r,model)=> (model.End - model.Start).Humanize(15,maxUnit: Humanizer.Localisation.TimeUnit.Hour)))
+                    (r,model)=> (model.End - model.Start).Humanize(3,maxUnit: Humanizer.Localisation.TimeUnit.Day)))
                 ;
 
 

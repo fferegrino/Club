@@ -9,8 +9,9 @@ using Microsoft.Data.Entity;
 
 namespace Club.Models.Repositories
 {
-    public interface IAnnouncementsRepository 
+    public interface IAnnouncementsRepository
     {
+        IEnumerable<Announcement> GetAnnouncementsForMonth(int year, int month, bool showPrivate);
         IEnumerable<Announcement> GetAllAnnouncements();
         Announcement GetAnnouncementById(int announcementId);
         void AddAnnouncement(Announcement item);
@@ -34,12 +35,34 @@ namespace Club.Models.Repositories
 
         public IEnumerable<Announcement> GetAllAnnouncements()
         {
-            return _context.Announcements.ToList();
+            return _context.Announcements.Include(evt => evt.ClubUserCreator).ToList();
         }
 
         public Announcement GetAnnouncementById(int announcementId)
         {
             return _context.Announcements.Include(evt => evt.ClubUserCreator).FirstOrDefault(ann => ann.Id == announcementId);
+        }
+
+
+        public IEnumerable<Announcement> GetAnnouncementsForMonth(int year, int month, bool showPrivate)
+        {
+
+            DateTime start = new DateTime(year, month, 1);
+            DateTime end = start.AddMonths(1);
+
+            var betweenBoundsAnnouncements = _context.Announcements.Include(evt => evt.ClubUserCreator)
+                .Where(
+                    evnt => ((start < evnt.CreatedOn && evnt.CreatedOn < end) || (start < evnt.DueDate && evnt.DueDate < end))
+                );
+
+
+            if (showPrivate)
+            {
+                return betweenBoundsAnnouncements.ToList();
+            }
+
+            return betweenBoundsAnnouncements.Where(evt => evt.IsPrivate == false).ToList();
+
         }
 
         public void AddAnnouncement(Announcement item)

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Logging;
 
 namespace Club.Controllers.Web
 {
@@ -38,7 +39,7 @@ namespace Club.Controllers.Web
         {
             if (User.Identity.IsAuthenticated)
             {
-
+                return RedirectToAction("index", "home");
             }
             return View();
         }
@@ -46,28 +47,26 @@ namespace Club.Controllers.Web
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View();
+
+            var signInResult = await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, false, false);
+
+            if (signInResult.Succeeded)
             {
-                var signInResult = await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, false, false);
+                var loggedInUser = _clubUsersRepository.GetUserByUserName(vm.Username);
 
-                if (signInResult.Succeeded)
+                if (!loggedInUser.Approved)
                 {
-                    var loggedInUser = _clubUsersRepository.GetUserByUserName(vm.Username);
-
-                    if (!loggedInUser.Approved)
-                    {
-                        await _signInManager.SignOutAsync();
-                        return RedirectToAction("pendingapproval", new { username = loggedInUser.UserName });
-                    }
-
-                    if (String.IsNullOrEmpty(returnUrl))
-                    {
-                        return RedirectToAction("index", "home");
-                    }
-                    return Redirect(returnUrl);
+                    await _signInManager.SignOutAsync();
+                    return RedirectToAction("pendingapproval", new { username = loggedInUser.UserName });
                 }
-                ModelState.AddModelError("", "Invalid credentials");
+
+                if (!String.IsNullOrEmpty(returnUrl)) return Redirect(returnUrl);
+
+                return RedirectToAction("index", User.IsInRole("admin") ? "dashboard" : "home");
+
             }
+            ModelState.AddModelError("", "Invalid credentials");
             return View();
         }
 

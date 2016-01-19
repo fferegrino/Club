@@ -8,6 +8,30 @@
 <h2>Crear aviso</h2>
 <form method="post" novalidate>
     <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+
+    <div class="row">
+        <div class="form-group col-12">
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+
+                <label class="btn btn-lg btn-info active">
+                    <input type="radio" name="type" value="info" autocomplete="off" checked>
+                    <span class="fa fa-exclamation-circle"></span>
+                </label>
+
+                <label class="btn btn-lg btn-warning">
+                    <input type="radio" name="type" value="warning" autocomplete="off">
+                    <span class="fa fa-exclamation-triangle"></span>
+                </label>
+
+                <label class="btn btn-lg btn-danger">
+                    <input type="radio" name="type" value="danger" autocomplete="off">
+                    <span class="fa fa-exclamation"></span>
+                </label>
+
+            </div>
+
+        </div>
+    </div>
     <div class="row">
         <div class="form-group col-md-9">
             <label asp-for="Name"></label>
@@ -27,7 +51,6 @@
             <span asp-validation-for="Text"></span>
         </div>
     </div>
-
 
     <div class="row">
         <div class="form-group col-md-12">
@@ -51,7 +74,8 @@
         $(function () {
             $('#DueDate').datetimepicker({
                 locale: 'es',
-                stepping: 15
+                stepping: 15,
+                sideBySide:true
             });
         });
     </script>

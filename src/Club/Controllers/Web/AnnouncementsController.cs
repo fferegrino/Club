@@ -22,6 +22,13 @@ IAnnouncementsRepository announcementsRepository)
             _announcementsRepository = announcementsRepository;
         }
 
+        public IActionResult Index()
+        {
+            var modelAnnouncements = _announcementsRepository.GetAllAnnouncements();
+            var vmAnnouncements = _mapper.Map<IEnumerable<ViewModels.AnnouncementViewModel>>(modelAnnouncements);
+            return View(vmAnnouncements);
+        }
+
         [Authorize]
         public IActionResult Create()
         {

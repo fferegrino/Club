@@ -9,6 +9,29 @@ namespace Club.Models.Context
     public static class SampleData
 
     {
+        public static List<Announcement> SampleAnnouncements = new List<Announcement>()
+        {
+            new Announcement { Name= "Proin vel nisl.", Text = "ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque. Sed eget lacus. Mauris non dui nec", DueDate = DateTime.Parse("2016-01-25T05:10:28-08:00"), IsPrivate = 1 % 2 == 0  },
+new Announcement { Name= "at, velit.", Text = "molestie dapibus ligula. Aliquam erat volutpat. Nulla dignissim. Maecenas ornare egestas ligula. Nullam feugiat", DueDate = DateTime.Parse("2016-01-22T09:15:09-08:00"), IsPrivate = 2 % 2 == 0  },
+new Announcement { Name= "Nulla", Text = "odio. Aliquam vulputate ullamcorper magna. Sed eu eros. Nam consequat dolor vitae dolor. Donec fringilla. Donec feugiat metus sit amet ante. Vivamus non lorem vitae odio sagittis semper. Nam", DueDate = DateTime.Parse("2016-01-29T09:52:42-08:00"), IsPrivate = 10 % 2 == 0  },
+new Announcement { Name= "in, hendrerit", Text = "venenatis lacus. Etiam bibendum fermentum", DueDate = DateTime.Parse("2016-01-28T21:03:27-08:00"), IsPrivate = 1 % 2 == 0  },
+new Announcement { Name= "Donec dignissim", Text = "nec luctus felis purus ac tellus. Suspendisse sed dolor. Fusce mi lorem, vehicula et, rutrum eu, ultrices sit amet, risus. Donec nibh enim, gravida sit amet, dapibus id, blandit at,", DueDate = DateTime.Parse("2016-01-27T03:48:45-08:00"), IsPrivate = 9 % 2 == 0  },
+new Announcement { Name= "Mauris vestibulum,", Text = "Nullam scelerisque neque sed sem egestas blandit. Nam nulla magna, malesuada vel, convallis in,", DueDate = DateTime.Parse("2016-01-24T23:11:11-08:00"), IsPrivate = 10 % 2 == 0  },
+new Announcement { Name= "Proin sed turpis", Text = "ut ipsum ac mi eleifend egestas. Sed pharetra,", DueDate = DateTime.Parse("2016-01-20T09:03:37-08:00"), IsPrivate = 9 % 2 == 0  },
+new Announcement { Name= "et arcu imperdiet", Text = "Integer vulputate, risus a ultricies adipiscing, enim mi tempor lorem, eget mollis lectus pede et risus. Quisque libero lacus,", DueDate = DateTime.Parse("2016-01-27T13:28:40-08:00"), IsPrivate = 8 % 2 == 0  },
+new Announcement { Name= "nisl.", Text = "dolor dapibus gravida. Aliquam tincidunt, nunc ac mattis ornare, lectus ante dictum mi, ac mattis velit justo nec ante. Maecenas mi felis, adipiscing fringilla,", DueDate = DateTime.Parse("2016-01-29T02:50:53-08:00"), IsPrivate = 6 % 2 == 0  },
+new Announcement { Name= "sagittis semper. Nam", Text = "nunc sed", DueDate = DateTime.Parse("2016-01-29T16:52:54-08:00"), IsPrivate = 6 % 2 == 0  },
+new Announcement { Name= "nunc nulla", Text = "metus facilisis lorem tristique aliquet. Phasellus fermentum convallis ligula. Donec luctus aliquet odio. Etiam ligula tortor, dictum eu, placerat eget, venenatis a, magna. Lorem ipsum dolor sit amet, consectetuer", DueDate = DateTime.Parse("2016-01-27T12:58:11-08:00"), IsPrivate = 6 % 2 == 0  },
+new Announcement { Name= "vitae,", Text = "Integer sem elit, pharetra ut, pharetra sed, hendrerit a, arcu. Sed et libero. Proin", DueDate = DateTime.Parse("2016-01-24T14:52:27-08:00"), IsPrivate = 9 % 2 == 0  },
+new Announcement { Name= "lectus", Text = "convallis convallis dolor. Quisque tincidunt pede ac urna. Ut tincidunt vehicula risus. Nulla eget metus eu erat semper rutrum. Fusce dolor quam, elementum at, egestas a,", DueDate = DateTime.Parse("2016-01-26T21:15:34-08:00"), IsPrivate = 8 % 2 == 0  },
+new Announcement { Name= "ornare.", Text = "placerat velit. Quisque varius. Nam porttitor scelerisque neque. Nullam nisl. Maecenas malesuada fringilla est. Mauris eu turpis. Nulla aliquet. Proin velit. Sed malesuada augue", DueDate = DateTime.Parse("2016-01-20T05:09:21-08:00"), IsPrivate = 6 % 2 == 0  },
+new Announcement { Name= "nec enim. Nunc", Text = "ut ipsum ac mi eleifend egestas. Sed pharetra, felis eget varius ultrices,", DueDate = DateTime.Parse("2016-01-29T02:18:56-08:00"), IsPrivate = 8 % 2 == 0  },
+new Announcement { Name= "turpis non enim.", Text = "enim, gravida sit amet, dapibus id,", DueDate = DateTime.Parse("2016-01-22T14:41:02-08:00"), IsPrivate = 1 % 2 == 0  },
+new Announcement { Name= "nibh. Quisque", Text = "nisl. Nulla eu neque pellentesque massa lobortis ultrices. Vivamus rhoncus. Donec est. Nunc ullamcorper,", DueDate = DateTime.Parse("2016-01-28T08:28:01-08:00"), IsPrivate = 8 % 2 == 0  },
+new Announcement { Name= "sapien.", Text = "sed orci lobortis augue scelerisque", DueDate = DateTime.Parse("2016-01-21T16:21:20-08:00"), IsPrivate = 4 % 2 == 0  },
+
+        };
+
         public static List<ClubUser> SampleClubUsers = new List<ClubUser>()
         {
             new ClubUser { UserName = "OLh743uUt", Approved=true, Email ="ullamcorper@dolorquamelementum.net", FirstName = "Stone", LastName = "Rocha" },

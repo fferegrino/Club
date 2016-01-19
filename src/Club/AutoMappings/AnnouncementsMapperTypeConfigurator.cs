@@ -15,7 +15,7 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.Models.Entities.Announcement, Club.ViewModels.AnnouncementViewModel>()
                 .ForMember(vm=> vm.Creator , opt => opt.ResolveUsing(m=>m.ClubUserCreator.UserName))
                 .ForMember(vm => vm.HumanizedDueDate, opt => opt.ResolveUsing(
-                    (r, model) => (model.DueDate - DateTime.Now).Humanize(15, maxUnit: Humanizer.Localisation.TimeUnit.Hour)));
+                    (r, model) => (model.DueDate - DateTime.Now).Humanize(3, maxUnit: Humanizer.Localisation.TimeUnit.Day)));
             Mapper.CreateMap<Club.ViewModels.AnnouncementViewModel, Club.Models.Entities.Announcement>()
                 .ForMember(m => m.ClubUserCreatorId, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserCreator, opt => opt.Ignore())
