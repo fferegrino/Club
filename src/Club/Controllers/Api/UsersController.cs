@@ -29,6 +29,16 @@ namespace Club.Controllers.Api
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet("")]
+        public JsonResult GetUsers()
+        {
+            var request = _requestFactory.Create(Request.ToUri());
+            var pagedQuery = _clubUsersRepository.GetPagedUsersWithAttendance(request);
+            var resp = _mapper.Map<PagedDataResponse<ApiModels.ComplexUserApiModel>>(pagedQuery);
+            return Json(resp);
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("unapproved")]
         public JsonResult GetUnapprovedUsers()
         {
@@ -40,7 +50,7 @@ namespace Club.Controllers.Api
 
         [Authorize(Roles = "Admin")]
         [HttpPut("approve")]
-        public void Put([FromBody]SimpleUserApiModel user)
+        public void Put([FromBody]ApprovedUserApiModel user)
         {
             _clubUsersRepository.UpdateApprovedStatus(user.Id, user.Approved);
             _clubUsersRepository.SaveAll();

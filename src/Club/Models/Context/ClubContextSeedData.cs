@@ -35,7 +35,7 @@ namespace Club.Models.Context
 
         public async Task EnsureSeedData()
         {
-            var adminRoleName = "Admin";
+            const string adminRoleName = "Admin";
             var adminRole = await _roleManager.FindByNameAsync(adminRoleName);
             if (adminRole == null)
             {
@@ -43,7 +43,7 @@ namespace Club.Models.Context
                 var roleresult = await _roleManager.CreateAsync(adminRole);
             }
 
-            var memberRoleName = "Member";
+            const string memberRoleName = "Member";
             var memberRole = await _roleManager.FindByNameAsync(memberRoleName);
             if (memberRole == null)
             {
@@ -57,35 +57,58 @@ namespace Club.Models.Context
 
             if (!_context.Announcements.Any())
             {
-                AddEvents(admin);
+                AddAnnouncements(admin);
             }
 
             if (!_context.Events.Any())
             {
-                _context.Add(new Event()
-                {
-                    Name = "Concurso 1",
-                    ClubUserHostId = admin.Id,
-                    CreatedOn = _dateTime.UtcNow,
-                    EventCode = _eventCodeGenerator.GetCode(),
-                    Start = DateTime.Now,
-                    End = DateTime.Now.AddHours(2)
-                });
-                _context.Add(new Event()
-                {
-                    Name = "Concurso 2",
-                    ClubUserHostId = admin.Id,
-                    CreatedOn = _dateTime.UtcNow,
-                    EventCode = _eventCodeGenerator.GetCode(),
-                    Start = DateTime.Now.AddDays(3),
-                    End = DateTime.Now.AddDays(3).AddHours(2)
-                });
-
-                _context.SaveChanges();
+                AddEvents(admin);
             }
+
+            if (!_context.EventAttendance.Any())
+                AddUsersEventsAttendance();
+
+        }
+
+        private void AddUsersEventsAttendance()
+        {
+            var activeUsers = _context.Users.Where(usr => usr.Approved).ToList();
+            var registeredEvents = _context.Events.ToList();
+            foreach (var user in activeUsers)
+            {
+                var firstRandom = Random.Next(0, 11);
+                for (int i = 0; i < firstRandom; i++)
+                {
+                    var randomEventIx = Random.Next(0, registeredEvents.Count);
+                    if (
+                        !_context.EventAttendance.Any(
+                            ea => ea.ClubUserId == user.Id && ea.EventId == registeredEvents[randomEventIx].Id))
+                    {
+                        _context.Add(new EventAttendance() { ClubUserId = user.Id, EventId = registeredEvents[randomEventIx].Id, AttendedOn = registeredEvents[randomEventIx].Start.AddMinutes(randomEventIx) });
+                        _context.SaveChanges();
+                    }
+                }
+
+            }
+
         }
 
         private void AddEvents(ClubUser creator)
+        {
+
+            foreach (var @event in SampleData.SampleEvents)
+            {
+                int r = (Random.Next(1, 65465465) % 270) + 30;
+                @event.ClubUserHostId = creator.Id;
+                @event.CreatedOn = DateTime.Now;
+                @event.EventCode = _eventCodeGenerator.GetCode();
+                @event.End = @event.Start.AddMinutes(r);
+                _context.Add(@event);
+            }
+            _context.SaveChanges();
+        }
+
+        private void AddAnnouncements(ClubUser creator)
         {
             foreach (var announcement in SampleData.SampleAnnouncements)
             {

@@ -33,6 +33,8 @@ namespace Club.Migrations
 
                     b.Property<string>("Text");
 
+                    b.Property<string>("Type");
+
                     b.HasKey("Id");
                 });
 
@@ -116,6 +118,17 @@ namespace Club.Migrations
                     b.Property<DateTime>("Start");
 
                     b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("Club.Models.Entities.EventAttendance", b =>
+                {
+                    b.Property<string>("ClubUserId");
+
+                    b.Property<int>("EventId");
+
+                    b.Property<DateTime>("AttendedOn");
+
+                    b.HasKey("ClubUserId", "EventId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
@@ -212,6 +225,17 @@ namespace Club.Migrations
                     b.HasOne("Club.Models.Entities.ClubUser")
                         .WithMany()
                         .HasForeignKey("ClubUserHostId");
+                });
+
+            modelBuilder.Entity("Club.Models.Entities.EventAttendance", b =>
+                {
+                    b.HasOne("Club.Models.Entities.ClubUser")
+                        .WithMany()
+                        .HasForeignKey("ClubUserId");
+
+                    b.HasOne("Club.Models.Entities.Event")
+                        .WithMany()
+                        .HasForeignKey("EventId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>

@@ -11,7 +11,7 @@
                 <span class="badge">@Model.UpcomingEventsCount</span>
                 Calendario
             </a>
-            <a asp-controller="announcements" asp-action="index"  class="list-group-item">
+            <a asp-controller="announcements" asp-action="index" class="list-group-item">
                 <span class="badge">@Model.RecentAnnouncements?.Count()</span>
                 Avisos
             </a>
@@ -22,11 +22,75 @@
         </div>
 
         <a asp-controller="events" asp-action="create" class="btn btn-primary btn-lg btn-block">
-            <i class="fa fa-calendar-plus-o"></i> Evento
+            <i class="fa fa-calendar-plus-o"></i> Nuevo evento
         </a>
         <a asp-controller="announcements" asp-action="create" class="btn btn-primary btn-lg btn-block">
-            <i class="fa fa-exclamation-circle"></i> Aviso
+            <i class="fa fa-exclamation-circle"></i> Nuevo aviso
         </a>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Usuarios más activos</h3>
+            </div>
+            <div class="panel-body">
+                @if (Model.MostActiveUsers.Any())
+                {
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Eventos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var usuario in Model.MostActiveUsers)
+                            {
+                                <tr>
+                                    <td>@usuario.Username</td>
+                                    <td>@usuario.EventsAttendedCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="panel-footer">
+                <a asp-action="index" asp-controller="users">Ver todos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Usuarios más activos</h3>
+            </div>
+            <div class="panel-body">
+                @if (Model.MostActiveUsers.Any())
+                {
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Eventos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var usuario in Model.MostActiveUsers)
+                            {
+                                <tr>
+                                    <td>@usuario.Username</td>
+                                    <td>@usuario.EventsAttendedCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="panel-footer">
+                <a asp-action="index" asp-controller="users">Ver todos</a>
+            </div>
+        </div>
     </div>
     <div class="col-lg-8">
         <div class="panel panel-default">
@@ -38,21 +102,21 @@
                 {
                     <table class="table table-responsive">
                         <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                        </tr>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach (var usuario in Model.UsersAwaitingApproval)
-                        {
-                            <tr>
-                                <td>@usuario.Username</td>
-                                <td>@usuario.FirstName</td>
-                                <td>@usuario.LastName</td>
-                            </tr>
-                        }
+                            @foreach (var usuario in Model.UsersAwaitingApproval)
+                            {
+                                <tr>
+                                    <td>@usuario.Username</td>
+                                    <td>@usuario.FirstName</td>
+                                    <td>@usuario.LastName</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 }

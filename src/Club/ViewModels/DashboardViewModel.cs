@@ -20,6 +20,9 @@ namespace Club.ViewModels
         [Display(Name = "Usuarios pendientes de aprobación")]
         public IEnumerable<SimpleUserViewModel> UsersAwaitingApproval { get; set; }
 
+        [Display(Name = "Usuarios pendientes de aprobación")]
+        public IEnumerable<ComplexUserViewModel> MostActiveUsers { get; set; }
+
 
 
     }

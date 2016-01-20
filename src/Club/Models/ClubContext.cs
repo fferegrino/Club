@@ -15,13 +15,16 @@ namespace Club.Models
         public DbSet<Event> Events { get; set; }
         public DbSet<EventAttendance> EventAttendance { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
+        
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = Startup.Configuration["Data:ClubContextConnection"];
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
         }
+
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +43,7 @@ namespace Club.Models
                 .HasOne(pt => pt.ClubUser)
                 .WithMany(t => t.EventsAttended)
                 .HasForeignKey(pt => pt.ClubUserId);
+            
         }
     }
 }
