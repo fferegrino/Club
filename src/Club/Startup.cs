@@ -34,9 +34,10 @@ namespace Club
         public Startup(IApplicationEnvironment appEnv, IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                    .SetBasePath(appEnv.ApplicationBasePath)
-                    .AddJsonFile("config.json")
-                    .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+                .SetBasePath(appEnv.ApplicationBasePath)
+                .AddJsonFile("config.json")
+                .AddEnvironmentVariables();
+                    //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -98,10 +99,9 @@ namespace Club
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<ClubContext>();
-
-#if DEBUG
+            
             services.AddScoped<IMailService, DebugMailService>();
-#endif
+
             services.AddSingleton<IEventCodeGenerator, DefaultEventCodeGenerator>();
             services.AddSingleton<IQrCodeApi, GoQrApi>();
 

@@ -1,4 +1,5 @@
-﻿using Club.Models.Entities;
+﻿using System;
+using Club.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Storage;
@@ -20,9 +21,10 @@ namespace Club.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 #if DEBUG
+            
             var connectionString = Startup.Configuration["Data:ClubContextConnection"];
 #else
-            var connectionString = Startup.Configuration["Data:AzureClubContextConnection:ConnectionString"];
+            var connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_AzureClubContextConnection");
 #endif
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
