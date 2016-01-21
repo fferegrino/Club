@@ -10,14 +10,28 @@
 }
 <div class="row">
     <div class="col-md-12 ">
-        <h1>@Model.Name</h1>
-        <p class="lead">@Model.Text</p>
-        <p class="lead">
-            <i class="fa fa-calendar"></i> @Model.DueDate
-        </p>
-        <p class="lead">
-            <span><i class="fa fa-clock-o"></i> @Model.HumanizedDueDate</span>
-        </p>
-        <p class="lead"><i class="fa fa-user"></i> @Model.Creator</p>
+        <div class="jumbotron">
+            <h1>@Model.Name</h1>
+            <p class="lead">@Model.Text</p>
+            <p class="lead">
+                <i class="fa fa-calendar fa-fw"></i> @Model.DueDate
+            </p>
+            <p class="lead">
+                <span><i class="fa fa-clock-o fa-fw"></i> Vence en @Model.HumanizedDueDate</span>
+            </p>
+            <p class="lead"><i class="fa fa-user fa-fw"></i> @Model.Creator</p>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="btn-group hidden-print">
+                    <button type="button" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-cogs fa-fw"></i> Opciones <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li role="separator" class="divider"></li>
+                        <li><a href="@Url.Action("delete", new {id = Model.Id})">Eliminar</a></li>
+                    </ul>
+                </div>
+            }
+        </div>
     </div>
 </div>

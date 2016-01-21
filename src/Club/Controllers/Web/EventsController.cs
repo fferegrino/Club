@@ -10,6 +10,7 @@ using Club.Common;
 using Club.Common.Extensions;
 using Club.Common.Security;
 using Club.Models.Entities;
+using Microsoft.AspNet.Http.Internal;
 using Microsoft.AspNet.Mvc.Routing;
 using Microsoft.AspNet.Razor.TagHelpers;
 
@@ -70,12 +71,13 @@ namespace Club.Controllers.Web
             };
 
             eventViewModel.EventCodeUrl = User.IsInRole("Admin") ? 
-                _qrCodeApi.GetQrUrl(uri.ToString(), 300) 
+                _qrCodeApi.GetQrUrl(uri.ToString(), 500) 
                 : "/img/defaults/eventcode.png";
 
 
             return View(eventViewModel);
         }
+        
 
         [Authorize]
         public IActionResult Attend(string eventCode)
@@ -88,14 +90,14 @@ namespace Club.Controllers.Web
             return RedirectToAction("detail", new { id = attendedEvent.Id });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(EventViewModel viewModel)
         {
             var eventEntity = _mapper.Map<Models.Entities.Event>(viewModel);
@@ -119,6 +121,33 @@ namespace Club.Controllers.Web
             _eventsRepository.SaveAll();
 
             return RedirectToAction("detail", new { id = eventEntity.Id });
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(int id)
+        {
+
+            var queriedEvent = _eventsRepository.GetEventById(id);
+            var eventViewModel = _mapper.Map<ViewModels.EventViewModel>(queriedEvent);
+            return View(eventViewModel);
+        }
+
+        // POST: dummy/Delete/5
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                _eventsRepository.DeleteById(id);
+                _eventsRepository.SaveAll();
+                return RedirectToAction("index","calendar");
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
