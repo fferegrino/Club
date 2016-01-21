@@ -31,12 +31,19 @@ namespace Club
     {
         public static IConfigurationRoot Configuration;
 
-        public Startup(IApplicationEnvironment appEnv)
+        public Startup(IApplicationEnvironment appEnv, IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                     .SetBasePath(appEnv.ApplicationBasePath)
                     .AddJsonFile("config.json")
-                    .AddEnvironmentVariables();
+                    .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+
+            if (env.IsDevelopment())
+            {
+                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                //builder.AddUserSecrets();
+            }
+
 
             Configuration = builder.Build();
         }
