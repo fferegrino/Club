@@ -1,0 +1,21 @@
+﻿@model Club.ViewModels.AnnouncementViewModel
+@{
+}
+
+
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="jumbotron">
+            <h1>@Model.Name</h1>
+            <p>@Model.Text | <i class="fa fa-calendar fa-fw"></i> @Model.DueDate | <i class="fa fa-user fa-fw"></i> @Model.Creator</p>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <a class="btn btn-info" href="@Url.Action("detail", new {id = Model.Id})">Volver</a> <input type="submit" value="Eliminar" class="btn btn-warning" />
+                </div>
+            }
+        </div>
+    </div>
+</div>

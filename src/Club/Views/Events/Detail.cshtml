@@ -9,21 +9,47 @@
     </div>
 }
 <div class="row">
-    <div class="col-md-8 ">
-        <h1>@Model.Name</h1>
-        <p class="lead">@Model.Description</p>
-        <p class="lead">
-            <i class="fa fa-calendar"></i> @Model.Start - @Model.End
-        </p>
-        <p class="lead">
-            <span><i class="fa fa-map-marker"></i> @Model.Location</span>
-        </p>
-        <p class="lead">
-            <span><i class="fa fa-clock-o"></i> @Model.Duration</span>
-        </p>
-        <p class="lead"><i class="fa fa-user"></i> @Model.Host</p>
+    <div class="col-md-10 col-md-pull-1 text-center visible-print-block">
+        <img class="img-responsive img-thumbnail" src="@Model.EventCodeUrl" alt="Código QR del evento" />
     </div>
-    <div class="col-md-3 col">
-        <img class="img-responsive img-thumbnail" src="@Model.EventCodeUrl" />
+    <div class="col-md-12 ">
+        <div class="jumbotron">
+            <h1>@Model.Name</h1>
+            <p class="lead">@Model.Description</p>
+            <p class="lead hidden-print">
+                <span><i class="fa fa-map-marker fa-fw"></i> @Model.Location</span>
+            </p>
+            <p class="lead">
+                <i class="fa fa-calendar fa-fw"></i> @Model.Start
+            </p>
+            <p class="lead">
+                <span><i class="fa fa-clock-o fa-fw"></i> @Model.Duration</span>
+            </p>
+            <p class="lead"><i class="fa fa-user fa-fw"></i> @Model.Host</p>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="btn-group hidden-print">
+                    <button type="button" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-cogs fa-fw"></i> Opciones <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" id="PrintButton">Imprimir</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="@Url.Action("delete", new {id = Model.Id})">Eliminar</a></li>
+                    </ul>
+                </div>
+            }
+        </div>
     </div>
 </div>
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $("#PrintButton").click(function() {
+                window.print();
+            });
+        });
+    </script>
+}

@@ -6,6 +6,7 @@ using Club.Common.TypeMapping;
 using Club.Models.Repositories;
 using Club.ViewModels;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Http.Internal;
 using Microsoft.AspNet.Mvc;
 
 namespace Club.Controllers.Web
@@ -15,7 +16,7 @@ namespace Club.Controllers.Web
         private readonly IAnnouncementsRepository _announcementsRepository;
         private readonly IAutoMapper _mapper;
 
-        public AnnouncementsController(IAutoMapper mapper, 
+        public AnnouncementsController(IAutoMapper mapper,
 IAnnouncementsRepository announcementsRepository)
         {
             _mapper = mapper;
@@ -53,7 +54,7 @@ IAnnouncementsRepository announcementsRepository)
         {
             var queriedEvent = _announcementsRepository.GetAnnouncementById(id);
             if (queriedEvent != null
-                && queriedEvent.IsPrivate 
+                && queriedEvent.IsPrivate
                 && !User.Identity.IsAuthenticated)
             {
                 return new HttpNotFoundResult();
@@ -61,6 +62,33 @@ IAnnouncementsRepository announcementsRepository)
 
             var eventViewModel = _mapper.Map<ViewModels.AnnouncementViewModel>(queriedEvent);
             return View(eventViewModel);
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(int id)
+        {
+
+            var queriedEvent = _announcementsRepository.GetAnnouncementById(id);
+            var eventViewModel = _mapper.Map<ViewModels.AnnouncementViewModel>(queriedEvent);
+            return View(eventViewModel);
+        }
+
+        // POST: dummy/Delete/5
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                _announcementsRepository.DeleteById(id);
+                _announcementsRepository.SaveAll();
+                return RedirectToAction("index", "calendar");
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }

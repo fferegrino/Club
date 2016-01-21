@@ -16,6 +16,7 @@ namespace Club.Models.Repositories
         Announcement GetAnnouncementById(int announcementId);
         void AddAnnouncement(Announcement item);
         bool SaveAll();
+        void DeleteById(int id);
     }
 
     public class AnnouncementsRepository : IAnnouncementsRepository
@@ -75,6 +76,13 @@ namespace Club.Models.Repositories
         public bool SaveAll()
         {
             return _context.SaveChanges() > 0;
+        }
+
+        public void DeleteById(int id)
+        {
+            var an = _context.Announcements.FirstOrDefault(e => e.Id == id);
+            if (an != null)
+                _context.Remove(an);
         }
     }
 }

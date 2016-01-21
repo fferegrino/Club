@@ -62,6 +62,13 @@ namespace Club.Models.Repositories
             return _context.Events.FirstOrDefault(evnt => evnt.EventCode == eventCode);
         }
 
+        public void DeleteById(int id)
+        {
+            var @event = _context.Events.FirstOrDefault(e => e.Id == id);
+            if (@event != null)
+                _context.Remove(@event);
+        }
+
         public void AddEvent(Event item)
         {
             item.CreatedOn = _date.UtcNow;
