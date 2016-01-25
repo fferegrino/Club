@@ -1,0 +1,17 @@
+﻿@model Club.ViewModels.ForgottenViewModel
+@{
+    ViewBag.Title = "Contraseña olvidada";
+}
+
+<h3>@ViewBag.Title</h3>
+<form method="post" novalidate>
+    <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Enviar" class="btn btn-success" />
+    </div>
+</form>

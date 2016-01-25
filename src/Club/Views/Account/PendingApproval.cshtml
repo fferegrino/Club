@@ -2,20 +2,33 @@
 @{
     ViewBag.Title = "Solicitud pendiente";
     var approved = (bool)ViewBag.Approved;
+    var emailConfirmed = (bool)ViewBag.EmailConfirmed;
 }
-
-@if (!approved)
+@if (emailConfirmed)
 {
-    <div class="jumbotron">
-        <h1>Solicitud pendiente</h1>
-        <p>Hola @Model.Username, tu solicitud está pendiente de aprobación, espera un poco más o ponte en contacto con el administrador del club para saber más.</p>
-    </div>
+    if (!approved)
+    {
+        <div class="jumbotron">
+            <h1>Solicitud pendiente</h1>
+            <p>Hola @Model.Username, tu solicitud está pendiente de aprobación, espera un poco más o ponte en contacto con el administrador del club para saber más.</p>
+        </div>
+    }
+    else
+    {
+        <div class="jumbotron">
+            <h1>Solicitud aprobada</h1>
+            <p>Hola @Model.Username, tu solicitud ha sido aceptada.</p>
+        </div>
+    }
+
 }
 else
 {
     <div class="jumbotron">
-        <h1>Solicitud aprobada</h1>
-        <p>Hola @Model.Username, tu solicitud ha sido aceptada.</p>
+        <h1>Email pendiente de confirmación</h1>
+        <p>Hola @Model.Username, hemos enviado un correo electrónico con un enlace de confirmación.</p>
     </div>
+
 }
+
 

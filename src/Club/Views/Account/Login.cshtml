@@ -1,8 +1,9 @@
 ﻿@model Club.ViewModels.LoginViewModel
 @{
+    ViewBag.Title = "Login";
 }
 
-<h3>Login</h3>
+<h3>@ViewBag.Title</h3>
 <form method="post" novalidate>
     <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
     <div class="form-group">
@@ -17,6 +18,7 @@
     </div>
     <div class="form-group">
         <input type="submit" value="Acceder" class="btn btn-success" />
+        <a asp-action="forgotten" class="btn btn-link">Crear una cuenta</a>
         <a asp-action="signup" class="btn btn-link">Crear una cuenta</a>
     </div>
 </form>

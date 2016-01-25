@@ -7,6 +7,6 @@ namespace Club.Services
 {
     public interface IMailService
     {
-        bool SendMail(string to, string from, string subject, string body);
+        Task<bool> SendMail(string to, string from, string subject, string body);
     }
 }

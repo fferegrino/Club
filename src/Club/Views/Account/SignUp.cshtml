@@ -1,10 +1,10 @@
 ﻿@model Club.ViewModels.SignUpViewModel
 @{
-    ViewBag.Title = "Sign up";
+    ViewBag.Title = "Registrarse";
 }
 
 
-<h2>Registrarse</h2>
+<h2>@ViewBag.Title</h2>
 <form method="post" asp-antiforgery="true">
     @if (ViewBag.Message != null)
     {

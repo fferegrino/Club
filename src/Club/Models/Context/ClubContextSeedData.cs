@@ -129,7 +129,7 @@ namespace Club.Models.Context
         private async Task<ClubUser> GetOrCreateAdmin(IdentityRole adminRole)
         {
 
-            var admin = await _userManager.FindByEmailAsync("antonio.feregrino@pokemon.com");
+            var admin = await _userManager.FindByEmailAsync("antonio.feregrino@gmail.com");
             if (admin == null)
             {
                 admin = new ClubUser
@@ -138,7 +138,7 @@ namespace Club.Models.Context
                     FirstName = "Antonio",
                     LastName = "Feregrino",
                     Approved = true,
-                    Email = "antonio.feregrino@pokemon.com"
+                    Email = "antonio.feregrino@gmail.com"
                 };
 
                 await _userManager.CreateAsync(admin, "P@sword1");

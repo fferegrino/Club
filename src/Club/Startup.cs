@@ -21,6 +21,7 @@ using Club.Common.Security;
 using Club.Models.Context;
 using Club.Models.Entities;
 using Microsoft.AspNet.Authentication.Facebook;
+using Microsoft.AspNet.DataProtection;
 using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -30,6 +31,7 @@ namespace Club
     public class Startup
     {
         public static IConfigurationRoot Configuration;
+        public static IDataProtectionProvider DataProtectionProvider { get; set; }
 
         public Startup(IApplicationEnvironment appEnv, IHostingEnvironment env)
         {
@@ -65,12 +67,11 @@ namespace Club
                 formatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
-            
-
             services.AddIdentity<ClubUser, IdentityRole>(config =>
             {
+
+
                 config.User.RequireUniqueEmail = true;
-                
                 config.Password.RequiredLength = 6;
                 config.Password.RequireNonLetterOrDigit = false;
                 config.Cookies.ApplicationCookie.LoginPath = "/account/login";
@@ -94,13 +95,14 @@ namespace Club
                 
 
             })
-            .AddEntityFrameworkStores<ClubContext>();
+            .AddEntityFrameworkStores<ClubContext>()
+            .AddDefaultTokenProviders();
 
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<ClubContext>();
             
-            services.AddScoped<IMailService, DebugMailService>();
+            services.AddScoped<IMailService, GmailService>();
 
             services.AddSingleton<IEventCodeGenerator, DefaultEventCodeGenerator>();
             services.AddSingleton<IQrCodeApi, GoQrApi>();
@@ -134,13 +136,6 @@ namespace Club
             app.UseStatusCodePages();
 
             app.UseMvc(RouteConfig.Configure);
-
-
-            app.UseFacebookAuthentication(new FacebookOptions
-            {
-                AppId = "X",
-                AppSecret = "X"
-            });
 
             await seeder.EnsureSeedData();
         }
