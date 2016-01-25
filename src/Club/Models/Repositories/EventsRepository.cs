@@ -22,6 +22,22 @@ namespace Club.Models.Repositories
             _user = user;
         }
 
+        public QueryResult<Event> GetPagedEventsAttendedByUsername(PagedDataRequest request, string username)
+        {
+            var user = _context.Users.First(u => u.UserName == username);
+            var attendedEvents = (from ea in _context.EventAttendance
+                                  join @event in _context.Events on ea.EventId equals @event.Id
+                                  where ea.ClubUserId == user.Id
+                                  orderby ea.AttendedOn descending
+                                  select @event);
+
+            var totalItemCount = attendedEvents.Count();
+            var startIndex = ResultsPagingUtility.CalculateStartIndex(request.PageNumber, request.PageSize);
+            var toReturnUsers = attendedEvents.Skip(startIndex).Take(request.PageSize).ToList();
+
+            return new QueryResult<Event>(request.PageSize, totalItemCount, toReturnUsers);
+        }
+
         public IEnumerable<Event> GetAllEvents()
         {
             return _context.Events.ToList();
@@ -36,7 +52,6 @@ namespace Club.Models.Repositories
                 .Where(
                     evnt => ((start < evnt.Start && evnt.Start < end) || (start < evnt.End && evnt.End < end))
                 );
-
 
             if (showPrivate)
             {
@@ -73,7 +88,7 @@ namespace Club.Models.Repositories
         {
             item.CreatedOn = _date.UtcNow;
             item.ClubUserHostId = _user.Id;
-            
+
             _context.Add(item);
         }
 

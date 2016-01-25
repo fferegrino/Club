@@ -1,0 +1,86 @@
+﻿@model Club.ViewModels.ComplexUserViewModel
+@{
+    ViewBag.Title = Model.Username;
+}
+
+<div ng-app="app-attended-events">
+    <div ng-controller="attendedEventsController as vm">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>@Model.Username</h2>
+                <input type="hidden" id="id" value="@Model.Username" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <p class="lead">@Model.FirstName @Model.LastName</p>
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-lg-2 col-lg-offset-7">
+                    <div class="btn-group hidden-print">
+                        <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-cogs fa-fw"></i> Opciones <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            @if (User.Identity.Name.Equals(Model.Username))
+                            {
+                                <li>
+                                    <a asp-action="edit">Editar perfil</a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li role="separator" class="divider"></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <h3>Asistencias</h3>
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Unicación</th>
+                    <th>Fecha</th>
+                    <th>Duración</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in vm.queriedUsers">
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.location }}</td>
+                    <td>{{ user.start | date:'medium' }}</td>
+                    <td>{{ user.duration }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button ng-click="vm.previousPage();" class="btn btn-default" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                {{ vm.currentPage }} / {{ vm.totalPages }}
+                            </button>
+                            <button ng-click="vm.nextPage();" class="btn btn-default" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </button>
+                        </div>
+
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/js/controllers/app-attended-events.js"></script>
+    <script src="~/js/controllers/attendedEventsController.js"></script>
+}

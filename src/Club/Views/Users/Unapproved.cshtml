@@ -5,18 +5,18 @@
     ViewBag.Title = "Usuarios pendientes de aprobación";
 }
 <h2>@ViewBag.Title</h2>
-    <div ng-app="app-unapproved-users">
-        <div ng-controller="unapprovedUsersController as vm">
-            <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
+<div ng-app="app-unapproved-users">
+    <div ng-controller="unapprovedUsersController as vm">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
                 <tr ng-repeat="user in vm.queriedUsers" id="{{ user.id }}">
                     <td>{{ user.username }}</td>
                     <td>{{ user.firstName }}</td>
@@ -32,8 +32,8 @@
                         </div>
                     </td>
                 </tr>
-                </tbody>
-                <tfoot>
+            </tbody>
+            <tfoot>
                 <tr>
                     <td colspan="3">
                         <div class="btn-group" role="group" aria-label="...">
@@ -50,12 +50,12 @@
 
                     </td>
                 </tr>
-                </tfoot>
-            </table>
-        </div>
+            </tfoot>
+        </table>
     </div>
+</div>
     @section Scripts{
-        <script src="~/lib/angular/angular.min.js"></script>
-        <script src="~/js/controllers/app-unapproved-users.js"></script>
-        <script src="~/js/controllers/unapprovedUsersController.js"></script>
+<script src="~/lib/angular/angular.min.js"></script>
+<script src="~/js/controllers/app-unapproved-users.js"></script>
+<script src="~/js/controllers/unapprovedUsersController.js"></script>
     }

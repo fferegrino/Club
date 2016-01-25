@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper.Internal;
 using Club.Common;
 using Club.Models.Entities;
+using Club.Models.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -98,9 +99,10 @@ namespace Club.Models.Context
 
             foreach (var @event in SampleData.SampleEvents)
             {
-                int r = (Random.Next(1, 65465465) % 270) + 30;
+                int r = (Random.Next(1, 65465465) % 270) + 45;
                 @event.ClubUserHostId = creator.Id;
                 @event.CreatedOn = DateTime.Now;
+                @event.Type = (EventType)(r % 4);
                 @event.EventCode = _eventCodeGenerator.GetCode();
                 @event.End = @event.Start.AddMinutes(r);
                 _context.Add(@event);
@@ -114,9 +116,9 @@ namespace Club.Models.Context
             {
                 int r = Random.Next(1, 65465465) % 365;
                 announcement.ClubUserCreatorId = creator.Id;
-                announcement.Type = (announcement.DueDate.Ticks % ((long)10) == ((long)0))
-                    ? "info"
-                    : announcement.IsPrivate ? "warning" : "danger";
+                announcement.Type = r % 2 == 0
+                    ? Club.Models.Enums.AnnouncementType.Info
+                    : announcement.IsPrivate ? Club.Models.Enums.AnnouncementType.Warning : Club.Models.Enums.AnnouncementType.Danger;
                 announcement.CreatedOn = DateTime.Now.AddDays(r);
                 announcement.DueDate = announcement.DueDate.AddDays(r);
                 _context.Add(announcement);

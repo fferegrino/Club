@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Club.Models.Enums;
 
 namespace Club.Models.Entities
 {
@@ -16,6 +17,7 @@ namespace Club.Models.Entities
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public DateTime CreatedOn { get; set; }
+        public EventType Type { get; set; }
         public ICollection<EventAttendance> UsersAttending { get; set; }
         public Event()
         {

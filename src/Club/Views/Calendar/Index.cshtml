@@ -3,8 +3,8 @@
     int month = (int)ViewBag.Month;
 }
 
-        <div id="calendar" class="calendar">
-        </div>
+<div id="calendar" class="calendar">
+</div>
 
 
 @section Scripts {
@@ -13,6 +13,17 @@
     <script src="~/lib/fullcalendar/dist/lang/es.js"></script>
 
     <script>
+        var iconDictionary = {
+            'success': 'check',
+            'warning': 'exclamation-triangle',
+            'info': 'exclamation-circle',
+            'danger': 'exclamation',
+
+            'contest': 'sort-numeric-asc',
+            'workshop': 'hand-lizard',
+            'conference': 'microphone',
+            'class': 'book'
+        };
         $(document).ready(function () {
 
             // page is now ready, initialize the calendar...
@@ -25,14 +36,22 @@
                     type: 'GET',
                     success: function (a, b, c) {
                     },
-                    error: function(a, b, c) {
+                    error: function (a, b, c) {
                     }
                 },
-                eventClick: function(event) {
+                eventClick: function (event) {
                     if (event.url) {
                         window.open(event.url);
                         return false;
                     }
+                }
+                ,
+                eventRender: function (event, element, view) {
+                    console.log(event);
+                    return $('<div class="fc-content ' + event.className[0] +
+                        '"><i title="' + event.className[1] + '" class="fa fa-' +
+                        iconDictionary[event.className[1]] + '"></i> ' +
+                        event.start.format("H:mm")+ ' '+ event.title + '</div>');
                 }
             });
 
@@ -42,5 +61,21 @@
 @section Styles {
 
     <link href="~/lib/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
+    <style>
+        .fc-content {
+            margin: 1px 0;
+            padding: 2px;
+            border-radius: 5px;
+            font-size: .85em;
+            color: white;
+        }
 
+            .fc-content.event {
+                background-color: #576396;
+            }
+
+            .fc-content.announcement {
+                background-color: #e76a05;
+            }
+    </style>
 }

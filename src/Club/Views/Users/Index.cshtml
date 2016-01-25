@@ -1,5 +1,55 @@
 ﻿@model IEnumerable<Club.ViewModels.SimpleUserViewModel>
 @{
+    ViewBag.Title = "Usuarios";
 }
 
+<h2>
+    @ViewBag.Title
+</h2>
+<div ng-app="app-users">
+    <div ng-controller="usersController as vm">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Eventos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in vm.queriedUsers" id="{{ user.id }}">
+                    <td>
+                        <a href="/u/{{ user.username }}">{{ user.username }}</a>
+                    </td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>{{ user.eventsAttendedCount }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button ng-click="vm.previousPage();" class="btn btn-default" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                {{ vm.currentPage }} / {{ vm.totalPages }}
+                            </button>
+                            <button ng-click="vm.nextPage();" class="btn btn-default" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </button>
+                        </div>
 
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/js/controllers/app-users.js"></script>
+    <script src="~/js/controllers/usersController.js"></script>
+}

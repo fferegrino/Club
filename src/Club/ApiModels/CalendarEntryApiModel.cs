@@ -13,6 +13,7 @@ namespace Club.ApiModels
         public string Description { get; set; }
         public string Start { get; set; }
         public string End { get; set; }
+        public string Type { get; set; }
         public string ClassName { get; set; }
         public string Color { get; set; }
         public string Url { get; set; }

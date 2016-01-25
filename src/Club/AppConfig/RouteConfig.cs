@@ -12,11 +12,16 @@ namespace Club.AppConfig
         public static void Configure(IRouteBuilder routes)
         {
             routes.MapRoute(
+                name: "Users short routes",
+                template: "u/{*username}",
+                defaults: new { controller = "users", action = "details" }
+                );
+
+            routes.MapRoute(
                 name: "Calendar route",
                 template: "calendar/{year:int?}/{month:int?}",
                 defaults: new { controller = "calendar", action = "index" }
                 );
-
 
             routes.MapRoute(
                 name: "Attend event route",

@@ -26,6 +26,12 @@ namespace Club.AutoMappings
                 .ForMember(m => m.UsersAttending, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHost, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHostId, opt => opt.Ignore());
+
+
+            Mapper.CreateMap<Club.Models.Entities.Event, Club.ApiModels.EventApiModel>()
+                .ForMember(vm => vm.Duration, opt => opt.ResolveUsing(
+                    (r, model) => (model.End - model.Start).Humanize(3, maxUnit: Humanizer.Localisation.TimeUnit.Day)))
+                ;
         }
     }
 }
