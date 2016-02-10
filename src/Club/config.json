@@ -3,6 +3,6 @@
     "SiteEmailAddress": "xD@xs.com"
   },
   "Data": {
-    "ClubContextConnection": "Server=(localdb)\\PRojectsV12;Database=ClubDb;Trusted_Connection=True;MultipleActiveResultSets=true;"
+    "ClubContextConnection": "Server=(localdb)\\MSSQLLocalDB;Database=ClubDb;Trusted_Connection=True;MultipleActiveResultSets=true;"
   }
 }

@@ -20,12 +20,7 @@ namespace Club.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-#if DEBUG
-            
             var connectionString = Startup.Configuration["Data:ClubContextConnection"];
-#else
-            var connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_AzureClubContextConnection");
-#endif
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
         }
