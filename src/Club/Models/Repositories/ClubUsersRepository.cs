@@ -57,10 +57,10 @@ namespace Club.Models.Repositories
         {
 
             var users = (from ea in _context.EventAttendance
-                                     group ea by ea.ClubUserId into u
-                                     join usr in _context.Users on u.Key equals usr.Id
-                                     orderby u.Count() descending
-                                     select usr);
+                         group ea by ea.ClubUserId into u
+                         join usr in _context.Users on u.Key equals usr.Id
+                         orderby u.Count() descending
+                         select usr);
 
             var totalItemCount = users.Count();
             var startIndex = ResultsPagingUtility.CalculateStartIndex(request.PageNumber, request.PageSize);
@@ -73,7 +73,7 @@ namespace Club.Models.Repositories
 
         public QueryResult<ClubUser> GetPagedUnapprovedUsers(PagedDataRequest request)
         {
-            var users = _context.Users.Where(user => user.Approved == false);
+            var users = _context.Users.Where(user => user.Approved == false && user.EmailConfirmed == true);
             var totalItemCount = users.Count();
             var startIndex = ResultsPagingUtility.CalculateStartIndex(request.PageNumber, request.PageSize);
             var toReturnUsers = users.Skip(startIndex).Take(request.PageSize).ToList();
@@ -88,10 +88,10 @@ namespace Club.Models.Repositories
                          orderby u.Count() descending
                          select usr);
 
-            
+
             var mostActiveUsers = users.Take(5).ToList();
             // Ugly hack around not being able to load EventsAttendedCount at the previous query
-            mostActiveUsers.ForEach(u=> u.EventsAttendedCount = _context.EventAttendance.Count(c=>c.ClubUserId== u.Id));
+            mostActiveUsers.ForEach(u => u.EventsAttendedCount = _context.EventAttendance.Count(c => c.ClubUserId == u.Id));
             return mostActiveUsers;
         }
 

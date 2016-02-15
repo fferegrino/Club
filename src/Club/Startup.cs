@@ -38,8 +38,10 @@ namespace Club
             var builder = new ConfigurationBuilder()
                 .SetBasePath(appEnv.ApplicationBasePath)
                 .AddJsonFile("config.json")
+                .AddJsonFile("mailConfig.json")
+                .AddJsonFile($"mailConfig{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
-                    //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+            //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -80,9 +82,9 @@ namespace Club
                     OnRedirectToLogin = ctx =>
                     {
                         if (ctx.Request.Path.StartsWithSegments("/api") &&
-                            ctx.Response.StatusCode == (int) HttpStatusCode.OK)
+                            ctx.Response.StatusCode == (int)HttpStatusCode.OK)
                         {
-                            ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                            ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         }
                         else
                         {
@@ -92,7 +94,7 @@ namespace Club
                         return Task.FromResult(0);
                     }
                 };
-                
+
 
             })
             .AddEntityFrameworkStores<ClubContext>()
@@ -101,7 +103,7 @@ namespace Club
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<ClubContext>();
-            
+
             services.AddScoped<IMailService, GmailService>();
 
             services.AddSingleton<IEventCodeGenerator, DefaultEventCodeGenerator>();
@@ -119,7 +121,7 @@ namespace Club
 
             services.AddScoped<IDateTime, DateTimeAdapter>();
 
-            services.AddSingleton<IPagedDataRequestFactory,PagedDataRequestFactory>();
+            services.AddSingleton<IPagedDataRequestFactory, PagedDataRequestFactory>();
 
             services.AddTransient<ClubContextSeedData>();
         }
@@ -129,7 +131,7 @@ namespace Club
         {
             //app.UseDefaultFiles();
             app.UseStaticFiles();
-            
+
             app.UseIdentity();
 
 

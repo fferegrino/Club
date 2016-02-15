@@ -106,7 +106,7 @@ namespace Club.Controllers.Web
 
 
                 await
-                    _mailService.SendMail(userModel.Email, "antonio.feregrino@hotmail.es", "Confirmación de email",
+                    _mailService.SendMail(userModel.Email, "mail@hola.com", "Confirmación de email",
                         "Confirma tu correo " + "<a href =\""
                         + callbackUrl + "\">link</a>");
                 return RedirectToAction("pendingapproval", new { username = userModel.UserName });
@@ -145,7 +145,7 @@ namespace Club.Controllers.Web
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account",
                 new { UserId = user.Id, code = code }, protocol: Request.ToUri().Scheme);
-                await _mailService.SendMail(user.Email, "antonio.feregrino@gmail.com", "Reset Password",
+                await _mailService.SendMail(user.Email, "mail@hola.com", "Reset Password",
                 "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
                 return View("ForgottenConfirmation");
             }

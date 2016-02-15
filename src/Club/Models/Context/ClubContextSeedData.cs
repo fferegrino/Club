@@ -138,6 +138,7 @@ namespace Club.Models.Context
                     FirstName = "Antonio",
                     LastName = "Feregrino",
                     Approved = true,
+                    EmailConfirmed = true,
                     Email = "antonio.feregrino@gmail.com"
                 };
 
@@ -158,6 +159,7 @@ namespace Club.Models.Context
             const string defaultPassword = "@Abc1234";
             foreach (var sampleUser in SampleData.SampleClubUsers)
             {
+                sampleUser.EmailConfirmed = sampleUser.Approved;
                 await _userManager.CreateAsync(sampleUser, defaultPassword);
                 await _userManager.AddToRoleAsync(sampleUser, memberRole.Name);
             }

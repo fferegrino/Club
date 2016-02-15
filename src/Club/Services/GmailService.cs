@@ -12,22 +12,29 @@ namespace Club.Services
     {
         public Task<bool> SendMail(string to, string from, string subject, string body)
         {
-            
-            MailMessage msg = new MailMessage();
 
-            msg.From = new MailAddress("YourMail@gmail.com");
+            var mailAccount = Startup.Configuration["Mail:Gmail"].Split('|');
+
+            MailMessage msg = new MailMessage
+            {
+                From = new MailAddress(mailAccount[0])
+            };
+
             msg.To.Add(to);
             msg.Subject = subject;
             msg.Body = body;
-            SmtpClient client = new SmtpClient();
-            client.UseDefaultCredentials = true;
-            client.Host = "smtp.gmail.com";
-            client.Port = 587;
-            client.EnableSsl = true;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            // Move this to config section
-            client.Credentials = new NetworkCredential("mail mail", "XXXXX");
-            client.Timeout = 20000;
+            msg.IsBodyHtml = true;
+            SmtpClient client = new SmtpClient
+            {
+                UseDefaultCredentials = true,
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(mailAccount[0], mailAccount[1]),
+                Timeout = 20000
+            };
+
             try
             {
                 client.Send(msg);
