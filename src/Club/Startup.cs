@@ -117,6 +117,7 @@ namespace Club
             services.AddScoped<IClubRepository, ClubRepository>();
             services.AddScoped<IClubUsersRepository, ClubUsersRepository>();
             services.AddScoped<IEventsRepository, EventsRepository>();
+            services.AddScoped<IProblemsRepository, ProblemsRepository>();
             services.AddScoped<IAnnouncementsRepository, AnnouncementsRepository>();
 
             services.AddScoped<IDateTime, DateTimeAdapter>();

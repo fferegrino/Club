@@ -17,6 +17,10 @@ namespace Club.Models
         public DbSet<EventAttendance> EventAttendance { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
 
+        public DbSet<UserLevel> UserLevels { get; set; }
+        public DbSet<Topic> Topics { get; set; }
+        public DbSet<Problem> Problems { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
