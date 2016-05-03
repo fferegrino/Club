@@ -32,6 +32,7 @@ namespace Club.AppConfig
             services.AddSingleton<IAutoMapperTypeConfigurator, PagedResponseMapperTypeConfigurator>();
             services.AddSingleton<IAutoMapperTypeConfigurator, ClubUserToComplexUserTypeConfigurator>();
             services.AddSingleton<IAutoMapperTypeConfigurator, ProblemsMapperTypeConfigurator>();
+            services.AddSingleton<IAutoMapperTypeConfigurator, TopicsMapperTypeConfigurator>();
 
             var serviceProvider = services.BuildServiceProvider();
             var configurators = serviceProvider.GetServices<IAutoMapperTypeConfigurator>();

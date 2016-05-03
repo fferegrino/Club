@@ -9,11 +9,6 @@ using Microsoft.Data.Entity;
 
 namespace Club.Models.Repositories
 {
-    public interface IProblemsRepository
-    {
-        Problem GetProblemById(int problemId);
-    }
-
     public class ProblemsRepository : IProblemsRepository
     {
         private readonly ClubContext _context;
@@ -29,7 +24,15 @@ namespace Club.Models.Repositories
 
         public Problem GetProblemById(int problemId)
         {
-            return _context.Problems.Include(pr => pr.Topic).FirstOrDefault(pr => pr.Id == problemId);
+            return _context.Problems
+                .Include(pr => pr.Topic)
+                .Include(pr => pr.Topic.Level)
+                .FirstOrDefault(pr => pr.Id == problemId);
+        }
+
+        public List<Topic> GetTopics()
+        {
+            return _context.Topics.Include(t => t.Level).ToList();
         }
     }
 }

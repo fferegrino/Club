@@ -1830,7 +1830,7 @@
           "lib/net45/Microsoft.Owin.Security.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1-beta1": {
+      "Newtonsoft.Json/7.0.1": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -3934,7 +3934,7 @@
           "lib/net45/Microsoft.Owin.Security.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1-beta1": {
+      "Newtonsoft.Json/7.0.1": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -6038,7 +6038,7 @@
           "lib/net45/Microsoft.Owin.Security.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1-beta1": {
+      "Newtonsoft.Json/7.0.1": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -7741,9 +7741,9 @@
         "Microsoft.Owin.Security.nuspec"
       ]
     },
-    "Newtonsoft.Json/7.0.1-beta1": {
+    "Newtonsoft.Json/7.0.1": {
       "type": "package",
-      "sha512": "eh9Z/FYVfAjFevLhAYcVenlVFyXD89f0tZbYBbIkMn7kyCeyKibOdnbVg7XoNiJP1vskSHzW5R2hxlD7TsS2nw==",
+      "sha512": "q3V4KLetMLnt1gpAVWgtXnHjKs0UG/RalBc29u2ZKxd5t5Ze4JBL5WiiYIklJyK/5CRiIiNwigVQUo0FgbsuWA==",
       "files": [
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
@@ -7755,10 +7755,10 @@
         "lib/net45/Newtonsoft.Json.xml",
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
-        "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll",
-        "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.xml",
-        "Newtonsoft.Json.7.0.1-beta1.nupkg",
-        "Newtonsoft.Json.7.0.1-beta1.nupkg.sha512",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
+        "Newtonsoft.Json.7.0.1.nupkg",
+        "Newtonsoft.Json.7.0.1.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "tools/install.ps1"
       ]
@@ -7925,7 +7925,7 @@
     "System.Diagnostics.DiagnosticSource/4.0.0-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "WHVhr5/p8UDjqNV7l9PCxZgOufE2tO4XOWva9pau9c7PzJJTdB1By6scO5dgHLpmlB/u4y27Y9AzT8AqtG8sxw==",
+      "sha512": "0uDR/UOmFCNPDCyHEPHhCrk6c1iRnDp00YqwSZ8Qf5aaaJjm4WXnf4Q9xZw4OoApsSiODSypDMdpQU24IxR16A==",
       "files": [
         "lib/dotnet5.2/System.Diagnostics.DiagnosticSource.dll",
         "lib/dotnet5.2/System.Diagnostics.DiagnosticSource.xml",
@@ -8114,7 +8114,7 @@
     "System.Numerics.Vectors/4.1.1-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "jphbCfQB30LZBC/8kNQtAaaCcKzCFIFnRyUvYapNOozvleUvwI6sYG9d3/WamMcalnNcHDgIlQ713QOv9aweVA==",
+      "sha512": "FCYCEjc3BXBTpVZTxMqf2m/sGYyDzLwICy5lNKgZzT8WfshJhsTGjJuETwsh1Cwi6bksw9YiTB6yeeWBBJDnTA==",
       "files": [
         "lib/dotnet5.4/System.Numerics.Vectors.dll",
         "lib/MonoAndroid10/_._",

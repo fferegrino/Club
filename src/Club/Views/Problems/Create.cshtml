@@ -1,0 +1,54 @@
+﻿@model Club.ViewModels.ProblemViewModel
+
+@{
+    ViewBag.Title = "Nuevo problema";
+}
+
+
+<h2>Crear aviso</h2>
+<form method="post" novalidate>
+    <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="Link"></label>
+            <input asp-for="Link" class="form-control" />
+            <span asp-validation-for="Link"></span>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label asp-for="Topic"></label>
+            <select asp-for="TopicId" class="form-control" asp-items="@ViewBag.SelectTopics"></select>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Difficulty"></label>
+            <br />
+            <input type="hidden" asp-for="Difficulty" class="rating" data-start="0" data-stop="10" data-filled="fa fa-check-circle fa-2x" data-empty="fa fa-circle fa-2x"/>
+            <span asp-validation-for="Difficulty"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-success" />
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/bootstrap-rating/bootstrap-rating.min.js"></script>
+}
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+}

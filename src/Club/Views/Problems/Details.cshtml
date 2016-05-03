@@ -6,15 +6,13 @@
     ViewBag.Title = Model.Name;
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="jumbotron">
+            <h1>@Model.Name</h1>
+            <h3>@Model.Topic — @Model.Level</h3>
+            <h4><a href="@Model.Link">@Model.Site</a></h4>
+        </div>
+    </div>
 </div>
-</body>
-</html>
