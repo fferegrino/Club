@@ -12,7 +12,14 @@
         <div class="jumbotron">
             <h1>@Model.Name</h1>
             <h3>@Model.Topic — @Model.Level</h3>
+            <input type="hidden" data-start="0" data-stop="10" class="rating" value="@Model.Difficulty" data-readonly />
             <h4><a href="@Model.Link">@Model.Site</a></h4>
         </div>
     </div>
 </div>
+
+
+
+@section Scripts{
+    <script src="~/lib/bootstrap-rating/bootstrap-rating.min.js"></script>
+}
