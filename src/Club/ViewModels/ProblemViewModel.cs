@@ -13,8 +13,9 @@ namespace Club.ViewModels
         public int TopicId { get; set; }
         public string Level { get; set; }
         public string Name { get; set; }
-        public string Link { get; set; }
         public string Site { get; set; }
+        public string Link { get; set; }
+
         [Range(1, 10)]
         public int Difficulty { get; set; }
         public string Notes { get; set; }

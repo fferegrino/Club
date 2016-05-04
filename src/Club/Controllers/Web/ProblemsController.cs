@@ -28,48 +28,45 @@ namespace Club.Controllers.Web
         public IActionResult Details(int id)
         {
             var queriedProblem = _problemsRepository.GetProblemById(id);
-            var eventViewModel = _mapper.Map<ViewModels.ProblemViewModel>(queriedProblem);
+            var eventViewModel = _mapper.Map<ProblemViewModel>(queriedProblem);
             return View(eventViewModel);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            var listTopics = _mapper.Map<List<TopicViewModel>>(_problemsRepository.GetTopics());
-            var selectTopics = listTopics.Select(t => new SelectListItem { Text = $"{t.Name} — {t.UserLevel}", Value = t.Id.ToString() });
-            ViewBag.SelectTopics = selectTopics;
+            ViewBag.SelectTopics = GetAllTopicsSelectList();
             return View();
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(ProblemViewModel viewModel)
         {
-            //var eventEntity = _mapper.Map<Models.Entities.Event>(viewModel);
-
-            //eventEntity.EventCode = _eventCodeGenerator.GetCode();
-            //_eventsRepository.AddEvent(eventEntity);
-
-            //if (viewModel.Repeat && viewModel.RepeatUntil.HasValue)
-            //{
-            //    var eventDuration = eventEntity.End - eventEntity.Start;
-            //    for (var start = eventEntity.Start.AddDays(7); start < viewModel.RepeatUntil; start = start.AddDays(7))
-            //    {
-            //        var repeatedEvent = _mapper.Map<Models.Entities.Event>(viewModel);
-            //        repeatedEvent.Start = start;
-            //        repeatedEvent.End = start + eventDuration;
-            //        repeatedEvent.EventCode = _eventCodeGenerator.GetCode();
-            //        _eventsRepository.AddEvent(repeatedEvent);
-            //    }
-            //}
-
-            //_eventsRepository.SaveAll();
-
-            //return RedirectToAction("detail", new { id = eventEntity.Id });
-            var listTopics = _mapper.Map<List<TopicViewModel>>(_problemsRepository.GetTopics());
-            var selectTopics = listTopics.Select(t => new SelectListItem { Text = $"{t.Name} — {t.UserLevel}", Value = t.Id.ToString() });
-            ViewBag.SelectTopics = selectTopics;
-            return View();
+            if (ModelState.IsValid)
+            {
+                var m = _mapper.Map<Models.Entities.Problem>(viewModel);
+                _problemsRepository.AddProblem(m);
+                _problemsRepository.SaveAll();
+            return RedirectToAction("details", new { id = m.Id });
+            }
+            ViewBag.SelectTopics = GetAllTopicsSelectList(viewModel.TopicId);
+            return View(viewModel);
         }
+
+        public IEnumerable<SelectListItem> GetAllTopicsSelectList(int selectedTopicId = 0)
+        {
+
+            var listTopics = _mapper.Map<List<TopicViewModel>>(_problemsRepository.GetTopics());
+            var selectTopics = listTopics.Select(t => new SelectListItem
+            {
+                Text = $"{t.Name} — {t.UserLevel}",
+                Value = t.Id.ToString(),
+                Selected = t.Id == selectedTopicId
+            });
+
+            return selectTopics;
+        }
+   
     }
 }

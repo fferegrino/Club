@@ -16,6 +16,7 @@ namespace Club.Models.Entities
         public string Notes { get; set; }
         public string ClubUserCreatorId { get; set; }
         public ClubUser ClubUserCreator { get; set; }
+        public DateTime AddedOn { get; set; }
 
     }
 }

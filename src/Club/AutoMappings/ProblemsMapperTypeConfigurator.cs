@@ -19,8 +19,16 @@ namespace Club.AutoMappings
                 .ForMember(vm => vm.Level, opt => opt.ResolveUsing(m => m.Topic.Level.Level))
                 .ForMember(vm => vm.Site, opt => opt.ResolveUsing<CustomConvert>())
                 ;
+
+            Mapper.CreateMap<Club.ViewModels.ProblemViewModel, Club.Models.Entities.Problem>()
+                .ForMember(entity => entity.AddedOn, opt => opt.Ignore())
+                .ForMember(entity => entity.ClubUserCreator, opt => opt.Ignore())
+                .ForMember(entity => entity.Topic, opt => opt.Ignore())
+                .ForMember(entity => entity.ClubUserCreatorId, opt => opt.Ignore());
+
         }
     }
+
     public class CustomConvert : ValueResolver<Club.Models.Entities.Problem, string>
     {
         protected override string ResolveCore(Club.Models.Entities.Problem source)

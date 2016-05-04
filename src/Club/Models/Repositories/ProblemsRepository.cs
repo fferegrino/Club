@@ -22,6 +22,14 @@ namespace Club.Models.Repositories
             _user = user;
         }
 
+        public void AddProblem(Problem item)
+        {
+            item.AddedOn = _date.UtcNow;
+            item.ClubUserCreatorId = _user.Id;
+
+            _context.Add(item);
+        }
+
         public Problem GetProblemById(int problemId)
         {
             return _context.Problems
@@ -34,5 +42,10 @@ namespace Club.Models.Repositories
         {
             return _context.Topics.Include(t => t.Level).ToList();
         }
+        public bool SaveAll()
+        {
+            return _context.SaveChanges() > 0;
+        }
+
     }
 }
