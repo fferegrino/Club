@@ -22,7 +22,7 @@ namespace Club.Models.Repositories
         ClubUser GetUserById(string id);
         void UpdateApprovedStatus(string userId, bool approved);
         bool SaveAll();
-        int CountUnaccepted();
+        int CountUnapprovedUsers();
         void AttendEvent(string id, Event attendedEvent);
     }
 
@@ -48,9 +48,9 @@ namespace Club.Models.Repositories
             return _context.SaveChanges() > 0;
         }
 
-        public int CountUnaccepted()
+        public int CountUnapprovedUsers()
         {
-            return _context.Users.Count(usr => usr.Approved == false);
+            return _context.Users.Count(usr => usr.Approved == false && usr.EmailConfirmed);
         }
 
         public QueryResult<ClubUser> GetPagedUsersWithAttendance(PagedDataRequest request)
@@ -73,7 +73,7 @@ namespace Club.Models.Repositories
 
         public QueryResult<ClubUser> GetPagedUnapprovedUsers(PagedDataRequest request)
         {
-            var users = _context.Users.Where(user => user.Approved == false && user.EmailConfirmed == true);
+            var users = _context.Users.Where(user => user.Approved == false && user.EmailConfirmed);
             var totalItemCount = users.Count();
             var startIndex = ResultsPagingUtility.CalculateStartIndex(request.PageNumber, request.PageSize);
             var toReturnUsers = users.Skip(startIndex).Take(request.PageSize).ToList();
@@ -97,7 +97,7 @@ namespace Club.Models.Repositories
 
         public IEnumerable<ClubUser> GetUnapprovedUsers(int count = 0)
         {
-            var users = _context.Users.Where(user => user.Approved == false);
+            var users = _context.Users.Where(user => user.Approved == false && user.EmailConfirmed);
             if (count == 0)
                 return users.ToList();
             else

@@ -29,7 +29,7 @@ namespace Club.Controllers.Web
 
             var n = _clubUsersRepository.GetUnapprovedUsers(5);
             userDashboard.UsersAwaitingApproval = _mapper.Map<IEnumerable<ViewModels.SimpleUserViewModel>>(n);
-            userDashboard.UsersAwaitingApprovalCount = _clubUsersRepository.CountUnaccepted();
+            userDashboard.UsersAwaitingApprovalCount = _clubUsersRepository.CountUnapprovedUsers();
             userDashboard.NextEvent = _mapper.Map<ViewModels.EventViewModel>(_eventsRepository.GetNextEvent());
             var mostActiveUsers = _clubUsersRepository.GetMostActiveUsers();
             userDashboard.MostActiveUsers = _mapper.Map<IEnumerable<ViewModels.ComplexUserViewModel>>(mostActiveUsers);
