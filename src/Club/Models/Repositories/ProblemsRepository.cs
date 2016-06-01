@@ -38,6 +38,25 @@ namespace Club.Models.Repositories
                 .FirstOrDefault(pr => pr.Id == problemId);
         }
 
+        public List<Problem> GetProblemsForLevel(int userLevelId)
+        {
+            var query = from problem in _context.Problems.Include(pr => pr.Topic).Include(p => p.Topic.Level)
+                join topic in _context.Topics
+                    on problem.TopicId equals topic.Id
+                join userLevel in _context.UserLevels
+                    on topic.UserLevelId equals userLevel.Id
+                select problem;
+
+            return query.ToList();
+        }
+
+        public List<Problem> GetAllCurrentProblems()
+        {
+            var query = from problem in _context.Problems.Include(pr => pr.Topic).Include(p => p.Topic.Level)
+                select problem;
+            return query.ToList();
+        }
+
         public List<Topic> GetTopics()
         {
             return _context.Topics.Include(t => t.Level).ToList();

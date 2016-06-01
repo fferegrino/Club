@@ -32,7 +32,7 @@ namespace Club.Controllers.Web
         public IActionResult Index()
         {
             return View();
-        }
+        } 
 
         public IActionResult Details(string username)
         {

@@ -16,6 +16,7 @@ namespace Club.AutoMappings
                 ;
             Mapper.CreateMap<Club.Models.Entities.ClubUser, Club.ViewModels.ComplexUserViewModel>()
                 .ForMember(model => model.Username, options => options.MapFrom(viewModel => viewModel.UserName))
+                .ForMember(model => model.Level, options => options.MapFrom(viewModel => viewModel.UserLevel.Level))
                 ;
         }
     }

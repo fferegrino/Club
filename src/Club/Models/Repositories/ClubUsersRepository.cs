@@ -108,7 +108,9 @@ namespace Club.Models.Repositories
 
         public ClubUser GetUserByUserName(string username)
         {
-            return _context.Users.FirstOrDefault(user => user.UserName == username);
+            return _context.Users
+                .Include(u => u.UserLevel)
+                .FirstOrDefault(user => user.UserName == username);
         }
 
         public ClubUser GetUserById(string id)

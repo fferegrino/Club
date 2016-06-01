@@ -7,6 +7,8 @@ namespace Club.Models.Repositories
     {
         void AddProblem(Problem problem);
         Problem GetProblemById(int problemId);
+        List<Problem> GetProblemsForLevel(int userLevelId);
+        List<Problem> GetAllCurrentProblems();
         List<Topic> GetTopics();
         bool SaveAll();
     }

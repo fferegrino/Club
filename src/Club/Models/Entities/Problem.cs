@@ -8,6 +8,7 @@ namespace Club.Models.Entities
     public class Problem
     {
         public int Id { get; set; }
+        //public string Ciclo { get; set; }
         public int TopicId { get; set; }
         public Topic Topic { get; set; }
         public string Name { get; set; }
@@ -17,6 +18,5 @@ namespace Club.Models.Entities
         public string ClubUserCreatorId { get; set; }
         public ClubUser ClubUserCreator { get; set; }
         public DateTime AddedOn { get; set; }
-
     }
 }

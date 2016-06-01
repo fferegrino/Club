@@ -10,6 +10,8 @@ namespace Club.Models.Entities
         public bool IsActive { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public UserLevel UserLevel { get; set; }
+        public int UserLevelId { get; set; }
         public ICollection<EventAttendance> EventsAttended { get; set; }
 
         [NotMapped]

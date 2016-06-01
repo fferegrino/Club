@@ -36,11 +36,16 @@ namespace Club.Models.Context
 
         public async Task EnsureSeedData()
         {
+
+            if (!_context.UserLevels.Any())
+            {
+                AddUserLevels();
+            }
+
             const string adminRoleName = "Admin";
             var adminRole = await _roleManager.FindByNameAsync(adminRoleName);
             if (adminRole == null)
             {
-                adminRole = new IdentityRole(adminRoleName);
                 adminRole = new IdentityRole(adminRoleName);
                 var roleresult = await _roleManager.CreateAsync(adminRole);
             }
@@ -70,11 +75,6 @@ namespace Club.Models.Context
             if (!_context.EventAttendance.Any())
                 AddUsersEventsAttendance();
 
-            if (!_context.UserLevels.Any())
-            {
-                AddUserLevels();
-            }
-
             if (!_context.Topics.Any())
             {
                 AddTopics();
@@ -91,6 +91,7 @@ namespace Club.Models.Context
         private UserLevel basicUserLevel,
             basicIntermediateUserLevel,
             intermediateUserLevel,
+            advancedIntermediateUserLevel,
             advancedUserLevel;
 
         private void AddUserLevels()
@@ -98,8 +99,9 @@ namespace Club.Models.Context
             basicUserLevel = new UserLevel { Level = "Basico" };
             basicIntermediateUserLevel = new UserLevel { Level = "Basico-Intermedio" };
             intermediateUserLevel = new UserLevel { Level = "Intermedio" };
+            advancedIntermediateUserLevel = new UserLevel { Level = "Intermedio-Avanzado" };
             advancedUserLevel = new UserLevel { Level = "Avanzado" };
-            _context.AddRange(basicUserLevel, basicIntermediateUserLevel, intermediateUserLevel, advancedUserLevel);
+            _context.AddRange(basicUserLevel, basicIntermediateUserLevel, intermediateUserLevel, advancedIntermediateUserLevel, advancedUserLevel);
             _context.SaveChanges();
         }
 
@@ -284,6 +286,7 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
                     FirstName = "Antonio",
                     LastName = "Feregrino",
                     Approved = true,
+                    UserLevel = advancedUserLevel,
                     EmailConfirmed = true,
                     Email = "antonio.feregrino@gmail.com"
                 };
@@ -306,6 +309,7 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
             foreach (var sampleUser in SampleData.SampleClubUsers)
             {
                 sampleUser.EmailConfirmed = sampleUser.Approved;
+                sampleUser.UserLevel = basicIntermediateUserLevel;
                 await _userManager.CreateAsync(sampleUser, defaultPassword);
                 await _userManager.AddToRoleAsync(sampleUser, memberRole.Name);
             }

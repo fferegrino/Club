@@ -47,7 +47,7 @@
                             @foreach (var usuario in Model.MostActiveUsers)
                             {
                                 <tr>
-                                    <td>@usuario.Username</td>
+                                    <td><a asp-controller="users" asp-action="details" asp-route-username="@usuario.Username" >@usuario.Username</a></td>
                                     <td>@usuario.EventsAttendedCount</td>
                                 </tr>
                             }
@@ -79,7 +79,7 @@
                             @foreach (var usuario in Model.MostActiveUsers)
                             {
                                 <tr>
-                                    <td>@usuario.Username</td>
+                                    <td><a asp-controller="users" asp-action="details" asp-route-username="@usuario.Username">@usuario.Username</a></td>
                                     <td>@usuario.EventsAttendedCount</td>
                                 </tr>
                             }

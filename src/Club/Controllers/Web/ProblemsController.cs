@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Club.Common.Security;
 using Club.Common.TypeMapping;
 using Club.Models.Repositories;
 using Club.ViewModels;
@@ -15,13 +16,15 @@ namespace Club.Controllers.Web
 {
     public class ProblemsController : Controller
     {
-        private IProblemsRepository _problemsRepository;
+        private readonly IProblemsRepository _problemsRepository;
         private readonly IAutoMapper _mapper;
+        private IWebUserSession _userSession;
 
-        public ProblemsController(IProblemsRepository problemsRepository, IAutoMapper mapper)
+        public ProblemsController(IProblemsRepository problemsRepository, IAutoMapper mapper, IWebUserSession userSession)
         {
             _problemsRepository = problemsRepository;
             _mapper = mapper;
+            _userSession = userSession;
         }
 
 
@@ -48,10 +51,20 @@ namespace Club.Controllers.Web
                 var m = _mapper.Map<Models.Entities.Problem>(viewModel);
                 _problemsRepository.AddProblem(m);
                 _problemsRepository.SaveAll();
-            return RedirectToAction("details", new { id = m.Id });
+                return RedirectToAction("details", new { id = m.Id });
             }
             ViewBag.SelectTopics = GetAllTopicsSelectList(viewModel.TopicId);
             return View(viewModel);
+        }
+
+        public ActionResult Index()
+        {
+            var userLevelId = 0;
+            if (User.Identity.IsAuthenticated)
+            {
+
+            }
+            return View();
         }
 
         public IEnumerable<SelectListItem> GetAllTopicsSelectList(int selectedTopicId = 0)
@@ -64,9 +77,8 @@ namespace Club.Controllers.Web
                 Value = t.Id.ToString(),
                 Selected = t.Id == selectedTopicId
             });
-
             return selectTopics;
         }
-   
+
     }
 }

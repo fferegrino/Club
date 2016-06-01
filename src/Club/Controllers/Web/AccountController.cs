@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Club.Common.Extensions;
 using Club.Common.TypeMapping;
@@ -54,7 +55,7 @@ namespace Club.Controllers.Web
         public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl)
         {
             if (!ModelState.IsValid) return View();
-
+            
             var signInResult = await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, false, false);
 
             if (signInResult.Succeeded)
@@ -66,7 +67,9 @@ namespace Club.Controllers.Web
                     await _signInManager.SignOutAsync();
                     return RedirectToAction("pendingapproval", new { username = loggedInUser.UserName });
                 }
-
+                var claims = new System.Security.Claims.ClaimsIdentity();
+                claims.AddClaim(new Claim(ClaimTypes.UserData, loggedInUser.UserLevelId.ToString()));
+                User.AddIdentity(new ClaimsIdentity(claims));
                 if (!String.IsNullOrEmpty(returnUrl)) return Redirect(returnUrl);
 
                 return RedirectToAction("index", User.IsInRole("admin") ? "dashboard" : "home");
