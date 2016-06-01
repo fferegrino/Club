@@ -17,12 +17,16 @@ namespace Club.Controllers.Web
     public class ProblemsController : Controller
     {
         private readonly IProblemsRepository _problemsRepository;
+        private readonly IClubUsersRepository _usersRepo;
         private readonly IAutoMapper _mapper;
         private IWebUserSession _userSession;
 
-        public ProblemsController(IProblemsRepository problemsRepository, IAutoMapper mapper, IWebUserSession userSession)
+        public ProblemsController(IProblemsRepository problemsRepository,
+            IClubUsersRepository usersRepo,
+            IAutoMapper mapper, IWebUserSession userSession)
         {
             _problemsRepository = problemsRepository;
+            _usersRepo = usersRepo;
             _mapper = mapper;
             _userSession = userSession;
         }
@@ -59,12 +63,16 @@ namespace Club.Controllers.Web
 
         public ActionResult Index()
         {
-            var userLevelId = 0;
+            var userLevelId = 1;
             if (User.Identity.IsAuthenticated)
             {
+                var user = _usersRepo.GetUserById(User.Identity.Name);
 
             }
-            return View();
+            var problemsRepo = _mapper.Map<List< ProblemViewModel>>( _problemsRepository.GetAllCurrentProblems());
+            var split = problemsRepo.GroupBy(t => t.LevelId);
+            ViewBag.UserLevelId = userLevelId;
+            return View(split);
         }
 
         public IEnumerable<SelectListItem> GetAllTopicsSelectList(int selectedTopicId = 0)

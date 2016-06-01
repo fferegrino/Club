@@ -17,6 +17,7 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.Models.Entities.Problem, Club.ViewModels.ProblemViewModel>()
                 .ForMember(vm => vm.Topic, opt => opt.ResolveUsing(m => m.Topic.Name))
                 .ForMember(vm => vm.Level, opt => opt.ResolveUsing(m => m.Topic.Level.Level))
+                .ForMember(vm => vm.LevelId, opt => opt.ResolveUsing(m => m.Topic.Level.Id))
                 .ForMember(vm => vm.Site, opt => opt.ResolveUsing<CustomConvert>())
                 ;
 

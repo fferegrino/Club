@@ -12,6 +12,7 @@ namespace Club.ViewModels
         public string Topic { get; set; }
         public int TopicId { get; set; }
         public string Level { get; set; }
+        public int LevelId { get; set; }
         public string Name { get; set; }
         public string Site { get; set; }
         public string Link { get; set; }

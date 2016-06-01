@@ -1,1 +1,48 @@
-﻿
+﻿@model IEnumerable<IGrouping<int, Club.ViewModels.ProblemViewModel>>
+
+@{
+    int userLevelId = (int)ViewBag.UserLevelId;
+    ViewBag.Title = "Añadir problema";
+}
+
+
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        @foreach (var group in Model)
+        {
+            <li role="presentation" class="@(group.Key == userLevelId?"active" : "")">
+                <a href="#problems-@group.Key" aria-controls="home" role="tab" data-toggle="tab">@group.Key problems</a>
+            </li>
+        }
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+        @foreach (var group in Model)
+        {
+            <div role="tabpanel" class="tab-pane @(group.Key == userLevelId?"active" : "")" id="problems-@group.Key">
+                <table class="table table-bordered table-striped">
+
+                    @foreach (var problemViewModel in group)
+                    {
+                        <tr>
+                            <td>
+                                @problemViewModel.Name
+                            </td>
+                            <td>
+                                @problemViewModel.Topic
+                            </td>
+                            <td>
+                                <a asp-controller="problems" asp-action="details" asp-route-id="@problemViewModel.Id">Ver</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+
+</div>

@@ -112,11 +112,16 @@ namespace Club.Models.Context
             busquedaBinaria;
         private void AddTopics()
         {
+            //barridoDeslizante = new Topic { Name = "Barrido deslizante", UserLevelId = basicUserLevel.Id };
+            //barridoAcumulativo = new Topic { Name = "Barrido acumulativo", UserLevelId = basicIntermediateUserLevel.Id };
+            //teoriaNumeros = new Topic { Name = "Teoría de números", UserLevelId = basicUserLevel.Id };
+            //greedy = new Topic { Name = "Greedy", UserLevelId = basicUserLevel.Id };
+            //busquedaBinaria = new Topic { Name = "Búsqeda binaria", UserLevelId = basicIntermediateUserLevel.Id };
             barridoDeslizante = new Topic { Name = "Barrido deslizante", UserLevelId = basicUserLevel.Id };
             barridoAcumulativo = new Topic { Name = "Barrido acumulativo", UserLevelId = basicIntermediateUserLevel.Id };
-            teoriaNumeros = new Topic { Name = "Teoría de números", UserLevelId = basicUserLevel.Id };
-            greedy = new Topic { Name = "Greedy", UserLevelId = basicUserLevel.Id };
-            busquedaBinaria = new Topic { Name = "Búsqeda binaria", UserLevelId = basicIntermediateUserLevel.Id };
+            busquedaBinaria = new Topic { Name = "Búsqeda binaria", UserLevelId = intermediateUserLevel.Id };
+            greedy = new Topic { Name = "Greedy", UserLevelId = advancedIntermediateUserLevel.Id };
+            teoriaNumeros = new Topic { Name = "Teoría de números", UserLevelId = advancedUserLevel.Id };
             _context.AddRange(barridoDeslizante, barridoAcumulativo, teoriaNumeros, greedy, busquedaBinaria);
             _context.SaveChanges();
         }
