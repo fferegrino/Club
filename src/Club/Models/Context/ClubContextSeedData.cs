@@ -195,30 +195,35 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
             {
                 problem.TopicId = barridoDeslizante.Id;
                 problem.ClubUserCreatorId = creator.Id;
+                problem.Year = DateTime.Today.Year;
                 _context.Add(problem);
             }
             foreach (var problem in problemasBarridoAcumulativo)
             {
                 problem.TopicId = barridoAcumulativo.Id;
                 problem.ClubUserCreatorId = creator.Id;
+                problem.Year = DateTime.Today.Year;
                 _context.Add(problem);
             }
             foreach (var problem in problemasTeoriaNumeros)
             {
                 problem.TopicId = teoriaNumeros.Id;
                 problem.ClubUserCreatorId = creator.Id;
+                problem.Year = DateTime.Today.Year;
                 _context.Add(problem);
             }
             foreach (var problem in problemasGreedy)
             {
                 problem.TopicId = greedy.Id;
                 problem.ClubUserCreatorId = creator.Id;
+                problem.Year = DateTime.Today.Year;
                 _context.Add(problem);
             }
             foreach (var problem in problemasBinaria)
             {
                 problem.TopicId = busquedaBinaria.Id;
                 problem.ClubUserCreatorId = creator.Id;
+                problem.Year = DateTime.Today.Year;
                 _context.Add(problem);
             }
             _context.SaveChanges();

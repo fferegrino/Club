@@ -14,6 +14,7 @@
             <h3>@Model.Topic — @Model.Level</h3>
             <input type="hidden" data-start="0" data-stop="10" class="rating" value="@Model.Difficulty" data-readonly />
             <h4><a href="@Model.Link">@Model.Site</a></h4>
+            <h4><a asp-action="create" asp-controller="submit" asp-route-problemId="@Model.Id">Enviar solucion</a></h4>
         </div>
     </div>
 </div>

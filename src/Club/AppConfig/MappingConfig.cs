@@ -33,6 +33,7 @@ namespace Club.AppConfig
             services.AddSingleton<IAutoMapperTypeConfigurator, ClubUserToComplexUserTypeConfigurator>();
             services.AddSingleton<IAutoMapperTypeConfigurator, ProblemsMapperTypeConfigurator>();
             services.AddSingleton<IAutoMapperTypeConfigurator, TopicsMapperTypeConfigurator>();
+            services.AddSingleton<IAutoMapperTypeConfigurator, SubmissionsMapperTypeConfigurator>();
 
             var serviceProvider = services.BuildServiceProvider();
             var configurators = serviceProvider.GetServices<IAutoMapperTypeConfigurator>();

@@ -17,6 +17,9 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.Models.Entities.Topic, Club.ViewModels.TopicViewModel>()
                 .ForMember(vm => vm.UserLevel, opt => opt.ResolveUsing(m => m.Level.Level))
                 ;
+            Mapper.CreateMap<Club.ViewModels.TopicViewModel,Club.Models.Entities.Topic>()
+                .ForMember(en => en.Level, opt => opt.Ignore())
+                .ForMember(en => en.Problems, opt => opt.Ignore());
         }
     }
 }

@@ -1,0 +1,59 @@
+﻿@model Club.ViewModels.SubmissionViewModel
+
+@{
+    var problema = ViewBag.Problem as Club.ViewModels.ProblemViewModel;
+    ViewBag.Title = "Solución a " + problema.Name;
+    var estatusClass = Model.Accepted == null ? "info" : (Model.Accepted.Value ? "success" : "danger");
+    var estauts = Model.Accepted == null ? "pendiente" : (Model.Accepted.Value ? "aceptada" : "rechazada");
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Solución a @problema.Name de @Model.User</h2>
+    </div>
+    <div class="col-md-8">
+        <code data-gist-id="@Model.GistId"></code>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-@estatusClass">
+            <div class="panel-heading">Envío @estauts</div>
+            <div class="panel-body">
+                Intentos: @Model.Attempts
+                <br />
+                Último intento: @Model.LastAttemptDate
+                <br />
+                <a asp-action="create" asp-route-problemId="@Model.ProblemId">Intentar</a>
+            </div>
+        </div>
+        @if (User.IsInRole("Admin")) {
+            <div class="panel panel-primary">
+                <div class="panel-heading">Administrador</div>
+                <div class="panel-body">
+                    <form asp-action="review">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                            @Html.HiddenFor(m => m.ProblemId)
+                            @Html.HiddenFor(m => m.User)
+                            <div class="btn-group" role="group">
+                                <button type="submit" value="True" name="ok" class="btn btn-success btn-lg">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="submit" value="False" name="ok" class="btn btn-danger btn-lg">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/lib/bootstrap-rating/bootstrap-rating.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
+}

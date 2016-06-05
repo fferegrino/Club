@@ -9,6 +9,7 @@ namespace Club.ViewModels
     public class ProblemViewModel
     {
         public int Id { get; set; }
+        public int Year { get; set; }
         public string Topic { get; set; }
         public int TopicId { get; set; }
         public string Level { get; set; }

@@ -1,0 +1,26 @@
+﻿@model List<Club.ViewModels.TopicViewModel>
+
+    @{
+        ViewBag.Title = "Añadir tema";
+    }
+
+
+    @*<h2>Temas</h2>*@
+    <form method="post" novalidate>
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Tema</th>
+                <th>Nivel</th>
+            </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.UserLevel</td>
+                </tr>
+            }
+        </table>
+
+    </form>

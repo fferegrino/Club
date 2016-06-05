@@ -18,10 +18,11 @@ namespace Club.AutoMappings
                 .ForMember(vm => vm.Topic, opt => opt.ResolveUsing(m => m.Topic.Name))
                 .ForMember(vm => vm.Level, opt => opt.ResolveUsing(m => m.Topic.Level.Level))
                 .ForMember(vm => vm.LevelId, opt => opt.ResolveUsing(m => m.Topic.Level.Id))
-                .ForMember(vm => vm.Site, opt => opt.ResolveUsing<CustomConvert>())
+                .ForMember(vm => vm.Site, opt => opt.ResolveUsing<GetHostValueResolver>())
                 ;
 
             Mapper.CreateMap<Club.ViewModels.ProblemViewModel, Club.Models.Entities.Problem>()
+                .IgnoreAllUnmapped()
                 .ForMember(entity => entity.AddedOn, opt => opt.Ignore())
                 .ForMember(entity => entity.ClubUserCreator, opt => opt.Ignore())
                 .ForMember(entity => entity.Topic, opt => opt.Ignore())
@@ -30,7 +31,7 @@ namespace Club.AutoMappings
         }
     }
 
-    public class CustomConvert : ValueResolver<Club.Models.Entities.Problem, string>
+    public class GetHostValueResolver : ValueResolver<Club.Models.Entities.Problem, string>
     {
         protected override string ResolveCore(Club.Models.Entities.Problem source)
         {

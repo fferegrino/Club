@@ -13,6 +13,7 @@ namespace Club.Models.Entities
         public UserLevel UserLevel { get; set; }
         public int UserLevelId { get; set; }
         public ICollection<EventAttendance> EventsAttended { get; set; }
+        public ICollection<Submission> Submissions { get; set; }
 
         [NotMapped]
         public int EventsAttendedCount { get; set; }
@@ -20,6 +21,7 @@ namespace Club.Models.Entities
         public ClubUser()
         {
             EventsAttended = new HashSet<EventAttendance>();
+            Submissions = new HashSet<Submission>();
         }
     }
 }
