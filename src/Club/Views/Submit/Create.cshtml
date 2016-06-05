@@ -3,10 +3,19 @@
 @{
     ViewBag.Title = "Enviar solución";
     var problema = ViewBag.Problem as Club.ViewModels.ProblemViewModel;
+
+    var estatusClass = Model?.Accepted == null ? "info" : (Model.Accepted.Value ? "success" : "danger");
+    var estauts = Model?.Accepted == null ? "pendiente" : (Model.Accepted.Value ? "aceptada" : "rechazada");
 }
 
 
 <h2>Solucion a @problema.Name</h2>
+@if (Model != null)
+{
+    <div class="alert alert-@estatusClass" role="alert">
+        Has intentado este problema @Model.Attempts veces y tu último intento fue @estauts
+    </div>
+}
 <form method="post" novalidate>
     <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
 
