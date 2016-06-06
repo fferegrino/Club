@@ -38,7 +38,7 @@ namespace Club.Controllers.Web
             var usr = _usersRepository.GetUserByUserName(user);
             _submissionsRepo.ReviewSubmission(problemId, usr.Id, ok);
             _submissionsRepo.SaveAll();
-            return RedirectToAction("details", new { problemId });
+            return RedirectToAction("details", new { problemId, user });
         }
 
         [Authorize]

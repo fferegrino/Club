@@ -12,9 +12,12 @@
         <div class="jumbotron">
             <h1>@Model.Name</h1>
             <h3>@Model.Topic — @Model.Level</h3>
-            <input type="hidden" data-start="0" data-stop="10" class="rating" value="@Model.Difficulty" data-readonly />
+            <input type="hidden" value="@Model.Difficulty" class="rating" data-start="0" data-stop="10" data-filled="fa fa-check-circle fa-2x" data-empty="fa fa-circle fa-2x" data-readonly />
             <h4><a href="@Model.Link">@Model.Site</a></h4>
-            <h4><a asp-action="create" asp-controller="submit" asp-route-problemId="@Model.Id">Enviar solucion</a></h4>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <h4><a asp-action="create" asp-controller="submit" asp-route-problemId="@Model.Id">Enviar solución</a></h4>
+            }
         </div>
     </div>
 </div>

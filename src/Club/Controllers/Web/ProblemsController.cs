@@ -70,7 +70,7 @@ namespace Club.Controllers.Web
 
             }
             var problemsRepo = _mapper.Map<List< ProblemViewModel>>( _problemsRepository.GetAllCurrentProblems());
-            var split = problemsRepo.GroupBy(t => t.LevelId);
+            var split = problemsRepo.GroupBy(t => t.LevelId).OrderBy(gr => gr.Key);
             ViewBag.UserLevelId = userLevelId;
             return View(split);
         }

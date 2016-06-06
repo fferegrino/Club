@@ -2,7 +2,18 @@
 
 @{
     int userLevelId = (int)ViewBag.UserLevelId;
-    ViewBag.Title = "Añadir problema";
+    string levelName = "";
+
+    var nameDict = new Dictionary<int, string>
+    {
+        {1, "Basico"},
+        {2, "Basico-Intermedio"},
+        {3, "Intermedio"},
+        {4, "Intermedio-Avanzado"},
+        {5, "Avanzado"},
+    };
+
+    ViewBag.Title = "Problemas";
 }
 
 
@@ -13,7 +24,7 @@
         @foreach (var group in Model)
         {
             <li role="presentation" class="@(group.Key == userLevelId?"active" : "")">
-                <a href="#problems-@group.Key" aria-controls="home" role="tab" data-toggle="tab">@group.Key problems</a>
+                <a href="#problems-@group.Key" aria-controls="home" role="tab" data-toggle="tab">@nameDict[group.Key]</a>
             </li>
         }
     </ul>
