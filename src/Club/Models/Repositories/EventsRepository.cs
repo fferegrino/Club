@@ -48,7 +48,9 @@ namespace Club.Models.Repositories
             DateTime start = new DateTime(year, month, 1);
             DateTime end = start.AddMonths(1);
 
-            var betweenBoundsEvents = _context.Events.Include(evt => evt.ClubUserHost)
+            var betweenBoundsEvents = _context.Events
+                .Include(evt => evt.ClubUserHost)
+                .Include(evt => evt.Term)
                 .Where(
                     evnt => ((start < evnt.Start && evnt.Start < end) || (start < evnt.End && evnt.End < end))
                 );
@@ -69,17 +71,22 @@ namespace Club.Models.Repositories
 
         public Event GetEventById(int eventId)
         {
-            return _context.Events.Include(evt => evt.ClubUserHost).FirstOrDefault(evnt => evnt.Id == eventId);
+            return _context.Events
+                .Include(evt => evt.ClubUserHost)
+                .Include(evt => evt.Term)
+                .FirstOrDefault(evnt => evnt.Id == eventId);
         }
 
         public Event GetEventByEventCode(string eventCode)
         {
-            return _context.Events.FirstOrDefault(evnt => evnt.EventCode == eventCode);
+            return _context.Events
+                .FirstOrDefault(evnt => evnt.EventCode == eventCode);
         }
 
         public void DeleteById(int id)
         {
-            var @event = _context.Events.FirstOrDefault(e => e.Id == id);
+            var @event = _context.Events
+                .FirstOrDefault(e => e.Id == id);
             if (@event != null)
                 _context.Remove(@event);
         }

@@ -40,6 +40,9 @@ namespace Club.ViewModels
 
         public DateTime CreatedOn { get; set; }
 
+        public int TermId { get; set; }
+        public string TermName { get; set; }
+
         public bool Repeat { get; set; }
         public DateTime? RepeatUntil { get; set; }
     }

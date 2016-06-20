@@ -23,6 +23,7 @@ namespace Club.Models
         public DbSet<UserLevel> UserLevels { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Problem> Problems { get; set; }
+        public DbSet<Term> Terms { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

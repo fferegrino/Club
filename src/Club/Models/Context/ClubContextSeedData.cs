@@ -42,6 +42,8 @@ namespace Club.Models.Context
                 AddUserLevels();
             }
 
+            AddTerm();
+
             const string adminRoleName = "Admin";
             var adminRole = await _roleManager.FindByNameAsync(adminRoleName);
             if (adminRole == null)
@@ -93,6 +95,23 @@ namespace Club.Models.Context
             intermediateUserLevel,
             advancedIntermediateUserLevel,
             advancedUserLevel;
+
+        private Term currentTerm;
+
+        private void AddTerm()
+        {
+            var start = new DateTime(DateTime.Today.Year, 1, 1);
+            var end = start.AddMonths(6);
+            currentTerm = new Term
+            {
+                Name = $"{start.Year} - A",
+                Start = start,
+                End = end
+            };
+
+            _context.Add(currentTerm);
+            _context.SaveChanges();
+        }
 
         private void AddUserLevels()
         {
@@ -258,8 +277,10 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
             foreach (var @event in SampleData.SampleEvents)
             {
                 int r = (Random.Next(1, 65465465) % 270) + 45;
+                @event.TermId = currentTerm.Id;
                 @event.ClubUserHostId = creator.Id;
                 @event.CreatedOn = DateTime.Now;
+                @event.Start = DateTime.Now.AddDays(r / 5);
                 @event.Type = (EventType)(r % 4);
                 @event.EventCode = _eventCodeGenerator.GetCode();
                 @event.End = @event.Start.AddMinutes(r);

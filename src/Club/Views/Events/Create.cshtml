@@ -1,7 +1,10 @@
-﻿@model Club.ViewModels.EventViewModel
+﻿@using Club.ViewModels
+@model Club.ViewModels.EventViewModel
 
 @{
     ViewBag.Title = "Nuevo evento";
+
+    var periodo = ViewBag.Term as TermViewModel;
 }
 
 

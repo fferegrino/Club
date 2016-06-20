@@ -19,12 +19,15 @@ namespace Club.AutoMappings
                 .ForMember(vm => vm.RepeatUntil, opt => opt.Ignore())
                 .ForMember(vm => vm.Duration, opt => opt.ResolveUsing(
                     (r,model)=> (model.End - model.Start).Humanize(3,maxUnit: Humanizer.Localisation.TimeUnit.Day)))
+                .ForMember(vm => vm.TermId, opt => opt.ResolveUsing(r => r.Term.Id))
+                .ForMember(vm => vm.TermName, opt => opt.ResolveUsing(r => r.Term.Name))
                 ;
 
 
             Mapper.CreateMap<Club.ViewModels.EventViewModel, Club.Models.Entities.Event>()
                 .ForMember(m => m.UsersAttending, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHost, opt => opt.Ignore())
+                .ForMember(m => m.Term, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHostId, opt => opt.Ignore());
 
 

@@ -121,6 +121,7 @@ namespace Club
             services.AddScoped<IUserLevelsRepository, UserLevelsRepository>();
             services.AddScoped<ITopicsRepository, TopicsRepository>();
             services.AddScoped<ISubmissionsRepository, SubmissionsRepository>();
+            services.AddScoped<ITermsRepository, TermsRepository>();
             services.AddScoped<IAnnouncementsRepository, AnnouncementsRepository>();
 
             services.AddScoped<IDateTime, DateTimeAdapter>();
