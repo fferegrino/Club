@@ -6,8 +6,10 @@ namespace Club.Models.Repositories
 {
     public interface ITermsRepository
     {
-        void AddEvent(Term item);
+        void AddTerm(Term item);
         Term GetTermById(int termId);
+        Term GetLastTerm();
         Term GetCurrentTerm();
+        bool SaveAll();
     }
 }

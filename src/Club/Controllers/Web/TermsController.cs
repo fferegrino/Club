@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Club.Common.TypeMapping;
 using Club.Models.Repositories;
 using Club.ViewModels;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -27,6 +28,25 @@ namespace Club.Controllers.Web
             var tt = _termsRepository.GetTermById(id);
             var t = _mapper.Map<TermViewModel>(tt);
             return View(t);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create()
+        {
+            ViewBag.LastTerm = _mapper.Map<TermViewModel>(_termsRepository.GetLastTerm());
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create(TermViewModel viewModel)
+        {
+            var eventEntity = _mapper.Map<Models.Entities.Term>(viewModel);
+
+            _termsRepository.AddTerm(eventEntity);
+            _termsRepository.SaveAll();
+
+            return RedirectToAction("detail", new { id = eventEntity.Id });
         }
     }
 }

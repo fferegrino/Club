@@ -15,11 +15,14 @@ namespace Club.Models.Repositories
         private readonly IDateTime _date;
         private readonly IUserSession _user;
 
-        public EventsRepository(ClubContext context, IDateTime date, IUserSession user)
+        private ITermsRepository _termsRepo;
+
+        public EventsRepository(ClubContext context, IDateTime date, IUserSession user, ITermsRepository termsRepo)
         {
             _context = context;
             _date = date;
             _user = user;
+            _termsRepo = termsRepo;
         }
 
         public QueryResult<Event> GetPagedEventsAttendedByUsername(PagedDataRequest request, string username)
@@ -66,7 +69,10 @@ namespace Club.Models.Repositories
 
         public Event GetNextEvent()
         {
-            return _context.Events.Include(evt => evt.ClubUserHost).FirstOrDefault(evt => evt.Start > _date.UtcNow);
+            return _context.Events
+                .Include(evt => evt.ClubUserHost)
+                .Include(evt => evt.Term)
+                .FirstOrDefault(evt => evt.Start > _date.UtcNow);
         }
 
         public Event GetEventById(int eventId)
@@ -95,6 +101,10 @@ namespace Club.Models.Repositories
         {
             item.CreatedOn = _date.UtcNow;
             item.ClubUserHostId = _user.Id;
+            var t = _termsRepo.GetCurrentTerm();
+
+            item.TermId = t.Id;
+            item.Term = t;
 
             _context.Add(item);
         }

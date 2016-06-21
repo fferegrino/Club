@@ -22,6 +22,7 @@ namespace Club.Controllers.Web
     {
         private readonly IEventsRepository _eventsRepository;
         private readonly IClubUsersRepository _usersRepository;
+        private readonly ITermsRepository _termsRepository;
         private readonly IEventCodeGenerator _eventCodeGenerator;
         private readonly IWebUserSession _webSession;
         private readonly IQrCodeApi _qrCodeApi;
@@ -32,7 +33,7 @@ namespace Club.Controllers.Web
             IAutoMapper mapper,
             IEventCodeGenerator eventCodeGenerator,
             IClubUsersRepository usersRepository,
-            IQrCodeApi qrCodeApi, IWebUserSession webSession)
+            IQrCodeApi qrCodeApi, IWebUserSession webSession, ITermsRepository termsRepository)
         {
             _mapper = mapper;
             _eventsRepository = eventsRepository;
@@ -40,6 +41,7 @@ namespace Club.Controllers.Web
             _usersRepository = usersRepository;
             _qrCodeApi = qrCodeApi;
             _webSession = webSession;
+            _termsRepository = termsRepository;
         }
 
         public IActionResult Index()
@@ -93,6 +95,8 @@ namespace Club.Controllers.Web
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
+            var term = _mapper.Map<TermViewModel>(_termsRepository.GetCurrentTerm());
+            ViewBag.Term = term;
             return View();
         }
 

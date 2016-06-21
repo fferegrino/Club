@@ -1,0 +1,80 @@
+﻿@using System.Threading.Tasks
+@using Club.ViewModels
+@model Club.ViewModels.TermViewModel
+
+@{
+    ViewBag.Title = "Nuevo periodo";
+    var lastTerm = ViewBag.LastTerm as TermViewModel;
+    var lastTermDate = lastTerm?.End.ToString("dd/MM/yyyy");
+}
+
+
+
+<h2>Crear periodo</h2>
+<form method="post" novalidate>
+    <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" aria-describedby="basic-addon-term" />
+            <span asp-validation-for="Name"></span>
+
+        </div>
+    </div> 
+    <div class="row">
+        <div class="form-group col-md-6">
+            
+            <label asp-for="Start"></label>
+            <input asp-for="Start" class="form-control" value="@lastTermDate"/>
+            <span asp-validation-for="Start"></span>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="End"></label>
+            <input asp-for="End" class="form-control" />
+            <span asp-validation-for="End"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-success" />
+    </div>
+</form>
+
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+
+        $(function () {
+            $('#Start').datetimepicker({
+                locale: 'es',
+                sideBySide: true,
+                stepping: 15,
+                useCurrent: true
+            });
+            $('#End').datetimepicker({
+                locale: 'es',
+                sideBySide: true,
+                stepping: 15,
+                useCurrent: false
+            });
+            $("#Start").on("dp.change", function (e) {
+                $('#End').data("DateTimePicker").minDate(e.date);
+                console.log(e.date);
+            });
+
+
+            $('#RepeatUntil').datetimepicker({
+                locale: 'es',
+                useCurrent: true
+            });
+        });
+    </script>
+}
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+}

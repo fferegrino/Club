@@ -20,15 +20,26 @@ namespace Club.Models.Repositories
             _user = user;
         }
 
-        public void AddEvent(Term item)
+        public void AddTerm(Term item)
         {
-            throw new System.NotImplementedException();
+            _context.Add(item);
+        }
+
+        public Term GetLastTerm()
+        {
+            var term = _context.Terms.OrderByDescending(t => t.End).FirstOrDefault();
+            return term;
         }
 
         public Term GetCurrentTerm()
         {
             var term = _context.Terms.FirstOrDefault(t => t.Start <= _date.UtcNow && _date.UtcNow <= t.End);
             return term;
+        }
+
+        public bool SaveAll()
+        {
+            return _context.SaveChanges() > 0;
         }
 
         public Term GetTermById(int termId)

@@ -16,6 +16,9 @@ namespace Club.AutoMappings
         {
             Mapper.CreateMap<Club.Models.Entities.Term, Club.ViewModels.TermViewModel>()
                 ;
+            Mapper.CreateMap<Club.ViewModels.TermViewModel, Club.Models.Entities.Term>()
+                .ForMember(m => m.Events, opt => opt.Ignore())
+                ;
 
             //Mapper.CreateMap<Club.ViewModels.ProblemViewModel, Club.Models.Entities.Problem>()
             //    .IgnoreAllUnmapped()
