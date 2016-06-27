@@ -12,7 +12,8 @@
     "jquery": "~2.1.4",
     "jquery-validation": "~1.14.0",
     "jquery-validation-unobtrusive": "~3.2.5",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+      "jqwidgets": "4.1.2"
   },
   "resolutions": {
     "jquery": "1.9.1 - 2"
