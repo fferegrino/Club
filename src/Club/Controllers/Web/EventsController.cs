@@ -100,6 +100,13 @@ namespace Club.Controllers.Web
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult Attendance()
+        {
+            //var attendance =  _mapper.Map<List<EventAttendanceViewModel>>(_eventsRepository.GetAllEventAttendance());
+            return View();
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult Create(EventViewModel viewModel)

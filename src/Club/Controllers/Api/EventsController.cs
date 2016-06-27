@@ -7,6 +7,8 @@ using Club.Common.Extensions;
 using Microsoft.AspNet.Mvc;
 using Club.Models.Repositories;
 using Club.Common.TypeMapping;
+using Club.ApiModels;
+using Microsoft.AspNet.Authorization;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,6 +34,13 @@ namespace Club.Controllers.Api
             var eventsModels = _eventsRepository.GetAllEvents();
             var eventsViewModels = _mapper.Map<IEnumerable<ViewModels.EventViewModel>>(eventsModels);
             return Json(eventsViewModels);
+        }
+
+        [HttpGet("attendance")]
+        public ActionResult Attendance()
+        {
+            var attendance = _mapper.Map<List<EventAttendanceApiModel>>(_eventsRepository.GetAllEventAttendance());
+            return Json(attendance);
         }
 
         [HttpGet("attended/{*username}")]

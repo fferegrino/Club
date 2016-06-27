@@ -24,6 +24,23 @@ namespace Club.AutoMappings
                 ;
 
 
+            Mapper.CreateMap<Club.Models.Entities.EventAttendance, Club.ApiModels.EventAttendanceApiModel>()
+                .ForMember(vm => vm.Host, opt => opt.ResolveUsing(m => m.Event.ClubUserHost.UserName))
+                .ForMember(vm => vm.Duration, opt => opt.ResolveUsing(
+                    (r, model) => (model.Event.End - model.Event.Start).TotalHours))
+                .ForMember(vm => vm.TermId, opt => opt.ResolveUsing(r => r.Event.Term.Id))
+                .ForMember(vm => vm.TermName, opt => opt.ResolveUsing(r => r.Event.Term.Name))
+                .ForMember(vm => vm.User, opt => opt.ResolveUsing(r => r.ClubUser.UserName))
+                .ForMember(vm => vm.UserId, opt => opt.ResolveUsing(r => r.ClubUserId))
+                .ForMember(vm => vm.Id, opt => opt.ResolveUsing(r => r.Event.Id))
+                .ForMember(vm => vm.Description, opt => opt.ResolveUsing(r => r.Event.Description))
+                .ForMember(vm => vm.Location, opt => opt.ResolveUsing(r => r.Event.Location))
+                .ForMember(vm => vm.Date, opt => opt.ResolveUsing(r => r.Event.Start))
+                .ForMember(vm => vm.Type, opt => opt.ResolveUsing(r => r.Event.Type))
+                ;
+
+
+
             Mapper.CreateMap<Club.ViewModels.EventViewModel, Club.Models.Entities.Event>()
                 .ForMember(m => m.UsersAttending, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHost, opt => opt.Ignore())

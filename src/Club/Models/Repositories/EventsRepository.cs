@@ -89,6 +89,15 @@ namespace Club.Models.Repositories
                 .FirstOrDefault(evnt => evnt.EventCode == eventCode);
         }
 
+        public IEnumerable<EventAttendance> GetAllEventAttendance()
+        {
+            return _context.EventAttendance
+                .Include(ev => ev.ClubUser)
+                .Include(ev => ev.Event)
+                .Include(ev => ev.Event.Term)
+                .Include(ev => ev.Event.ClubUserHost);
+        }
+
         public void DeleteById(int id)
         {
             var @event = _context.Events

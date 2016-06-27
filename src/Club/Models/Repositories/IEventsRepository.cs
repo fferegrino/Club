@@ -18,6 +18,9 @@ namespace Club.Models.Repositories
         Event GetEventById(int eventId);
 
         Event GetEventByEventCode(string eventCode);
+
+        IEnumerable<EventAttendance> GetAllEventAttendance();
+
         void DeleteById(int id);
 
         bool SaveAll();
