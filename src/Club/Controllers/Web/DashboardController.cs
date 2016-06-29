@@ -13,19 +13,23 @@ namespace Club.Controllers.Web
     {
         private readonly IEventsRepository _eventsRepository;
         private readonly IClubUsersRepository _clubUsersRepository;
+        private readonly ITermsRepository _termsRepository;
         private readonly IAutoMapper _mapper;
 
         public DashboardController(IClubUsersRepository clubUsersRepository,
-            IAutoMapper mapper, IEventsRepository eventsRepository)
+            IAutoMapper mapper, IEventsRepository eventsRepository, ITermsRepository termsRepository)
         {
             _clubUsersRepository = clubUsersRepository;
             _mapper = mapper;
             _eventsRepository = eventsRepository;
+            _termsRepository = termsRepository;
         }
 
         public IActionResult Index()
         {
             var userDashboard = new DashboardViewModel();
+
+            ViewBag.Term = _mapper.Map<ViewModels.TermViewModel>( _termsRepository.GetCurrentTerm());
 
             var n = _clubUsersRepository.GetUnapprovedUsers(5);
             userDashboard.UsersAwaitingApproval = _mapper.Map<IEnumerable<ViewModels.SimpleUserViewModel>>(n);
