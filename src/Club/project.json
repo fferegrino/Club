@@ -6,6 +6,7 @@
 
   "dependencies": {
     "AutoMapper": "4.1.1",
+    "DocX": "1.0.0.19",
     "EntityFramework.Commands": "7.0.0-rc1-final",
     "EntityFramework.Core": "7.0.0-rc1-final",
     "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",

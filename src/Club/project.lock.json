@@ -12,6 +12,15 @@
           "lib/net45/AutoMapper.dll": {}
         }
       },
+      "DocX/1.0.0.19": {
+        "type": "package",
+        "compile": {
+          "lib/net40/DocX.dll": {}
+        },
+        "runtime": {
+          "lib/net40/DocX.dll": {}
+        }
+      },
       "EntityFramework.Commands/7.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -2111,6 +2120,15 @@
         },
         "runtime": {
           "lib/net45/AutoMapper.dll": {}
+        }
+      },
+      "DocX/1.0.0.19": {
+        "type": "package",
+        "compile": {
+          "lib/net40/DocX.dll": {}
+        },
+        "runtime": {
+          "lib/net40/DocX.dll": {}
         }
       },
       "EntityFramework.Commands/7.0.0-rc1-final": {
@@ -4215,6 +4233,15 @@
         },
         "runtime": {
           "lib/net45/AutoMapper.dll": {}
+        }
+      },
+      "DocX/1.0.0.19": {
+        "type": "package",
+        "compile": {
+          "lib/net40/DocX.dll": {}
+        },
+        "runtime": {
+          "lib/net40/DocX.dll": {}
         }
       },
       "EntityFramework.Commands/7.0.0-rc1-final": {
@@ -6342,6 +6369,16 @@
         "lib/wpa81/AutoMapper.xml",
         "lib/Xamarin.iOS10/AutoMapper.dll",
         "lib/Xamarin.iOS10/AutoMapper.XML"
+      ]
+    },
+    "DocX/1.0.0.19": {
+      "type": "package",
+      "sha512": "ZoKdoM2ZlZ5bCBEtJHrTJMHICW3o9wsh6tStdqIXHh9mCjb+7o4+w5e6DWyNy2nnS5X7Q/eCFYQtyhInWMyc7w==",
+      "files": [
+        "DocX.1.0.0.19.nupkg",
+        "DocX.1.0.0.19.nupkg.sha512",
+        "DocX.nuspec",
+        "lib/net40/DocX.dll"
       ]
     },
     "EntityFramework.Commands/7.0.0-rc1-final": {
@@ -8638,6 +8675,7 @@
   "projectFileDependencyGroups": {
     "": [
       "AutoMapper >= 4.1.1",
+      "DocX >= 1.0.0.19",
       "EntityFramework.Commands >= 7.0.0-rc1-final",
       "EntityFramework.Core >= 7.0.0-rc1-final",
       "EntityFramework.MicrosoftSqlServer >= 7.0.0-rc1-final",

@@ -19,6 +19,7 @@ namespace Club.Models.Repositories
         IEnumerable<ClubUser> GetMostActiveUsers(int count = 5);
         IEnumerable<ClubUser> GetUnapprovedUsers(int count = 0);
         ClubUser GetUserByUserName(string username);
+        ClubUser GetFullUserByUserName(string username);
         ClubUser GetUserById(string id);
         void UpdateApprovedStatus(string userId, bool approved);
         bool SaveAll();
@@ -111,6 +112,17 @@ namespace Club.Models.Repositories
             return _context.Users
                 .Include(u => u.UserLevel)
                 .FirstOrDefault(user => user.UserName == username);
+        }
+
+        public ClubUser GetFullUserByUserName(string username)
+        {
+            return _context.Users
+                   .Include(u => u.UserLevel)
+                   .Include(u => u.EventsAttended)
+                    .ThenInclude(a => a.Event)
+                    .ThenInclude(a => a.Term)
+                   //.Include(u => u.EventsAttended.Select(y => y.Event.Term))
+                   .FirstOrDefault(user => user.UserName == username);
         }
 
         public ClubUser GetUserById(string id)

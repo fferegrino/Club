@@ -13,13 +13,13 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-5">
                 <p class="lead">@Model.FirstName @Model.LastName</p>
                 <p class="lead">@Model.Level</p>
             </div>
             @if (User.Identity.IsAuthenticated)
             {
-                <div class="col-lg-2 col-lg-offset-7">
+                <div class="col-lg-2 col-lg-offset-5">
                     <div class="btn-group hidden-print">
                         <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-cogs fa-fw"></i> Opciones <span class="caret"></span>
@@ -34,6 +34,9 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li role="separator" class="divider"></li>
+                                <li>
+                                    <a asp-action="Letter">Descargar carta</a>
+                                </li>
                             }
                         </ul>
                     </div>
@@ -45,15 +48,13 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Asistencias</a></li>
-                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Problemas resueltos</a></li>
-                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                <li role="presentation" class="active"><a href="#events" aria-controls="home" role="tab" data-toggle="tab">Asistencias</a></li>
+                <li role="presentation"><a href="#problems" aria-controls="profile" role="tab" data-toggle="tab">Problemas resueltos</a></li>
             </ul>
 
             <!-- Tab panes -->
             <div class="tab-content" ng-app="app-attended-events">
-                <div ng-controller="attendedEventsController as vm" role="tabpanel" class="tab-pane active" id="home">
+                <div ng-controller="attendedEventsController as vm" role="tabpanel" class="tab-pane active" id="events">
                     <table class="table table-responsive">
                         <thead>
                             <tr>
@@ -91,9 +92,7 @@
                         </tfoot>
                     </table>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="profile">...</div>
-                <div role="tabpanel" class="tab-pane" id="messages">...</div>
-                <div role="tabpanel" class="tab-pane" id="settings">...</div>
+                <div role="tabpanel" class="tab-pane" id="problems">...</div>
             </div>
 
         </div>
