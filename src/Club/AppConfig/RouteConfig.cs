@@ -30,6 +30,12 @@ namespace Club.AppConfig
                 );
 
             routes.MapRoute(
+                name: "Submissions route",
+                template: "submissions",
+                defaults: new { action = "index", controller = "submit" }
+                );
+
+            routes.MapRoute(
                 name: "Submit route",
                 template: "submit/{problemId:int}",
                 defaults: new { action = "create", controller = "submit" }

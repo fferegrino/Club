@@ -13,16 +13,21 @@ namespace Club.Controllers.Web
     {
         private readonly IEventsRepository _eventsRepository;
         private readonly IClubUsersRepository _clubUsersRepository;
+        private readonly ISubmissionsRepository _submissionsRepository;
         private readonly ITermsRepository _termsRepository;
         private readonly IAutoMapper _mapper;
 
         public DashboardController(IClubUsersRepository clubUsersRepository,
-            IAutoMapper mapper, IEventsRepository eventsRepository, ITermsRepository termsRepository)
+            IAutoMapper mapper, 
+            IEventsRepository eventsRepository, 
+            ITermsRepository termsRepository,
+            ISubmissionsRepository submissionsRepository)
         {
             _clubUsersRepository = clubUsersRepository;
             _mapper = mapper;
             _eventsRepository = eventsRepository;
             _termsRepository = termsRepository;
+            _submissionsRepository = submissionsRepository;
         }
 
         public IActionResult Index()
@@ -37,6 +42,8 @@ namespace Club.Controllers.Web
             userDashboard.NextEvent = _mapper.Map<ViewModels.EventViewModel>(_eventsRepository.GetNextEvent());
             var mostActiveUsers = _clubUsersRepository.GetMostActiveUsers();
             userDashboard.MostActiveUsers = _mapper.Map<IEnumerable<ViewModels.ComplexUserViewModel>>(mostActiveUsers);
+
+            userDashboard.PendingSubmissionsCount = _submissionsRepository.GetAllPendingSubmissionsCount();
 
             return View(userDashboard);
         }

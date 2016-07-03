@@ -14,6 +14,8 @@ namespace Club.Models.Repositories
         void ReviewSubmission(int problemId, string userId, bool accept);
 
         IEnumerable<Submission> GetAllSubmissionsForUser(string userId = null);
+        IEnumerable<Submission> GetAllRecentSubmissions();
+        int GetAllPendingSubmissionsCount();
         Submission GetSubmissionForProblem(int problemId, string userId = null);
 
         bool SaveAll();
@@ -85,6 +87,29 @@ namespace Club.Models.Repositories
         public bool SaveAll()
         {
             return _context.SaveChanges() > 0;
+        }
+
+        public IEnumerable<Submission> GetAllRecentSubmissions()
+        {
+            var problem =
+                _context.Submissions
+                .Include(s => s.User)
+                .Include(s => s.Problem)
+                .Where(pr => pr.LastAttemptDate >= _date.UtcNow.AddMonths(-6));
+
+            return problem;
+        }
+
+        public int GetAllPendingSubmissionsCount()
+        {
+            var problem =
+                _context.Submissions
+                .Where(s=> s.Accepted == null)
+                .Where(pr => pr.LastAttemptDate >= _date.UtcNow.AddMonths(-6));
+
+            var rcount = problem.Count();
+
+            return rcount;
         }
     }
 }

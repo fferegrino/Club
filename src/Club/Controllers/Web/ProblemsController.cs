@@ -66,8 +66,8 @@ namespace Club.Controllers.Web
             var userLevelId = 1;
             if (User.Identity.IsAuthenticated)
             {
-                var user = _usersRepo.GetUserById(User.Identity.Name);
-
+                var user = _usersRepo.GetUserByUserName(User.Identity.Name);
+                userLevelId = user.UserLevelId;
             }
             var problemsRepo = _mapper.Map<List< ProblemViewModel>>( _problemsRepository.GetAllCurrentProblems());
             var split = problemsRepo.GroupBy(t => t.LevelId).OrderBy(gr => gr.Key);

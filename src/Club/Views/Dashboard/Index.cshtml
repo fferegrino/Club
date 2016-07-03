@@ -39,6 +39,9 @@
             <a asp-controller="problems" asp-action="create" class="list-group-item">
                 Nuevo problema <span class="badge"><i class="fa fa-gavel"></i></span>
             </a>
+            <a asp-controller="submit" asp-action="index" class="list-group-item">
+                Revisar problemas <span class="badge">@Model.PendingSubmissionsCount</span>
+            </a>
             <a asp-controller="topics" asp-action="create" class="list-group-item">
                 Nuevo tema <span class="badge"><i class="fa fa-tags"></i></span>
             </a>

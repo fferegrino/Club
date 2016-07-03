@@ -54,6 +54,14 @@ namespace Club.Controllers.Web
             return View(problem);
         }
 
+        [Authorize(Roles = "Admin")]
+        public IActionResult Index()
+        {
+            var rrr = _submissionsRepo.GetAllRecentSubmissions();
+            var problems = _mapper.Map<List<SubmissionViewModel>>(rrr);
+            return View(problems);
+        }
+
 
         [Authorize]
         public IActionResult Create(int problemId)

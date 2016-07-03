@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper.Internal;
@@ -98,18 +99,42 @@ namespace Club.Models.Context
 
         private Term currentTerm;
 
+        List<Term> terms;
+
         private void AddTerm()
         {
             var start = new DateTime(DateTime.Today.Year, 1, 1);
             var end = start.AddMonths(6);
             currentTerm = new Term
             {
-                Name = $"{start.Year} - A",
+                Name = $"{start.Year}/{start.Month} - {end.Year}/{end.Month}",
                 Start = start,
                 End = end
             };
 
-            _context.Add(currentTerm);
+            terms = new List<Term>()
+            {
+                currentTerm
+            };
+
+            var lastStartDate = currentTerm.Start;
+            for (int i = 1; i < 5; i++)
+            {
+                var t = new Term
+                {
+                    Start = lastStartDate.AddMonths(-6),
+                    End = lastStartDate.AddDays(-1)
+                };
+                t.Name = $"{t.Start.Year}/{t.Start.Month} - {t.End.Year}/{t.End.Month}";
+                terms.Add(t);
+                lastStartDate = lastStartDate.AddMonths(-6);
+
+            }
+
+            foreach (var term in terms)
+            {
+                _context.Add(term);
+            }
             _context.SaveChanges();
         }
 
@@ -276,10 +301,12 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
 
             foreach (var @event in SampleData.SampleEvents)
             {
+                int tt = Random.Next(1, 65465465) % terms.Count;
+                var trm = terms[tt];
                 int r = (Random.Next(1, 65465465) % 270) + 45;
-                @event.TermId = currentTerm.Id;
+                @event.TermId = trm.Id;
                 @event.ClubUserHostId = creator.Id;
-                @event.CreatedOn = DateTime.Now;
+                @event.CreatedOn = trm.Start.AddDays(1);
                 @event.Start = DateTime.Now.AddDays(r / 5);
                 @event.Type = (EventType)(r % 4);
                 @event.EventCode = _eventCodeGenerator.GetCode();
@@ -337,10 +364,12 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
         private async Task CreateAditionalUsers(IdentityRole memberRole)
         {
             const string defaultPassword = "@Abc1234";
+            
             foreach (var sampleUser in SampleData.SampleClubUsers)
             {
+                var r = Random.Next(0, 10);
                 sampleUser.EmailConfirmed = sampleUser.Approved;
-                sampleUser.UserLevel = basicIntermediateUserLevel;
+                sampleUser.UserLevel = r%2 == 0 ? basicIntermediateUserLevel : advancedIntermediateUserLevel;
                 await _userManager.CreateAsync(sampleUser, defaultPassword);
                 await _userManager.AddToRoleAsync(sampleUser, memberRole.Name);
             }

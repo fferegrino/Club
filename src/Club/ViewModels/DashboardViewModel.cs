@@ -16,6 +16,7 @@ namespace Club.ViewModels
         public IEnumerable<AnnouncementViewModel> RecentAnnouncements { get; set; }
 
         public int UsersAwaitingApprovalCount { get; set; }
+        public int PendingSubmissionsCount { get; set; }
 
         [Display(Name = "Usuarios pendientes de aprobación")]
         public IEnumerable<SimpleUserViewModel> UsersAwaitingApproval { get; set; }

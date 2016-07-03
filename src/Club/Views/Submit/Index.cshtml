@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Club.ViewModels.SubmissionViewModel>
+
+@{
+    var submissions = Model.ToList();
+}
+
+
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#pendientes" aria-controls="home"
+               role="tab" data-toggle="tab">Pendientes</a>
+        </li>
+        <li role="presentation">
+            <a href="#aceptados" aria-controls="home"
+               role="tab" data-toggle="tab">Aceptados</a>
+        </li>
+        <li role="presentation">
+            <a href="#rechazados" aria-controls="home"
+               role="tab" data-toggle="tab">Rechazados</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="pendientes">
+            <table class="table table-bordered table-striped">
+                @foreach (var problemViewModel in submissions.Where(s => !s.Accepted.HasValue))
+                {
+                    <tr>
+                        <td>
+                            @problemViewModel.User
+                        </td>
+                        <td>
+                            @problemViewModel.ProblemName
+                        </td>
+                        <td>
+                            <a asp-controller="submit" asp-action="details"
+                               asp-route-problemId="@problemViewModel.ProblemId"
+                               asp-route-user="@problemViewModel.User">Review</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="aceptados">
+            <table class="table table-bordered table-striped">
+                @foreach (var problemViewModel in submissions.Where(s => s.Accepted.HasValue && s.Accepted.Value))
+                {
+                    <tr>
+                        <td>
+                            @problemViewModel.User
+                        </td>
+                        <td>
+                            @problemViewModel.ProblemName
+                        </td>
+                        <td>
+                            <a asp-controller="submit" asp-action="details"
+                               asp-route-problemId="@problemViewModel.ProblemId"
+                               asp-route-user="@problemViewModel.User">Ver</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="rechazados">
+            <table class="table table-bordered table-striped">
+                @foreach (var problemViewModel in submissions.Where(s => s.Accepted.HasValue && !s.Accepted.Value))
+                {
+                    <tr>
+                        <td>
+                            @problemViewModel.User
+                        </td>
+                        <td>
+                            @problemViewModel.ProblemName
+                        </td>
+                        <td>
+                            <a asp-controller="submit" asp-action="details"
+                               asp-route-problemId="@problemViewModel.ProblemId"
+                               asp-route-user="@problemViewModel.User">Ver</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+</div>
