@@ -52,7 +52,9 @@ namespace Club.AutoMappings
             {
                 t.Add(term.First().Event.Term);
             }
-            return t.Select(trm => $"{trm.Start:MMMM yyy} - {trm.End:MMMM yyy}").Humanize();
+            return t.OrderBy(r0 => r0.Start)
+                .Select(trm => $"{trm.Start:MMMM yyy} - {trm.End:MMMM yyy}")
+                .Humanize();
         }
     }
 
