@@ -34,15 +34,13 @@
                     <ul class="nav navbar-nav navbar-right">
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <li><a asp-controller="users" asp-action="details" asp-route-username="@User.Identity.Name">@User.Identity.Name</a></li>
                             if (User.IsInRole("Admin"))
-                             {
+                            {
                                  <li><a asp-controller="dashboard" asp-action="index">Dashboard</a></li>
 
                             }
-                            else
-                            {
-                                <li><a asp-controller="problems" asp-action="index">Problemas</a></li>
-                            }
+                            <li><a asp-controller="problems" asp-action="index">Problemas</a></li>
                             <li><a asp-controller="account" asp-action="logout">Logout</a></li>
                         }
                         else

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Club.Common.TypeMapping;
+using Club.Models.Entities;
 using Club.Models.Repositories;
 using Club.ViewModels;
 using Microsoft.AspNet.Authorization;
@@ -11,6 +12,8 @@ using Microsoft.AspNet.Mvc.ModelBinding.Metadata;
 using Microsoft.Extensions.PlatformAbstractions;
 using Novacode;
 using Humanizer;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc.Rendering;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,14 +23,17 @@ namespace Club.Controllers.Web
     {
         private readonly IClubUsersRepository _usersRepository;
         private readonly IAutoMapper _mapper;
+        private readonly IUserLevelsRepository _usersLevelRepo;
         private readonly IApplicationEnvironment _appEnv;
 
         public UsersController(IClubUsersRepository usersRepository,
-            IAutoMapper mapper, IApplicationEnvironment appEnv)
+            IAutoMapper mapper, IApplicationEnvironment appEnv, 
+            IUserLevelsRepository usersLevelRepo)
         {
             _usersRepository = usersRepository;
             _mapper = mapper;
             _appEnv = appEnv;
+            _usersLevelRepo = usersLevelRepo;
         }
 
         [Authorize(Roles = "Admin")]
@@ -71,11 +77,38 @@ namespace Club.Controllers.Web
             return View();
         }
 
+        public IActionResult Edit(string username)
+        {
+            if (User.IsInRole("Admin") || User.Identity.Name.Equals(username))
+            {
+                var entity = _usersRepository.GetFullUserByUserName(username);
+                var vm = _mapper.Map<EditUserViewModel>(entity);
+                vm.IsAdmin = _usersRepository.IsAdmin(username);
+                ViewBag.SelectUserLevels = GetAllUserLevelsSelectList(vm.LevelId);
+                
+                return View(vm);
+            }
+            return RedirectToAction("details", new { username });
+        }
+
         public IActionResult Details(string username)
         {
             var entity = _usersRepository.GetUserByUserName(username);
             var viewModel = _mapper.Map<ViewModels.ComplexUserViewModel>(entity);
             return View(viewModel);
+        }
+
+
+
+        public IEnumerable<SelectListItem> GetAllUserLevelsSelectList(int selectedTopicId = 0)
+        {
+            var selectTopics = _usersLevelRepo.GetAllUsersLevels().Select(t => new SelectListItem
+            {
+                Text = $"{t.Id} — {t.Level}",
+                Value = t.Id.ToString(),
+                Selected = t.Id == selectedTopicId
+            });
+            return selectTopics;
         }
     }
 }

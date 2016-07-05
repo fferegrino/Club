@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Club.Common;
 using Club.Models.Entities;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,7 @@ namespace Club.Models.Repositories
         ClubUser GetUserByUserName(string username);
         ClubUser GetFullUserByUserName(string username);
         ClubUser GetUserById(string id);
+        bool IsAdmin(string username);
         void UpdateApprovedStatus(string userId, bool approved);
         bool SaveAll();
         int CountUnapprovedUsers();
@@ -31,11 +33,22 @@ namespace Club.Models.Repositories
     {
         private readonly ClubContext _context;
         private readonly IDateTime _date;
+        private readonly UserManager<ClubUser> _userManager;
 
         public ClubUsersRepository(ClubContext context, IDateTime date, UserManager<ClubUser> userManager)
         {
             _context = context;
             _date = date;
+            _userManager = userManager;
+        }
+
+        public bool IsAdmin(string username)
+        {
+
+            var ttt = _userManager.GetRolesAsync(GetFullUserByUserName(username));
+            ttt.Wait();
+            var rolesForUser = ttt.Result;
+            return rolesForUser.Contains("Admin");
         }
 
         public void UpdateApprovedStatus(string userId, bool approved)

@@ -53,6 +53,14 @@ namespace Club.Models.Context
                 var roleresult = await _roleManager.CreateAsync(adminRole);
             }
 
+            const string superAdminRoleName = "SuperAdmin";
+            var superAdminRole = await _roleManager.FindByNameAsync(superAdminRoleName);
+            if (superAdminRole == null)
+            {
+                superAdminRole = new IdentityRole(adminRoleName);
+                var roleresult = await _roleManager.CreateAsync(superAdminRole);
+            }
+
             const string memberRoleName = "Member";
             var memberRole = await _roleManager.FindByNameAsync(memberRoleName);
             if (memberRole == null)
@@ -61,7 +69,7 @@ namespace Club.Models.Context
                 var roleresult = await _roleManager.CreateAsync(memberRole);
             }
 
-            var admin = await GetOrCreateAdmin(adminRole);
+            var admin = await GetOrCreateAdmin(adminRole, superAdminRole);
             await CreateAditionalUsers(memberRole);
 
 
@@ -332,7 +340,7 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
             _context.SaveChanges();
         }
 
-        private async Task<ClubUser> GetOrCreateAdmin(IdentityRole adminRole)
+        private async Task<ClubUser> GetOrCreateAdmin(IdentityRole adminRole, IdentityRole superAdminRole)
         {
 
             var admin = await _userManager.FindByEmailAsync("antonio.feregrino@gmail.com");
@@ -356,6 +364,11 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
                 if (!rolesForUser.Contains(adminRole.Name))
                 {
                     var result = await _userManager.AddToRoleAsync(admin, adminRole.Name);
+                }
+
+                if (!rolesForUser.Contains(superAdminRole.Name))
+                {
+                    var result = await _userManager.AddToRoleAsync(admin, superAdminRole.Name);
                 }
             }
             return admin;

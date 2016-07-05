@@ -72,8 +72,6 @@ namespace Club.Controllers.Web
 
         public IEnumerable<SelectListItem> GetAllUserLevelsSelectList(int selectedTopicId = 0)
         {
-
-            //var listTopics = _mapper.Map<List< UserLevelsRepository>> (_usersLevelRepo.GetAllUsersLevels());
             var selectTopics = _usersLevelRepo.GetAllUsersLevels().Select(t => new SelectListItem
             {
                 Text = $"{t.Id} — {t.Level}",

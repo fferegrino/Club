@@ -28,7 +28,7 @@
                             @if (User.Identity.Name.Equals(Model.Username) || User.IsInRole("Admin"))
                             {
                                 <li>
-                                    <a asp-action="edit">Editar perfil</a>
+                                    <a asp-action="edit" asp-route-username="@Model.Username">Editar perfil</a>
                                 </li>
                             }
                             @if (User.IsInRole("Admin"))

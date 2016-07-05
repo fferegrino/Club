@@ -1,0 +1,49 @@
+﻿@model Club.ViewModels.EditUserViewModel
+@{
+    ViewBag.Title = Model.Username;
+}
+
+<h2>@Model.Username</h2>
+<form method="post" asp-antiforgery="true">
+    @if (ViewBag.Message != null)
+    {
+        <div>@ViewBag.Message</div>
+    }
+    <div asp-validation-summary="ValidationSummary.ModelOnly"></div>
+    <input asp-for="Username" type="hidden" />
+    <div class="form-group">
+        @Html.LabelFor(i => i.FirstName)
+        <input class="form-control" asp-for="FirstName" />
+        <span class="text-muted" asp-validation-for="FirstName"></span>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(i => i.LastName)
+        <input class="form-control" asp-for="LastName" />
+        <span class="text-muted" asp-validation-for="LastName"></span>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-8">
+            <label asp-for="LevelId"></label>
+            <select asp-for="LevelId" class="form-control" asp-items="@ViewBag.SelectUserLevels"></select>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="IsAdmin"></label>
+            <input asp-for="IsAdmin" class="form-control" />
+        </div>
+    </div>
+        <div class="form-group">
+            @Html.LabelFor(i => i.Email)
+            <input class="form-control" asp-for="Email" type="email" />
+            <span class="text-muted" asp-validation-for="Email"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Guardar" />
+            <a  class="btn btn-success" asp-action="details" asp-route-username="@Model.Username">Cancelar</a>
+        </div>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+

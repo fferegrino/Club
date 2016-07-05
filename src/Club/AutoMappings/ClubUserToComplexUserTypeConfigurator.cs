@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Club.Common.TypeMapping;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Club.AutoMappings
 {
@@ -11,14 +12,22 @@ namespace Club.AutoMappings
     {
         public void Config()
         {
-            Mapper.CreateMap<Club.Models.Entities.ClubUser,Club.ApiModels.ComplexUserApiModel>()
+            Mapper.CreateMap<Club.Models.Entities.ClubUser, Club.ApiModels.ComplexUserApiModel>()
                 .ForMember(model => model.Username, options => options.MapFrom(viewModel => viewModel.UserName))
                 ;
             Mapper.CreateMap<Club.Models.Entities.ClubUser, Club.ViewModels.ComplexUserViewModel>()
                 .ForMember(model => model.Username, options => options.MapFrom(viewModel => viewModel.UserName))
                 .ForMember(model => model.Level, options => options.MapFrom(viewModel => viewModel.UserLevel.Level))
                 ;
+
+
+            Mapper.CreateMap<Club.Models.Entities.ClubUser, Club.ViewModels.EditUserViewModel>()
+                .ForMember(model => model.Username, options => options.MapFrom(viewModel => viewModel.UserName))
+                .ForMember(model => model.Level, options => options.MapFrom(viewModel => viewModel.UserLevel.Level))
+                .ForMember(model => model.LevelId, options => options.MapFrom(viewModel => viewModel.UserLevel.Id))
+                .ForMember(model => model.IsAdmin, options => options.Ignore())
+                ;
         }
     }
-
+    
 }
