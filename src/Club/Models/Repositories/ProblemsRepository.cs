@@ -25,6 +25,7 @@ namespace Club.Models.Repositories
         public void AddProblem(Problem item)
         {
             item.AddedOn = _date.UtcNow;
+            item.Topic = _context.Topics.First(t => t.Id == item.TopicId);
             item.ClubUserCreatorId = _user.Id;
 
             _context.Add(item);

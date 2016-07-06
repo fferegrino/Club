@@ -22,9 +22,11 @@ namespace Club.AutoMappings
                 ;
 
             Mapper.CreateMap<Club.ViewModels.ProblemViewModel, Club.Models.Entities.Problem>()
-                .IgnoreAllUnmapped()
+                //.IgnoreAllUnmapped()
+                //.ForMember(entity => entity.TopicId, opt => opt.MapFrom(m => m.TopicId))
                 .ForMember(entity => entity.AddedOn, opt => opt.Ignore())
                 .ForMember(entity => entity.ClubUserCreator, opt => opt.Ignore())
+                .ForMember(entity => entity.Submissions, opt => opt.Ignore())
                 .ForMember(entity => entity.Topic, opt => opt.Ignore())
                 .ForMember(entity => entity.ClubUserCreatorId, opt => opt.Ignore());
 
@@ -35,8 +37,12 @@ namespace Club.AutoMappings
     {
         protected override string ResolveCore(Club.Models.Entities.Problem source)
         {
-            var uri = new Uri(source.Link);
-            return uri.Host;
+            if (!String.IsNullOrEmpty(source.Link))
+            {
+                var uri = new Uri(source.Link);
+                return uri.Host;
+            }
+            return "Error";
         }
     }
 }
