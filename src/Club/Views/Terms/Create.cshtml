@@ -25,7 +25,7 @@
         <div class="form-group col-md-6">
             
             <label asp-for="Start"></label>
-            <input asp-for="Start" class="form-control" value="@lastTermDate"/>
+            <input asp-for="Start" class="form-control" value="@lastTermDate" />
             <span asp-validation-for="Start"></span>
         </div>
 
@@ -51,26 +51,36 @@
         $(function () {
             $('#Start').datetimepicker({
                 locale: 'es',
-                sideBySide: true,
+                sideBySide: false,
                 stepping: 15,
                 useCurrent: true
             });
+
+
             $('#End').datetimepicker({
                 locale: 'es',
-                sideBySide: true,
+                sideBySide: false,
                 stepping: 15,
                 useCurrent: false
             });
+
             $("#Start").on("dp.change", function (e) {
+                var sixMonths  = moment.duration({'months' : 6});
+                var newDate = e.date;
+                newDate.add(sixMonths);
                 $('#End').data("DateTimePicker").minDate(e.date);
+                $('#End').data("DateTimePicker").defaultDate(newDate);
+                console.log("Start:");
                 console.log(e.date);
+                console.log("End:");
+                console.log(newDate);
             });
 
+            if (@lastTermDate !== "") {
+                $('#Start').data("DateTimePicker").minDate("@lastTermDate");
+                console.log("@lastTermDate");
+            }
 
-            $('#RepeatUntil').datetimepicker({
-                locale: 'es',
-                useCurrent: true
-            });
         });
     </script>
 }

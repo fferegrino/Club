@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Club.Common;
+using Club.Common.Security;
 using Club.Models.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -22,11 +23,12 @@ namespace Club.Models.Repositories
         ClubUser GetUserByUserName(string username);
         ClubUser GetFullUserByUserName(string username);
         ClubUser GetUserById(string id);
-        bool IsAdmin(string username);
+        Task<bool> IsAdmin(string username, bool superAdmin = false);
         void UpdateApprovedStatus(string userId, bool approved);
         bool SaveAll();
         int CountUnapprovedUsers();
         void AttendEvent(string id, Event attendedEvent);
+        Task ModifyUser(ClubUser entity);
     }
 
     public class ClubUsersRepository : IClubUsersRepository
@@ -34,21 +36,21 @@ namespace Club.Models.Repositories
         private readonly ClubContext _context;
         private readonly IDateTime _date;
         private readonly UserManager<ClubUser> _userManager;
+        private readonly IUserSession _user;
 
-        public ClubUsersRepository(ClubContext context, IDateTime date, UserManager<ClubUser> userManager)
+        public ClubUsersRepository(ClubContext context, IDateTime date, UserManager<ClubUser> userManager, IUserSession user)
         {
             _context = context;
             _date = date;
             _userManager = userManager;
+            _user = user;
         }
 
-        public bool IsAdmin(string username)
+        public async Task<bool> IsAdmin(string username, bool superAdmin = false)
         {
 
-            var ttt = _userManager.GetRolesAsync(GetFullUserByUserName(username));
-            ttt.Wait();
-            var rolesForUser = ttt.Result;
-            return rolesForUser.Contains("Admin");
+            var rolesForUser = await _userManager.GetRolesAsync(GetFullUserByUserName(username));
+            return rolesForUser.Contains(superAdmin ? "SuperAdmin" : "Admin");
         }
 
         public void UpdateApprovedStatus(string userId, bool approved)
@@ -162,6 +164,40 @@ namespace Club.Models.Repositories
                 };
                 user.EventsAttended.Add(eventAttendance);
             }
+        }
+
+        public async Task ModifyUser(ClubUser entity)
+        {
+            var realEntity = GetUserByUserName(entity.UserName);
+
+            realEntity.FirstName = entity.FirstName;
+            realEntity.LastName = entity.LastName;
+            realEntity.Email = entity.Email;
+            realEntity.UserLevel = _context.UserLevels.First(level => level.Id == entity.UserLevelId);
+            realEntity.UserLevelId = entity.UserLevelId;
+
+            var isSuperAdmin = await IsAdmin(entity.UserName, true);
+            var canModifyStatus = true;
+            if (isSuperAdmin)
+                canModifyStatus = await IsAdmin(_user.Username, true);
+
+            if (canModifyStatus)
+            {
+                if (!entity.IsAdmin)
+                {
+                    var adminUsers = await _userManager.GetUsersInRoleAsync("Admin");
+                    if (adminUsers.Count > 1)
+                    {
+                        await _userManager.RemoveFromRoleAsync(realEntity, "Admin");
+                    }
+                }
+                else if (entity.IsAdmin)
+                {
+                    await _userManager.AddToRoleAsync(realEntity, "Admin");
+                }
+            }
+
+            _context.Update(realEntity);
         }
     }
 }

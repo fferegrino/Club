@@ -57,7 +57,7 @@ namespace Club.Models.Context
             var superAdminRole = await _roleManager.FindByNameAsync(superAdminRoleName);
             if (superAdminRole == null)
             {
-                superAdminRole = new IdentityRole(adminRoleName);
+                superAdminRole = new IdentityRole(superAdminRoleName);
                 var roleresult = await _roleManager.CreateAsync(superAdminRole);
             }
 

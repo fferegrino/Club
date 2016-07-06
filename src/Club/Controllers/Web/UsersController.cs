@@ -27,7 +27,7 @@ namespace Club.Controllers.Web
         private readonly IApplicationEnvironment _appEnv;
 
         public UsersController(IClubUsersRepository usersRepository,
-            IAutoMapper mapper, IApplicationEnvironment appEnv, 
+            IAutoMapper mapper, IApplicationEnvironment appEnv,
             IUserLevelsRepository usersLevelRepo)
         {
             _usersRepository = usersRepository;
@@ -77,18 +77,35 @@ namespace Club.Controllers.Web
             return View();
         }
 
-        public IActionResult Edit(string username)
+        public async Task<IActionResult> Edit(string username)
         {
             if (User.IsInRole("Admin") || User.Identity.Name.Equals(username))
             {
                 var entity = _usersRepository.GetFullUserByUserName(username);
                 var vm = _mapper.Map<EditUserViewModel>(entity);
-                vm.IsAdmin = _usersRepository.IsAdmin(username);
+                vm.IsAdmin = await _usersRepository.IsAdmin(username);
                 ViewBag.SelectUserLevels = GetAllUserLevelsSelectList(vm.LevelId);
-                
+
                 return View(vm);
             }
             return RedirectToAction("details", new { username });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditUserViewModel vm)
+        {
+            if (User.IsInRole("Admin") || User.Identity.Name.Equals(vm.Username))
+            {
+                //var entity = _usersRepository.GetFullUserByUserName(vm.Username);
+                var entity = _mapper.Map<ClubUser>(vm);
+                await _usersRepository.ModifyUser(entity);
+                _usersRepository.SaveAll();
+                return RedirectToAction("details", new { vm.Username });
+
+            }
+            ViewBag.SelectUserLevels = GetAllUserLevelsSelectList(vm.LevelId);
+            return View(vm);
         }
 
         public IActionResult Details(string username)

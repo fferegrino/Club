@@ -18,6 +18,9 @@ namespace Club.Models.Entities
         [NotMapped]
         public int EventsAttendedCount { get; set; }
 
+        [NotMapped]
+        public bool IsAdmin { get; set; }
+
         public ClubUser()
         {
             EventsAttended = new HashSet<EventAttendance>();
