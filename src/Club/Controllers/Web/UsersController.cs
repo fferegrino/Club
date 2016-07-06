@@ -84,6 +84,7 @@ namespace Club.Controllers.Web
                 var entity = _usersRepository.GetFullUserByUserName(username);
                 var vm = _mapper.Map<EditUserViewModel>(entity);
                 vm.IsAdmin = await _usersRepository.IsAdmin(username);
+                vm.IsSuperAdmin = await _usersRepository.IsAdmin(username, true);
                 ViewBag.SelectUserLevels = GetAllUserLevelsSelectList(vm.LevelId);
 
                 return View(vm);

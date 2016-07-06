@@ -14,7 +14,7 @@ namespace Club.Services
         {
 
             var mailAccount = Startup.Configuration["Mail:Gmail"].Split('|');
-
+            System.Diagnostics.Debug.WriteLine(Startup.Configuration["Mail:Gmail"]);
             MailMessage msg = new MailMessage
             {
                 From = new MailAddress(mailAccount[0])
@@ -42,6 +42,7 @@ namespace Club.Services
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
                 return Task.FromResult(false);
             }
             finally

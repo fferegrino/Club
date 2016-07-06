@@ -176,10 +176,16 @@ namespace Club.Models.Repositories
             realEntity.UserLevel = _context.UserLevels.First(level => level.Id == entity.UserLevelId);
             realEntity.UserLevelId = entity.UserLevelId;
 
-            var isSuperAdmin = await IsAdmin(entity.UserName, true);
+            var editedUserAdmin = await IsAdmin(entity.UserName, false);
+            var editedUserSuperAdmin = await IsAdmin(entity.UserName, true);
+            var editingUserIsAdmin = await IsAdmin(_user.Username, false);
+            var editingUserIsSuperAdmin = await IsAdmin(_user.Username, true);
             var canModifyStatus = true;
-            if (isSuperAdmin)
-                canModifyStatus = await IsAdmin(_user.Username, true);
+
+            if (editedUserSuperAdmin)
+            {
+                canModifyStatus = editingUserIsSuperAdmin;
+            }
 
             if (canModifyStatus)
             {
@@ -195,6 +201,23 @@ namespace Club.Models.Repositories
                 {
                     await _userManager.AddToRoleAsync(realEntity, "Admin");
                 }
+            }
+
+            if (editingUserIsSuperAdmin)
+            {
+                if (!entity.IsSuperAdmin)
+                {
+                    var superAdminUsers = await _userManager.GetUsersInRoleAsync("SuperAdmin");
+                    if (superAdminUsers.Count > 1)
+                    {
+                        await _userManager.RemoveFromRoleAsync(realEntity, "SuperAdmin");
+                    }
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(realEntity, "SuperAdmin");
+                }
+
             }
 
             _context.Update(realEntity);

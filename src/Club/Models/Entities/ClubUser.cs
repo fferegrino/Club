@@ -21,6 +21,9 @@ namespace Club.Models.Entities
         [NotMapped]
         public bool IsAdmin { get; set; }
 
+        [NotMapped]
+        public bool IsSuperAdmin { get; set; }
+
         public ClubUser()
         {
             EventsAttended = new HashSet<EventAttendance>();
