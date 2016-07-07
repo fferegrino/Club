@@ -14,17 +14,16 @@ namespace Club.Services
 
         public async Task<bool> SendMail(string to, string @from, string subject, string body)
         {
+            var mailAccount = Startup.Configuration["Mail:SendGrid"].Split('|');
+
             var myMessage = new SendGridMessage();
+            myMessage.From = new System.Net.Mail.MailAddress(mailAccount[0]);
             myMessage.AddTo(to);
-            myMessage.From = new System.Net.Mail.MailAddress(
-                                "qwdqwd.qwdqwd@qwd84qw9d84qwd.com", "qwdqwd fqwfqweqwe");
             myMessage.Subject = subject;
             myMessage.Text = body;
             myMessage.Html = body;
 
-            var credentials = new NetworkCredential(
-                       "qdwqwdqw.swqsqw@4qwd49q48w9d4.es",
-                       "654654wd6qw4d65qw");
+            var credentials = new NetworkCredential(mailAccount[1],mailAccount[2]);
 
             // Create a Web transport for sending email.
             var transportWeb = new Web(credentials);

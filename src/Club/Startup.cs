@@ -104,7 +104,7 @@ namespace Club
                 .AddSqlServer()
                 .AddDbContext<ClubContext>();
 
-            services.AddScoped<IMailService, GmailService>();
+            services.AddScoped<IMailService, SendGridMailService>();
 
             services.AddSingleton<IEventCodeGenerator, DefaultEventCodeGenerator>();
             services.AddSingleton<IQrCodeApi, GoQrApi>();

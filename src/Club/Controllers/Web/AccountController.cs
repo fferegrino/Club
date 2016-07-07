@@ -97,9 +97,8 @@ namespace Club.Controllers.Web
         public async Task<IActionResult> SignUp(SignUpViewModel viewModel)
         {
             var userModel = _mapper.Map<Models.Entities.ClubUser>(viewModel);
-
+            userModel.UserLevelId = 1;
             var result = await _userManager.CreateAsync(userModel, viewModel.Password);
-
             if (result.Succeeded)
             {
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync(userModel);
