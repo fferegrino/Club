@@ -46,7 +46,7 @@ namespace Club.Controllers.Web
             _termsRepository.AddTerm(eventEntity);
             _termsRepository.SaveAll();
 
-            return RedirectToAction("detail", new { id = eventEntity.Id });
+            return RedirectToAction("details", new { id = eventEntity.Id });
         }
     }
 }

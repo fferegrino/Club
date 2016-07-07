@@ -33,6 +33,12 @@
                     </p>
                 </a>
             }
+            <a href="~/events/attendance" class="list-group-item">
+                Asistencia
+            </a>
+            @*<a asp-controller="events" asp-action="attendance" class="list-group-item">
+                
+            </a>*@
             <a asp-controller="announcements" asp-action="create" class="list-group-item">
                 Nuevo aviso <span class="badge"><i class="fa fa-bullhorn"></i></span>
             </a>
@@ -47,6 +53,9 @@
             </a>
             <a asp-controller="terms" asp-action="create" class="list-group-item">
                 Nuevo periodo <span class="badge"><i class="fa fa-tags"></i></span>
+            </a>
+            <a asp-action="index" asp-controller="users" class="list-group-item">
+                Ver usuarios
             </a>
             <a asp-action="unapproved" asp-controller="users" class="list-group-item">
                 <span class="badge">@Model.UsersAwaitingApprovalCount</span>

@@ -35,7 +35,7 @@
                             {
                                 <li role="separator" class="divider"></li>
                                 <li>
-                                    <a  asp-route-id="@Model.Username" asp-action="Letter">Descargar carta</a>
+                                    <a asp-route-id="@Model.Username" asp-action="Letter">Descargar carta</a>
                                 </li>
                             }
                         </ul>
@@ -53,46 +53,66 @@
             </ul>
 
             <!-- Tab panes -->
-            <div class="tab-content" ng-app="app-attended-events">
-                <div ng-controller="attendedEventsController as vm" role="tabpanel" class="tab-pane active" id="events">
+            <div ng-app="app-attended-events" class="tab-content">
+                
+                <div 
+                     ng-controller="attendedEventsController as vm" role="tabpanel" class="tab-pane active" id="events">
                     <table class="table table-responsive">
                         <thead>
-                            <tr>
-                                <th>Evento</th>
-                                <th>Ubicación</th>
-                                <th>Fecha</th>
-                                <th>Duración</th>
-                            </tr>
+                        <tr>
+                            <th>Evento</th>
+                            <th>Ubicación</th>
+                            <th>Fecha</th>
+                            <th>Duración</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="user in vm.queriedUsers">
-                                <td>{{ user.name }}</td>
-                                <td>{{ user.location }}</td>
-                                <td>{{ user.start | date:'medium' }}</td>
-                                <td>{{ user.duration }}</td>
-                            </tr>
+                        <tr ng-repeat="user in vm.queriedUsers">
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.location }}</td>
+                            <td>{{ user.start | date:'medium' }}</td>
+                            <td>{{ user.duration }}</td>
+                        </tr>
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <td colspan="3">
-                                    <div class="btn-group" role="group" aria-label="...">
-                                        <button ng-click="vm.previousPage();" class="btn btn-default" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </button>
-                                        <button type="button" class="btn btn-default">
-                                            {{ vm.currentPage }} / {{ vm.totalPages }}
-                                        </button>
-                                        <button ng-click="vm.nextPage();" class="btn btn-default" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </button>
-                                    </div>
+                        <tr>
+                            <td colspan="3">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button ng-click="vm.previousPage();" class="btn btn-default" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </button>
+                                    <button type="button" class="btn btn-default">
+                                        {{ vm.currentPage }} / {{ vm.totalPages }}
+                                    </button>
+                                    <button ng-click="vm.nextPage();" class="btn btn-default" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </button>
+                                </div>
 
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="problems">...</div>
+                <div 
+                     ng-controller="submissionsController as tt" role="tabpanel" class="tab-pane" id="problems">
+                    <table class="table table-responsive">
+                        <thead>
+                        <tr>
+                            <th>Problema</th>
+                            <th>Estatus</th>
+                            <th>Fecha</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="sumbission in tt.queriedSubmissions">
+                            <td>{{ sumbission.problemName }}</td>
+                            <td>{{ submission.accepted }}</td>
+                            <td>{{ sumbission.lastAttemptDate | date:'medium' }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
@@ -100,6 +120,10 @@
 </div>
 @section Scripts{
     <script src="~/lib/angular/angular.min.js"></script>
-    <script src="~/js/controllers/app-attended-events.js"></script>
+
+    @*<script src="~/js/controllers/app-submissions.js"></script>
+    <script src="~/js/controllers/submissionsController.js"></script>*@
+<script src="~/js/controllers/app-attended-events.js"></script>
     <script src="~/js/controllers/attendedEventsController.js"></script>
+        
 }

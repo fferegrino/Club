@@ -21,11 +21,20 @@ namespace Club.AutoMappings
                 .ForMember(vm => vm.Accepted, opt => opt.Ignore())
                 .ForMember(vm => vm.LastAttemptDate, opt => opt.Ignore())
                 ;
+
             Mapper.CreateMap<Club.Models.Entities.Submission, Club.ViewModels.SubmissionViewModel>()
                 .ForMember(en => en.User, opt => opt.ResolveUsing(ent => ent.User.UserName))
                 .ForMember(en => en.ProblemId, opt => opt.ResolveUsing(ent => ent.Problem.Id))
                 .ForMember(en => en.ProblemName, opt => opt.ResolveUsing(ent => ent.Problem.Name))
-                .ForMember(en => en.GistId, opt => opt.ResolveUsing<GetGistIdValueResolver>());
+                .ForMember(en => en.GistId, opt => opt.ResolveUsing<GetGistIdValueResolver>())
+                ;
+
+            Mapper.CreateMap<Club.Models.Entities.Submission, Club.ApiModels.SubmissionApiModel>()
+                .ForMember(en => en.User, opt => opt.ResolveUsing(ent => ent.User.UserName))
+                .ForMember(en => en.ProblemId, opt => opt.ResolveUsing(ent => ent.Problem.Id))
+                .ForMember(en => en.ProblemName, opt => opt.ResolveUsing(ent => ent.Problem.Name))
+                ;
+
         }
     }
 

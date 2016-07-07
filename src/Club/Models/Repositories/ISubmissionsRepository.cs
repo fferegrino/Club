@@ -69,7 +69,13 @@ namespace Club.Models.Repositories
 
         public IEnumerable<Submission> GetAllSubmissionsForUser(string userId = null)
         {
-            throw new NotImplementedException();
+            var user = _context.Users.First(r => r.UserName == userId);
+            var problem =
+                _context.Submissions
+                .Include(s => s.User)
+                .Include(s => s.Problem)
+                .Where(pr =>  pr.UserId == user.Id && pr.Accepted.HasValue && pr.Accepted.Value);
+            return problem;
         }
 
         public Submission GetSubmissionForProblem(int problemId, string userId = null)
