@@ -203,23 +203,6 @@ namespace Club.Models.Repositories
                 }
             }
 
-            if (editingUserIsSuperAdmin)
-            {
-                if (!entity.IsSuperAdmin)
-                {
-                    var superAdminUsers = await _userManager.GetUsersInRoleAsync("SuperAdmin");
-                    if (superAdminUsers.Count > 1)
-                    {
-                        await _userManager.RemoveFromRoleAsync(realEntity, "SuperAdmin");
-                    }
-                }
-                else
-                {
-                    await _userManager.AddToRoleAsync(realEntity, "SuperAdmin");
-                }
-
-            }
-
             _context.Update(realEntity);
         }
     }

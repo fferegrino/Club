@@ -34,7 +34,6 @@ namespace Club.AutoMappings
                 .ForMember(model => model.Email, options => options.MapFrom(viewModel => viewModel.Email))
                 .ForMember(model => model.Id, options => options.MapFrom(viewModel => viewModel.Id))
                 .ForMember(model => model.IsAdmin, options => options.MapFrom(viewModel => viewModel.IsAdmin))
-                .ForMember(model => model.IsSuperAdmin, options => options.MapFrom(viewModel => viewModel.IsSuperAdmin))
                 .ForMember(model => model.UserName, options => options.MapFrom(viewModel => viewModel.Username))
                 .ForMember(model => model.UserLevelId, options => options.MapFrom(viewModel => viewModel.LevelId))
                 ;
