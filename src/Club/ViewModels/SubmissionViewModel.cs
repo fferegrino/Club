@@ -8,13 +8,24 @@ namespace Club.ViewModels
 {
     public class SubmissionViewModel
     {
+
+        [Display(Name = "Username")]
         public string User { get; set; }
+
         public int ProblemId { get; set; }
+
+        [Display(Name = "Nombre")]
         public string ProblemName { get; set; }
         public string GistUrl { get; set; }
         public string GistId { get; set; }
+
+        [Display(Name = "Aceptado")]
         public bool? Accepted { get; set; }
+
+        [Display(Name = "Último intento")]
         public DateTime LastAttemptDate { get; set; }
+
+        [Display(Name = "Intentos")]
         public int Attempts { get; set; }
         public string Comment { get; set; }
     }
