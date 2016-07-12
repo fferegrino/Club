@@ -5,12 +5,12 @@
 @if (Model.IsPrivate)
 {
     <div class="alert alert-warning" role="alert">
-        <strong>Este es un evento privado</strong>, lo cual significa que solo es visible para los miembros
+        <strong>Esta es una sesión privada</strong>, lo cual significa que solo es visible para los miembros
     </div>
 }
 <div class="row">
     <div class="col-md-10 col-md-pull-1 text-center visible-print-block">
-        <img class="img-responsive img-thumbnail" src="@Model.EventCodeUrl" alt="Código QR del evento" />
+        <img class="img-responsive img-thumbnail" src="@Model.EventCodeUrl" alt="Código QR de la sesión" />
     </div>
     <div class="col-md-12 ">
         <div class="jumbotron">

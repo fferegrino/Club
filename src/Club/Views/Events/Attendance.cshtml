@@ -1,6 +1,8 @@
 ﻿@{
+    ViewBag.Title = "Asistencia a sesiones";
 }
 
+<h2>@ViewBag.Title</h2>
 <div class="row">
     <div class="col-lg-1 col-lg-push-11">
         <button id='excelExport' class="btn btn-primary btn-lg">
@@ -84,7 +86,7 @@
                             columns:
                             [
                                 { text: 'Periodo', filtermode: 'excel', datafield: 'termName', width: 100 },
-                                { text: 'Evento', datafield: 'eventName', width: 250 },
+                                { text: 'Sesión', datafield: 'eventName', width: 250 },
                                 { text: 'Fecha', datafield: 'date', width: 100, filtertype: 'date', cellsformat: 'd' },
                                 { text: 'Duración (horas)', datafield: 'duration', width: 200, filterable: false, cellsformat: 'd2' },
                                 { text: 'Asistente', datafield: 'user', width: 250 }
