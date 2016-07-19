@@ -43,6 +43,7 @@ namespace Club.Models.Repositories
                 ss.GistUrl = s.GistUrl;
                 ss.LastAttemptDate = _date.UtcNow;
                 ss.Accepted = null;
+                ss.File = s.File;
                 ss.Attempts++;
                 _context.Update(ss);
             }

@@ -1,6 +1,7 @@
 ﻿{
   "AppSettings": {
-    "SiteEmailAddress": "xD@xs.com"
+    "SiteEmailAddress": "xD@xs.com",
+    "MaxKbFileSize": 100
   },
   "Data": {
     "ClubContextConnection": "Server=(localdb)\\MSSQLLocalDB;Database=ClubDb;Trusted_Connection=True;MultipleActiveResultSets=true;"

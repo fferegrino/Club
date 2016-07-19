@@ -20,6 +20,7 @@ namespace Club.AutoMappings
                 .ForMember(vm => vm.UserId, opt => opt.Ignore())
                 .ForMember(vm => vm.Accepted, opt => opt.Ignore())
                 .ForMember(vm => vm.LastAttemptDate, opt => opt.Ignore())
+                .ForMember(vm => vm.File, opt => opt.Ignore())
                 ;
 
             Mapper.CreateMap<Club.Models.Entities.Submission, Club.ViewModels.SubmissionViewModel>()
@@ -27,6 +28,7 @@ namespace Club.AutoMappings
                 .ForMember(en => en.ProblemId, opt => opt.ResolveUsing(ent => ent.Problem.Id))
                 .ForMember(en => en.ProblemName, opt => opt.ResolveUsing(ent => ent.Problem.Name))
                 .ForMember(en => en.GistId, opt => opt.ResolveUsing<GetGistIdValueResolver>())
+                .ForMember(en => en.FileContent, opt => opt.ResolveUsing<FileBytesToStringResolver>())
                 ;
 
             Mapper.CreateMap<Club.Models.Entities.Submission, Club.ApiModels.SubmissionApiModel>()
@@ -42,8 +44,19 @@ namespace Club.AutoMappings
     {
         protected override string ResolveCore(Club.Models.Entities.Submission source)
         {
+            if (source?.GistUrl == null) return "";
             var uri = new Uri(source.GistUrl);
             return uri.Segments.Last();
+        }
+    }
+
+    public class FileBytesToStringResolver : ValueResolver<Club.Models.Entities.Submission, string>
+    {
+        protected override string ResolveCore(Club.Models.Entities.Submission source)
+        {
+            if (source.File == null) return null;
+
+            return System.Text.Encoding.UTF8.GetString(source.File);
         }
     }
 }

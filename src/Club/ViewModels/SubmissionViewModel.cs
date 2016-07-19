@@ -27,6 +27,7 @@ namespace Club.ViewModels
 
         [Display(Name = "Intentos")]
         public int Attempts { get; set; }
+        public string FileContent { get; set; }
         public string Comment { get; set; }
     }
 }

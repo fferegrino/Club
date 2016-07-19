@@ -16,5 +16,6 @@ namespace Club.Models.Entities
         public DateTime LastAttemptDate { get; set; }
         public int Attempts { get; set; }
         public string Comment { get; set; }
+        public byte[] File { get; set; }
     }
 }

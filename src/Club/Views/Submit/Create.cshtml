@@ -16,14 +16,20 @@
         Has intentado este problema @Model.Attempts veces y tu último intento fue @estauts
     </div>
 }
-<form method="post" novalidate>
+<form method="post" enctype="multipart/form-data">
     <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
 
     <div class="row">
         <div class="form-group col-md-12">
             <label asp-for="GistUrl"></label>
             <input asp-for="GistUrl" class="form-control" />
-            <span asp-validation-for="GistUrl"></span>  
+            <span asp-validation-for="GistUrl"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label for="files">O sube un archivo</label>
+            <input type="file" name="files" id="files" class="form-control" />
         </div>
     </div>
     <div class="form-group">
