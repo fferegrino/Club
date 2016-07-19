@@ -3,8 +3,8 @@
 
 $sidebar-width: 250px;
 
-#sidebar{
-    position:fixed;
+#sidebar {
+    position: fixed;
     height: 100%;
     width: $sidebar-width;
     left: 0;
@@ -14,4 +14,13 @@ $sidebar-width: 250px;
 
 #wrapper {
     margin: 0 0 0 $sidebar-width;
+}
+
+#headerNav {
+    background-image: url(http://lorempixel.com/250/80/sports/1/);
+}
+
+#footer {
+  height: 60px;
+  background-color: #f5f5f5;
 }

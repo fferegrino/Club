@@ -45,7 +45,7 @@ namespace Club.Controllers.Web
         [Authorize(Roles = "Admin")]
         public IActionResult Letter(string id)
         {
-            string cartaDoc = _appEnv.ApplicationBasePath + "\\assets\\carta.docx";
+            string cartaDoc = _appEnv.ApplicationBasePath + "\\wwwroot\\assets\\carta.docx";
             var temp = System.IO.Path.GetTempFileName();
             temp = System.IO.Path.ChangeExtension(temp, "docx");
 

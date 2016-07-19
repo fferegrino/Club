@@ -1,0 +1,38 @@
+﻿@*@model IEnumerable<Club.ViewModels.SettingsViewModel>*@
+
+@{
+}
+
+
+<div>
+    <form method="post" asp-action="carta" enctype="multipart/form-data">
+        <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+        <div class="row">
+            <div class="form-group col-md-8">
+                <input type="file" name="carta" id="carta" />
+            </div>
+            <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-success">Cargar</button>
+            </div>
+            <div class="form-group col-md-2">
+                <a asp-action="carta" class="btn btn-default">Descargar</a>
+            </div>
+        </div>
+    </form>
+
+
+    <form method="post" asp-action="header" enctype="multipart/form-data">
+        <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+        <div class="row">
+            <div class="form-group col-md-8">
+                <input type="file" name="header" id="header" />
+            </div>
+            <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-success">Cargar</button>
+            </div>
+            <div class="form-group col-md-2">
+                <a asp-action="header" class="btn btn-default">Descargar</a>
+            </div>
+        </div>
+    </form>
+</div>
