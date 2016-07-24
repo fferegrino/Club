@@ -27,14 +27,18 @@ namespace Club.Controllers.Web
         private readonly IWebUserSession _webSession;
         private readonly IQrCodeApi _qrCodeApi;
         private readonly IAutoMapper _mapper;
+        private readonly IDateTime _dateTime;
 
 
         public EventsController(IEventsRepository eventsRepository,
             IAutoMapper mapper,
             IEventCodeGenerator eventCodeGenerator,
             IClubUsersRepository usersRepository,
-            IQrCodeApi qrCodeApi, IWebUserSession webSession, ITermsRepository termsRepository)
+            IQrCodeApi qrCodeApi, IWebUserSession webSession,
+            ITermsRepository termsRepository,
+            IDateTime dateTime)
         {
+            _dateTime = dateTime;
             _mapper = mapper;
             _eventsRepository = eventsRepository;
             _eventCodeGenerator = eventCodeGenerator;
@@ -54,7 +58,58 @@ namespace Club.Controllers.Web
 
 
             var queriedEvent = _eventsRepository.GetEventById(id);
-            if (queriedEvent == null 
+            if (queriedEvent == null
+                || (queriedEvent.IsPrivate
+                && !User.Identity.IsAuthenticated))
+            {
+                return new HttpNotFoundResult();
+            }
+
+
+
+            var eventViewModel = _mapper.Map<ViewModels.EventViewModel>(queriedEvent);
+            string attendanceUrl = Url.Action("attend", new { eventCode = eventViewModel.EventCode });
+            var requestUri = Request.ToUri();
+            var uri = new UriBuilder
+            {
+                Scheme = Request.Scheme,
+                Host = requestUri.Host,
+                Path = Request.PathBase + attendanceUrl,
+                Port = requestUri.Port
+            };
+
+            eventViewModel.EventCodeUrl = User.IsInRole("Admin") ?
+                _qrCodeApi.GetQrUrl(uri.ToString(), 500)
+                : "/img/defaults/eventcode.png";
+
+
+
+            var now = _dateTime.UtcNow;
+
+            if (now > eventViewModel.End && now > eventViewModel.Start)
+            {
+                eventViewModel.TimeStatus = EventStatus.Past;
+            }
+            else if (eventViewModel.Start <= now && now <= eventViewModel.End)
+            {
+                eventViewModel.TimeStatus = EventStatus.Ongoing;
+            }
+            else
+            {
+                eventViewModel.TimeStatus = EventStatus.Future;
+            }
+
+
+            return View(eventViewModel);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(int id)
+        {
+
+
+            var queriedEvent = _eventsRepository.GetEventById(id);
+            if (queriedEvent == null
                 || (queriedEvent.IsPrivate
                 && !User.Identity.IsAuthenticated))
             {
@@ -67,19 +122,33 @@ namespace Club.Controllers.Web
             var uri = new UriBuilder
             {
                 Scheme = Request.Scheme,
-                Host =requestUri.Host,
+                Host = requestUri.Host,
                 Path = Request.PathBase + attendanceUrl,
                 Port = requestUri.Port
             };
 
-            eventViewModel.EventCodeUrl = User.IsInRole("Admin") ? 
-                _qrCodeApi.GetQrUrl(uri.ToString(), 500) 
+            eventViewModel.EventCodeUrl = User.IsInRole("Admin") ?
+                _qrCodeApi.GetQrUrl(uri.ToString(), 500)
                 : "/img/defaults/eventcode.png";
+
+            var now = _dateTime.UtcNow;
+
+            if (now > eventViewModel.End && now > eventViewModel.Start)
+            {
+                eventViewModel.TimeStatus = EventStatus.Past;
+            }
+            else if (eventViewModel.Start <= now && now <= eventViewModel.End)
+            {
+                eventViewModel.TimeStatus = EventStatus.Ongoing;
+            }
+            else
+            {
+                eventViewModel.TimeStatus = EventStatus.Future;
+            }
 
 
             return View(eventViewModel);
         }
-        
 
         [Authorize]
         public IActionResult Attend(string eventCode)
@@ -115,13 +184,13 @@ namespace Club.Controllers.Web
 
             eventEntity.EventCode = _eventCodeGenerator.GetCode();
             _eventsRepository.AddEvent(eventEntity);
-            
+
             if (viewModel.Repeat && viewModel.RepeatUntil.HasValue)
             {
                 var eventDuration = eventEntity.End - eventEntity.Start;
                 for (var start = eventEntity.Start.AddDays(7); start < viewModel.RepeatUntil; start = start.AddDays(7))
                 {
-                    var repeatedEvent=  _mapper.Map<Models.Entities.Event>(viewModel);
+                    var repeatedEvent = _mapper.Map<Models.Entities.Event>(viewModel);
                     repeatedEvent.Start = start;
                     repeatedEvent.End = start + eventDuration;
                     repeatedEvent.EventCode = _eventCodeGenerator.GetCode();
@@ -153,7 +222,7 @@ namespace Club.Controllers.Web
             {
                 _eventsRepository.DeleteById(id);
                 _eventsRepository.SaveAll();
-                return RedirectToAction("index","calendar");
+                return RedirectToAction("index", "calendar");
             }
             catch
             {

@@ -17,6 +17,7 @@ namespace Club.AutoMappings
                 .ForMember(vm => vm.EventCodeUrl, opt => opt.Ignore())
                 .ForMember(vm => vm.Repeat, opt => opt.Ignore())
                 .ForMember(vm => vm.RepeatUntil, opt => opt.Ignore())
+                .ForMember(vm => vm.TimeStatus, opt => opt.Ignore())
                 .ForMember(vm => vm.Duration, opt => opt.ResolveUsing(
                     (r,model)=> (model.End - model.Start).Humanize(3,maxUnit: Humanizer.Localisation.TimeUnit.Day)))
                 .ForMember(vm => vm.TermId, opt => opt.ResolveUsing(r => r.Term.Id))
