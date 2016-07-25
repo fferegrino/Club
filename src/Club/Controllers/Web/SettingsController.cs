@@ -17,6 +17,7 @@ namespace Club.Controllers.Web
 {
     public class SettingsController : Controller
     {
+        
         //IApplicationEnvironment _app;
         string _assetsFolder;
         public SettingsController(IApplicationEnvironment appEnv)
@@ -65,7 +66,16 @@ namespace Club.Controllers.Web
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            return View(Startup.Settings);
+        }
+
+        // GET: /<controller>/
+        [HttpPost]
+        public IActionResult Index(SettingsViewModel settings)
+        {
+            Startup.Settings.HtmlFooter = settings.HtmlFooter;
+            Startup.Settings.Theme = settings.Theme;
+            return View(Startup.Settings);
         }
     }
 }
