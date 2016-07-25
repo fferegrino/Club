@@ -79,7 +79,7 @@ namespace Club.Controllers.Web
         {
             var problem = _mapper.Map<SubmissionViewModel>(_submissionsRepo.GetSubmissionForProblem(problemId));
             var file = files.FirstOrDefault();
-            if (file != null || String.IsNullOrEmpty(viewModel.GistUrl))
+            if (file != null || !String.IsNullOrEmpty(viewModel.GistUrl))
             {
                 if (ModelState.IsValid)
                 {
