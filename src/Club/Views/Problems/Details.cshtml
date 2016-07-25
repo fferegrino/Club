@@ -18,6 +18,10 @@
             {
                 <h4><a asp-action="create" asp-controller="submit" asp-route-problemId="@Model.Id">Enviar solución</a></h4>
             }
+            @if (User.IsInRole("Admin"))
+            {
+                <h4><a asp-action="edit" asp-route-id="@Model.Id">Editar</a></h4>
+            }
         </div>
     </div>
 </div>

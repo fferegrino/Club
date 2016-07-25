@@ -31,6 +31,19 @@ namespace Club.Models.Repositories
             _context.Add(item);
         }
 
+        public void UpdateProblem(Problem item)
+        {
+
+            var oldItem = _context.Problems.First(pr => pr.Id == item.Id);
+            oldItem.Topic = _context.Topics.First(t => t.Id == item.TopicId);
+
+            oldItem.Name = item.Name;
+            oldItem.Difficulty = item.Difficulty;
+            oldItem.Link = item.Link;
+
+            _context.Update(oldItem);
+        }
+
         public Problem GetProblemById(int problemId)
         {
             return _context.Problems

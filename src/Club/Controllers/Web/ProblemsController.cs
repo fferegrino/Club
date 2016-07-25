@@ -61,6 +61,31 @@ namespace Club.Controllers.Web
             return View(viewModel);
         }
 
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(int id)
+        {
+            var queriedProblem = _problemsRepository.GetProblemById(id);
+            var eventViewModel = _mapper.Map<ProblemViewModel>(queriedProblem);
+            ViewBag.SelectTopics = GetAllTopicsSelectList();
+            return View(eventViewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(ProblemViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var m = _mapper.Map<Models.Entities.Problem>(viewModel);
+                _problemsRepository.UpdateProblem(m);
+                _problemsRepository.SaveAll();
+                return RedirectToAction("details", new { id = m.Id });
+            }
+            ViewBag.SelectTopics = GetAllTopicsSelectList(viewModel.TopicId);
+            return View(viewModel);
+        }
+
         public ActionResult Index()
         {
             var userLevelId = 1;
