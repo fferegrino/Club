@@ -29,6 +29,7 @@ namespace Club.AutoMappings
                 ;
             Mapper.CreateMap<Club.ViewModels.EditUserViewModel, Club.Models.Entities.ClubUser>()
                 .IgnoreAllUnmapped()
+                .ForMember(model => model.Notes, options => options.MapFrom(viewModel => viewModel.Notes))
                 .ForMember(model => model.FirstName, options => options.MapFrom(viewModel => viewModel.FirstName))
                 .ForMember(model => model.LastName, options => options.MapFrom(viewModel => viewModel.LastName))
                 .ForMember(model => model.Email, options => options.MapFrom(viewModel => viewModel.Email))

@@ -28,7 +28,7 @@ namespace Club.Models.Repositories
         bool SaveAll();
         int CountUnapprovedUsers();
         void AttendEvent(string id, Event attendedEvent);
-        Task ModifyUser(ClubUser entity);
+        Task ModifyUser(ClubUser entity, bool modifyNotes = false);
     }
 
     public class ClubUsersRepository : IClubUsersRepository
@@ -166,7 +166,7 @@ namespace Club.Models.Repositories
             }
         }
 
-        public async Task ModifyUser(ClubUser entity)
+        public async Task ModifyUser(ClubUser entity, bool modifyNotes = false)
         {
             var realEntity = GetUserByUserName(entity.UserName);
 
@@ -181,6 +181,11 @@ namespace Club.Models.Repositories
             var editingUserIsAdmin = await IsAdmin(_user.Username, false);
             var editingUserIsSuperAdmin = await IsAdmin(_user.Username, true);
             var canModifyStatus = true;
+
+            if (modifyNotes)
+            {
+                realEntity.Notes = entity.Notes;
+            }
 
             if (editedUserSuperAdmin)
             {

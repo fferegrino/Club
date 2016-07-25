@@ -19,5 +19,8 @@ namespace Club.ViewModels
 
         [Display(Name = "Nivel")]
         public string Level { get; set; }
+
+        [Display(Name = "Notas")]
+        public string Notes { get; set; }
     }
 }

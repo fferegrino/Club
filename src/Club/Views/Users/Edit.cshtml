@@ -33,19 +33,16 @@
                 <input asp-for="IsAdmin" class="form-control"/>
             </div>
         }
-        @if (User.IsInRole("SuperAdmin"))
-        {
-            <div class="form-group col-md-2">
-                <label asp-for="IsSuperAdmin"></label>
-                <input asp-for="IsSuperAdmin" class="form-control" />
-            </div>
-
-        }
     </div>
     <div class="form-group">
         @Html.LabelFor(i => i.Email)
         <input class="form-control" asp-for="Email" type="email" />
         <span class="text-muted" asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(i => i.Notes)
+        <textarea class="form-control" name="notes" id="notes">@Model.Notes</textarea>
+        <span class="text-muted" asp-validation-for="Notes"></span>
     </div>
     <div class="form-group">
         <input type="submit" class="btn btn-success" value="Guardar" />

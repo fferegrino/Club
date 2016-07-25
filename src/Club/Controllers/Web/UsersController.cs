@@ -99,7 +99,7 @@ namespace Club.Controllers.Web
             {
                 //var entity = _usersRepository.GetFullUserByUserName(vm.Username);
                 var entity = _mapper.Map<ClubUser>(vm);
-                await _usersRepository.ModifyUser(entity);
+                await _usersRepository.ModifyUser(entity, User.IsInRole("Admin"));
                 _usersRepository.SaveAll();
                 return RedirectToAction("details", new { vm.Username });
 
