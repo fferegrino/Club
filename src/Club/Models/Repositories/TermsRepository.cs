@@ -1,7 +1,9 @@
+using System;
 using System.Linq;
 using Club.Common;
 using Club.Common.Security;
 using Club.Models.Entities;
+using System.Collections.Generic;
 
 namespace Club.Models.Repositories
 {
@@ -36,6 +38,11 @@ namespace Club.Models.Repositories
             var term = _context.Terms.FirstOrDefault(t => t.Start <= _date.UtcNow && _date.UtcNow <= t.End);
             return term;
         }
+        public List<Term> GetCurrentAndNextTerms()
+        {
+            var term = _context.Terms.Where(t => _date.UtcNow <= t.End);
+            return term.ToList();
+        }
 
         public bool SaveAll()
         {
@@ -47,5 +54,6 @@ namespace Club.Models.Repositories
             var term = _context.Terms.First(t => t.Id == termId);
             return term;
         }
+
     }
 }

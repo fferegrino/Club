@@ -7,6 +7,7 @@ namespace Club.Models.Repositories
     public interface IEventsRepository
     {
         void AddEvent(Event item);
+        void UpdateEvent(Event item);
         QueryResult<Event> GetPagedEventsAttendedByUsername(PagedDataRequest request, string username);
 
         IEnumerable<Event> GetAllEvents();

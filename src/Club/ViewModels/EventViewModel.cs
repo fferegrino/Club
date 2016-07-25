@@ -62,5 +62,15 @@ namespace Club.ViewModels
 
         [Display(Name = "Repetir hasta")]
         public DateTime? RepeatUntil { get; set; }
+
+        [Display(Name = "Estatus")]
+        public EventStatus Status { get; set; }
+    }
+
+    public enum EventStatus
+    {
+        Past,
+        Underway,
+        Future
     }
 }
