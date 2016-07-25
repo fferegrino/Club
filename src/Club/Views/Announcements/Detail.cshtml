@@ -1,5 +1,6 @@
 ﻿@model Club.ViewModels.AnnouncementViewModel
 @{
+    var editAllowed = (bool)ViewBag.EditAllowed;
 }
 
 @if (Model.IsPrivate)
@@ -27,7 +28,11 @@
                         <i class="fa fa-cogs fa-fw"></i> Opciones <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li role="separator" class="divider"></li>
+                        @if (User.IsInRole("Admin") && editAllowed)
+                        {
+                            <li><a href="@Url.Action("edit", new {id = Model.Id})">Edit</a></li>
+                            <li role="separator" class="divider"></li>
+                        }
                         <li><a href="@Url.Action("delete", new {id = Model.Id})">Eliminar</a></li>
                     </ul>
                 </div>

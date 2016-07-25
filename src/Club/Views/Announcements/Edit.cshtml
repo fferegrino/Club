@@ -1,0 +1,85 @@
+﻿@model Club.ViewModels.AnnouncementViewModel
+
+@{
+    ViewBag.Title = "Editar aviso";
+}
+
+<h2>@ViewBag.Title</h2>
+<form method="post" novalidate>
+    <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+
+    <div class="row">
+        <div class="form-group col-12">
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+
+                <label class="btn btn-lg btn-info active">
+                    <input type="radio" name="type" value="info" autocomplete="off" checked>
+                    <span class="fa fa-exclamation-circle"></span>
+                </label>
+
+                <label class="btn btn-lg btn-warning">
+                    <input type="radio" name="type" value="warning" autocomplete="off">
+                    <span class="fa fa-exclamation-triangle"></span>
+                </label>
+
+                <label class="btn btn-lg btn-danger">
+                    <input type="radio" name="type" value="danger" autocomplete="off">
+                    <span class="fa fa-exclamation"></span>
+                </label>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-9">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div class="form-group  col-md-3">
+            <label asp-for="IsPrivate"></label>
+            <input asp-for="IsPrivate" class="form-control"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="Text"></label>
+            <textarea asp-for="Text" class="form-control"></textarea>
+            <span asp-validation-for="Text"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="DueDate"></label>
+            <input asp-for="DueDate" class="form-control"/>
+            <span asp-validation-for="DueDate"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Guardar" class="btn btn-success"/>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.jsce"></script>
+    <script>
+        $(function () {
+            $('#DueDate').datetimepicker({
+                locale: 'es',
+                stepping: 15,
+                sideBySide:true
+            });
+        });
+    </script>
+}
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+}
