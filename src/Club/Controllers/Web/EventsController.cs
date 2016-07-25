@@ -36,7 +36,9 @@ namespace Club.Controllers.Web
             IAutoMapper mapper,
             IEventCodeGenerator eventCodeGenerator,
             IClubUsersRepository usersRepository,
-            IQrCodeApi qrCodeApi, IWebUserSession webSession, ITermsRepository termsRepository, IDateTime dateTime)
+            IQrCodeApi qrCodeApi, IWebUserSession webSession,
+            ITermsRepository termsRepository,
+            IDateTime dateTime)
         {
             _dateTime = dateTime;
             _mapper = mapper;
@@ -64,6 +66,8 @@ namespace Club.Controllers.Web
             {
                 return new HttpNotFoundResult();
             }
+
+
 
             var eventViewModel = _mapper.Map<ViewModels.EventViewModel>(queriedEvent);
             string attendanceUrl = Url.Action("attend", new { eventCode = eventViewModel.EventCode });
@@ -93,6 +97,23 @@ namespace Club.Controllers.Web
             {
                 eventViewModel.Status = EventStatus.Past;
             }
+
+
+            var now = _dateTime.UtcNow;
+
+            if (now > eventViewModel.End && now > eventViewModel.Start)
+            {
+                eventViewModel.TimeStatus = EventStatus.Past;
+            }
+            else if (eventViewModel.Start <= now && now <= eventViewModel.End)
+            {
+                eventViewModel.TimeStatus = EventStatus.Ongoing;
+            }
+            else
+            {
+                eventViewModel.TimeStatus = EventStatus.Future;
+            }
+
 
             return View(eventViewModel);
         }

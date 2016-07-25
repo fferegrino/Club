@@ -31,12 +31,13 @@ namespace Club.ViewModels
 
         [Display(Name = "Inicio")]
         [Required]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
         public DateTime Start { get; set; }
 
         [Display(Name = "Fin")]
         [Required]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
         public DateTime End { get; set; }
 
         [Display(Name = "Tipo")]
