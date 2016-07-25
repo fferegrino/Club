@@ -1,0 +1,25 @@
+﻿@model System.Collections.Generic.List<Club.ViewModels.TermViewModel>
+
+@{
+
+}
+
+<table class="table table-responsive">
+    <tr>
+        <td>Name</td><td>Start</td><td>End</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Start
+            </td>
+            <td>
+                @item.End
+            </td>
+        </tr>
+    }
+</table>
