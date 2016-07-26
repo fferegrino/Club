@@ -16,9 +16,15 @@ namespace Club.ViewModels
         public string Name { get; set; }
 
         [Display(Name = "Inicio")]
+        [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime Start { get; set; }
 
         [Display(Name = "Fin")]
+        [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime End { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace Club.Models.Repositories
         private readonly IDateTime _date;
         private readonly IUserSession _user;
 
-        public AnnouncementsRepository(IDateTime date, 
+        public AnnouncementsRepository(IDateTime date,
             ClubContext context, IUserSession user)
         {
             _date = date;
@@ -80,6 +80,7 @@ namespace Club.Models.Repositories
             oldItem.Name = item.Name;
             oldItem.IsPrivate = item.IsPrivate;
             oldItem.Text = item.Text;
+            oldItem.DueDate = item.DueDate;
 
             _context.Update(oldItem);
         }

@@ -172,8 +172,8 @@ namespace Club
 
 
             var mexCulture = new CultureInfo("es-ES");
-            mexCulture.DateTimeFormat.FullDateTimePattern = "dd/MM/yyyy hh:mm";
-            mexCulture.DateTimeFormat.LongDatePattern = "dd/MM/yyyy hh:mm";
+            mexCulture.DateTimeFormat.FullDateTimePattern = "dd/MM/yyyy HH:mm";
+            mexCulture.DateTimeFormat.LongDatePattern = "dd/MM/yyyy HH:mm";
             mexCulture.DateTimeFormat.DateSeparator = "/";
             mexCulture.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
 

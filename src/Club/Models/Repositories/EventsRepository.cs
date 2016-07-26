@@ -128,6 +128,9 @@ namespace Club.Models.Repositories
             oldEvent.Description = item.Description;
             oldEvent.Type = item.Type;
 
+            oldEvent.Start = item.Start;
+            oldEvent.End = item.End;
+
             oldEvent.Term = _termsRepo.GetTermById(item.TermId);
             oldEvent.TermId = item.TermId;
 

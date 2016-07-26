@@ -27,6 +27,9 @@ namespace Club.ViewModels
         public bool IsPrivate { get; set; }
 
         [Display(Name = "Fecha de vencimiento")]
+        [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime DueDate { get; set; }
         public string HumanizedDueDate { get; set; }
         public DateTime CreatedOn { get; set; }
