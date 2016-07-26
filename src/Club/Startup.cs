@@ -20,7 +20,6 @@ using Club.Common;
 using Club.Common.Security;
 using Club.Models.Context;
 using Club.Models.Entities;
-using Microsoft.AspNet.Authentication.Facebook;
 using Microsoft.AspNet.DataProtection;
 using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json;
@@ -76,11 +75,11 @@ namespace Club
 
 
             services
-                .AddMvc()
+                .AddMvc(opy => {
+                    opy.Filters.Add(typeof(LanguageCookieActionFilter));
+                })
                 .AddViewLocalization(options => options.ResourcesPath = "Resources")
                 .AddDataAnnotationsLocalization();
-
-            services.AddScoped<LanguageCookieActionFilter>();
 
 
             services.Configure<MvcOptions>(options =>

@@ -24,34 +24,34 @@ namespace Club.Filters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            string cultureName;
-            var request = context.HttpContext.Request;
-            var cultureCookie = request.Cookies[CultureCookieName];
+            //string cultureName;
+            //var request = context.HttpContext.Request;
+            //var cultureCookie = request.Cookies[CultureCookieName];
 
-            if (cultureCookie.Any())
-            {
-                cultureName = cultureCookie[0];
-            }
-            else
-            {
-                cultureName = request.Headers["Accept-Language"];
-                var cultures = CultureHelper.ParserHeaderAcceptedLanguage(cultureName);
+            //if (cultureCookie.Any())
+            //{
+            //    cultureName = cultureCookie[0];
+            //}
+            //else
+            //{
+            //    cultureName = request.Headers["Accept-Language"];
+            //    var cultures = CultureHelper.ParserHeaderAcceptedLanguage(cultureName);
 
-                var cultureFirst = cultures?.FirstOrDefault();
-                if (cultureFirst != null)
-                    cultureName = cultureFirst.Value;
+            //    var cultureFirst = cultures?.FirstOrDefault();
+            //    if (cultureFirst != null)
+            //        cultureName = cultureFirst.Value;
 
-                cultureName = CultureHelper.GetImplementedCulture(cultureName); // This is safe
+            //    cultureName = CultureHelper.GetImplementedCulture(cultureName); // This is safe
 
-                context.HttpContext.Response.Cookies.Append(CultureCookieName, cultureName);
+            //    context.HttpContext.Response.Cookies.Append(CultureCookieName, cultureName);
 
-            }
+            //}
 
-            _logger.LogInformation($"Setting the culture from the URL: {cultureName}");
+            //_logger.LogInformation($"Setting the culture from the URL: {cultureName}");
 
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureName);
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureName);
+            // Override thread culture
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("es-MX");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("es-MX");
 
             base.OnActionExecuting(context);
         }
