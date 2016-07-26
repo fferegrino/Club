@@ -45,7 +45,7 @@ namespace Club.Controllers.Web
         [Authorize(Roles = "Admin")]
         public IActionResult Letter(string id)
         {
-            string cartaDoc = _appEnv.ApplicationBasePath + "\\assets\\carta.docx";
+            string cartaDoc = _appEnv.ApplicationBasePath + "\\wwwroot\\assets\\carta.docx";
             var temp = System.IO.Path.GetTempFileName();
             temp = System.IO.Path.ChangeExtension(temp, "docx");
 
@@ -99,7 +99,7 @@ namespace Club.Controllers.Web
             {
                 //var entity = _usersRepository.GetFullUserByUserName(vm.Username);
                 var entity = _mapper.Map<ClubUser>(vm);
-                await _usersRepository.ModifyUser(entity);
+                await _usersRepository.ModifyUser(entity, User.IsInRole("Admin"));
                 _usersRepository.SaveAll();
                 return RedirectToAction("details", new { vm.Username });
 

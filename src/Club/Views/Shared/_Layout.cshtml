@@ -4,67 +4,116 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/bootswatch/flatly/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootswatch/@Club.Startup.Settings.Theme/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <style>
+        nav#header {
+            min-height: 80px;
+            padding: 0;
+        }
+
+
+            nav#header #headerNav {
+                padding-top: 10px;
+                background-image: url(../../../assets/headerbg.png);
+                background-position: top left;
+                background-repeat: no-repeat;
+                min-height: 80px;
+            }
+
+        #homeLink {
+            width: 250px;
+        }
+
+        /* Fixed crap */
+
+        html,
+        body {
+            height: 100%;
+            /* The html and body elements cannot have any padding or margin. */
+        }
+
+        /* Wrapper for page content to push down footer */
+        #wrap {
+            min-height: 100%;
+            height: auto;
+            /* Negative indent footer by its height */
+            margin: 0 auto -80px;
+            /* Pad bottom by footer height */
+            padding: 0 0 80px;
+        }
+
+        /* Set the fixed height of the footer here */
+        #footer {
+            height: 80px;
+            background-color: #f5f5f5;
+        }
+    </style>
     @RenderSection("Styles", false)
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-inverse">
-            <div class="container container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a asp-controller="home" asp-action="index" class="navbar-brand">Club</a>
-                </div>
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+        <header>
+            <nav class="navbar navbar-inverse" id="header">
+                <div id="headerNav" class="container container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a id="homeLink" asp-controller="home" asp-action="index" class="navbar-brand">&nbsp;</a>
+                    </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a asp-controller="calendar" asp-action="index">Calendario</a></li>
-                        <li><a asp-controller="announcements" asp-action="index">Avisos</a></li>
-                        <li><a asp-controller="home" asp-action="contact">Contacto</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li><a asp-controller="users" asp-action="details" asp-route-username="@User.Identity.Name">@User.Identity.Name</a></li>
-                            if (User.IsInRole("Admin"))
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a asp-controller="calendar" asp-action="index">Calendario</a></li>
+                            <li><a asp-controller="announcements" asp-action="index">Avisos</a></li>
+                            <li><a asp-controller="home" asp-action="contact">Contacto</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            @if (User.Identity.IsAuthenticated)
                             {
-                                 <li><a asp-controller="dashboard" asp-action="index">Dashboard</a></li>
+                                <li><a asp-controller="users" asp-action="details" asp-route-username="@User.Identity.Name">@User.Identity.Name</a></li>
+                                if (User.IsInRole("Admin"))
+                                {
+                                    <li><a asp-controller="dashboard" asp-action="index">Dashboard</a></li>
 
+                                }
+                                <li><a asp-controller="problems" asp-action="index">Problemas</a></li>
+                                <li><a asp-controller="account" asp-action="logout">Logout</a></li>
                             }
-                            <li><a asp-controller="problems" asp-action="index">Problemas</a></li>
-                            <li><a asp-controller="account" asp-action="logout">Logout</a></li>
-                        }
-                        else
-                        {
-                            <li><a asp-controller="account" asp-action="login">Login</a></li>
-                        }
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
+                            else
+                            {
+                                <li><a asp-controller="account" asp-action="login">Login</a></li>
+                            }
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
 
 
-    </header>
+        </header>
 
-    <div class="container-fluid" id="main">
+        <div class="container-fluid" id="main">
 
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2">
-                @RenderBody()
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    @RenderBody()
+                </div>
             </div>
         </div>
     </div>
-    <footer></footer>
-
+    <footer id="footer">
+        <div class="container">
+            @Html.Raw(Club.Startup.Settings.HtmlFooter)
+        </div>
+    </footer>
     @* Scripts *@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

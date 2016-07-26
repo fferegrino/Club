@@ -15,6 +15,7 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.Models.Entities.Event, Club.ViewModels.EventViewModel>()
                 .ForMember(vm=> vm.Host, opt => opt.ResolveUsing(m=> m.ClubUserHost.UserName))
                 .ForMember(vm => vm.EventCodeUrl, opt => opt.Ignore())
+                .ForMember(vm => vm.Status, opt => opt.Ignore())
                 .ForMember(vm => vm.Repeat, opt => opt.Ignore())
                 .ForMember(vm => vm.RepeatUntil, opt => opt.Ignore())
                 .ForMember(vm => vm.TimeStatus, opt => opt.Ignore())

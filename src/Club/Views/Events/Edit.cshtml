@@ -2,7 +2,7 @@
 @model Club.ViewModels.EventViewModel
 
 @{
-    ViewBag.Title = "Editar sesión";
+    ViewBag.Title = "Nueva sesión";
 
     var term = ViewBag.Term as TermViewModel;
 }
@@ -11,21 +11,17 @@
 <form method="post" novalidate>
     <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
     <div class="row">
-        <div class="form-group col-md-9">
-            <label asp-for="Name"></label>
-            @if (Model.TimeStatus == EventStatus.Future)
-            {
-                <div class="input-group">
-                    <input asp-for="Name" class="form-control" aria-describedby="basic-addon-term" />
-                </div>
-                <span asp-validation-for="Name"></span>
-            }
-            else
-            {
-                <p class="form-control-static">@Model.Name</p>
-            }
+        <div class="form-group col-md-3">
+            <label asp-for="TermId"></label>
+            <select asp-for="TermId" class="form-control" asp-items="@ViewBag.SelectTerms"></select>
         </div>
-        <div class="form-group  col-md-3">
+        <div class="form-group col-md-7">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name"></span>
+
+        </div>
+        <div class="form-group  col-md-2">
             <label asp-for="IsPrivate"></label>
             <input asp-for="IsPrivate" class="form-control" />
         </div>
@@ -34,15 +30,8 @@
     <div class="row">
         <div class="form-group col-md-12">
             <label asp-for="Location"></label>
-            @if (Model.TimeStatus == EventStatus.Future)
-            {
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location"></span>
-            }
-            else
-            {
-                <p class="form-control-static">@Model.Location</p>
-            }
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location"></span>
         </div>
     </div>
     <div class="row">
@@ -67,16 +56,8 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label asp-for="Start"></label>
-
-            @if (Model.TimeStatus == EventStatus.Future)
-            {
-                <input asp-for="Start" class="form-control" />
-                <span asp-validation-for="Start"></span>
-            }
-            else
-            {
-                <p class="form-control-static">@Model.Start</p>
-            }
+            <input asp-for="Start" class="form-control" />
+            <span asp-validation-for="Start"></span>
         </div>
 
         <div class="form-group col-md-6">
@@ -86,9 +67,10 @@
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" value="Crear" class="btn btn-success" />
+        <input type="submit" value="Guardar" class="btn btn-success" />
     </div>
 </form>
+
 
 @section Scripts{
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>

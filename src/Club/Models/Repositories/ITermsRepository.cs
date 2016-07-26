@@ -10,6 +10,7 @@ namespace Club.Models.Repositories
         Term GetTermById(int termId);
         Term GetLastTerm();
         Term GetCurrentTerm();
+        List<Term> GetCurrentAndNextTerms();
         bool SaveAll();
     }
 }

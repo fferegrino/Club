@@ -15,6 +15,7 @@ namespace Club.Models.Repositories
         IEnumerable<Announcement> GetAllAnnouncements();
         Announcement GetAnnouncementById(int announcementId);
         void AddAnnouncement(Announcement item);
+        void UpdateAnnoucement(Announcement item);
         bool SaveAll();
         void DeleteById(int id);
     }
@@ -71,6 +72,16 @@ namespace Club.Models.Repositories
             item.CreatedOn = _date.UtcNow;
             item.ClubUserCreatorId = _user.Id;
             _context.Add(item);
+        }
+
+        public void UpdateAnnoucement(Announcement item)
+        {
+            var oldItem = _context.Announcements.First(it => it.Id == item.Id);
+            oldItem.Name = item.Name;
+            oldItem.IsPrivate = item.IsPrivate;
+            oldItem.Text = item.Text;
+
+            _context.Update(oldItem);
         }
 
         public bool SaveAll()

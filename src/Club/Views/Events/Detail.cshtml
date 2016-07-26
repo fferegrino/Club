@@ -39,7 +39,7 @@
                         <li>
                             <a href="#" id="PrintButton">Imprimir</a>
                         </li>
-                        @if (Model.TimeStatus == Club.ViewModels.EventStatus.Future || Model.TimeStatus == Club.ViewModels.EventStatus.Ongoing)
+                        @if (Model.Status != Club.ViewModels.EventStatus.Past)
                         {
                             <li><a href="@Url.Action("edit", new {id = Model.Id})">Editar</a></li>
                         }
@@ -53,8 +53,8 @@
 </div>
 @section Scripts{
     <script>
-        $(document).ready(function() {
-            $("#PrintButton").click(function() {
+        $(document).ready(function () {
+            $("#PrintButton").click(function () {
                 window.print();
             });
         });

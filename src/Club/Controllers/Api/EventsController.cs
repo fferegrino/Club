@@ -51,5 +51,6 @@ namespace Club.Controllers.Api
             var eventsViewModels = _mapper.Map<PagedDataResponse<ApiModels.EventApiModel>>(eventsModels);
             return Json(eventsViewModels);
         }
+
     }
 }

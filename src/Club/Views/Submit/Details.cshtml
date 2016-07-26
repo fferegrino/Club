@@ -12,7 +12,17 @@
         <h2>Solución a <strong>@problema.Name</strong> de <strong>@Model.User</strong></h2>
     </div>
     <div class="col-md-8">
-        <code data-gist-id="@Model.GistId"></code>
+        @if (String.IsNullOrEmpty(Model.FileContent))
+        {
+            <code data-gist-id="@Model.GistId"></code>
+        }
+        else
+        {
+            <pre>
+@Model.FileContent
+            </pre>
+
+        }
     </div>
     <div class="col-md-4">
         <div class="panel panel-@estatusClass">
@@ -25,7 +35,8 @@
                 <a asp-action="create" asp-route-problemId="@Model.ProblemId">Intentar</a>
             </div>
         </div>
-        @if (User.IsInRole("Admin")) {
+        @if (User.IsInRole("Admin"))
+        {
             <div class="panel panel-primary">
                 <div class="panel-heading">Administrador</div>
                 <div class="panel-body">

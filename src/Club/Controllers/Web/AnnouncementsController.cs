@@ -8,6 +8,7 @@ using Club.ViewModels;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http.Internal;
 using Microsoft.AspNet.Mvc;
+using Club.Common;
 
 namespace Club.Controllers.Web
 {
@@ -15,10 +16,13 @@ namespace Club.Controllers.Web
     {
         private readonly IAnnouncementsRepository _announcementsRepository;
         private readonly IAutoMapper _mapper;
+        private readonly IDateTime _dateTime;
 
         public AnnouncementsController(IAutoMapper mapper,
-IAnnouncementsRepository announcementsRepository)
+            IAnnouncementsRepository announcementsRepository,
+            IDateTime dateTime)
         {
+            _dateTime = dateTime;
             _mapper = mapper;
             _announcementsRepository = announcementsRepository;
         }
@@ -40,15 +44,56 @@ IAnnouncementsRepository announcementsRepository)
         [Authorize]
         public IActionResult Create(AnnouncementViewModel viewModel)
         {
-            var model = _mapper.Map<Models.Entities.Announcement>(viewModel);
-            model.ClubUserCreatorId = User.Identity.Name;
-            _announcementsRepository.AddAnnouncement(model);
+            if (ModelState.IsValid)
+            {
+                var model = _mapper.Map<Models.Entities.Announcement>(viewModel);
+                model.ClubUserCreatorId = User.Identity.Name;
+                _announcementsRepository.AddAnnouncement(model);
 
-            _announcementsRepository.SaveAll();
+                _announcementsRepository.SaveAll();
 
-            return RedirectToAction("detail", new { id = model.Id });
+                return RedirectToAction("detail", new { id = model.Id });
+
+            }
+            return View(viewModel);
         }
 
+        [Authorize(Roles ="Admin")]
+        public IActionResult Edit(int id)
+        {
+            var queriedEvent = _announcementsRepository.GetAnnouncementById(id);
+            if (queriedEvent != null
+                && queriedEvent.IsPrivate
+                && !User.Identity.IsAuthenticated)
+            {
+                return new HttpNotFoundResult();
+            }
+
+
+            var eventViewModel = _mapper.Map<ViewModels.AnnouncementViewModel>(queriedEvent);
+
+            ViewBag.EditAllowed = _dateTime.UtcNow < eventViewModel.DueDate;
+            return View(eventViewModel);
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(AnnouncementViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = _mapper.Map<Models.Entities.Announcement>(viewModel);
+                model.ClubUserCreatorId = User.Identity.Name;
+                _announcementsRepository.UpdateAnnoucement(model);
+
+                _announcementsRepository.SaveAll();
+
+                return RedirectToAction("detail", new { id = model.Id });
+
+            }
+            return View(viewModel);
+        }
 
         public IActionResult Detail(int id)
         {
@@ -61,6 +106,10 @@ IAnnouncementsRepository announcementsRepository)
             }
 
             var eventViewModel = _mapper.Map<ViewModels.AnnouncementViewModel>(queriedEvent);
+
+
+            ViewBag.EditAllowed = _dateTime.UtcNow < eventViewModel.DueDate;
+
             return View(eventViewModel);
         }
 

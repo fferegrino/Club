@@ -8,88 +8,79 @@
 }
 
 <h2>@ViewBag.Title</h2>
-@if (term == null)
-{
-    <div class="alert alert-warning" role="alert">
-        <strong>No existe un periodo para esta sesión</strong>, puedes crear uno aquí
+<form method="post" novalidate>
+    <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label asp-for="TermId"></label>
+            <select asp-for="TermId" class="form-control" asp-items="@ViewBag.SelectTerms"></select>
+        </div>
+        <div class="form-group col-md-7">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name"></span>
+
+        </div>
+        <div class="form-group  col-md-2">
+            <label asp-for="IsPrivate"></label>
+            <input asp-for="IsPrivate" class="form-control" />
+        </div>
     </div>
-}
-else
-{
-    <form method="post" novalidate>
-        <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
-        <div class="row">
-            <div class="form-group col-md-9">
-                <label asp-for="Name"></label>
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon-term">Periodo @term.Name</span>
-                    <input asp-for="Name" class="form-control" aria-describedby="basic-addon-term"/>
-                </div>
-                <span asp-validation-for="Name"></span>
-                
-            </div>
-            <div class="form-group  col-md-3">
-                <label asp-for="IsPrivate"></label>
-                <input asp-for="IsPrivate" class="form-control" />
-            </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="Location"></label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="Type"></label>
+            <select asp-for="Type" class="form-control"
+                    asp-items="Html.GetEnumSelectList<Club.Enums.EventType>()"></select>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description"></span>
         </div>
 
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label asp-for="Location"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location"></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label asp-for="Type"></label>
-                <select asp-for="Type" class="form-control"
-                        asp-items="Html.GetEnumSelectList<Club.Enums.EventType>()"></select>
-            </div>
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label asp-for="Start"></label>
+            <input asp-for="Start" class="form-control" />
+            <span asp-validation-for="Start"></span>
         </div>
 
-
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description"></span>
-            </div>
-
+        <div class="form-group col-md-6">
+            <label asp-for="End"></label>
+            <input asp-for="End" class="form-control" />
+            <span asp-validation-for="End"></span>
         </div>
-
-
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label asp-for="Start"></label>
-                <input asp-for="Start" class="form-control" />
-                <span asp-validation-for="Start"></span>
-            </div>
-
-            <div class="form-group col-md-6">
-                <label asp-for="End"></label>
-                <input asp-for="End" class="form-control" />
-                <span asp-validation-for="End"></span>
-            </div>
+    </div>
+    <div class="row">
+        <div class="form-group  col-md-3">
+            <label asp-for="Repeat"></label>
+            <input asp-for="Repeat" class="form-control" />
         </div>
-        <div class="row">
-            <div class="form-group  col-md-3">
-                <label asp-for="Repeat"></label>
-                <input asp-for="Repeat" class="form-control" />
-            </div>
-            <div class="form-group col-md-9">
-                <label asp-for="RepeatUntil"></label>
-                <input asp-for="RepeatUntil" class="form-control" />
-                <span asp-validation-for="RepeatUntil"></span>
-            </div>
+        <div class="form-group col-md-9">
+            <label asp-for="RepeatUntil"></label>
+            <input asp-for="RepeatUntil" class="form-control" />
+            <span asp-validation-for="RepeatUntil"></span>
         </div>
-        <div class="form-group">
-            <input type="submit" value="Crear" class="btn btn-success" />
-        </div>
-    </form>
-
-}
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-success" />
+    </div>
+</form>
 
 
 @section Scripts{

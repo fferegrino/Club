@@ -16,6 +16,15 @@ namespace Club.Controllers.Web
         private readonly ITermsRepository _termsRepository;
         private readonly IAutoMapper _mapper;
 
+
+
+        public IActionResult Index()
+        {
+            var modelAnnouncements = _termsRepository.GetCurrentAndNextTerms();
+            var vmAnnouncements = _mapper.Map<IEnumerable<ViewModels.TermViewModel>>(modelAnnouncements);
+            return View(vmAnnouncements);
+        }
+
         public TermsController(ITermsRepository termsRepository, 
             IAutoMapper mapper)
         {

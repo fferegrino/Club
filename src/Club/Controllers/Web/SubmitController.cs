@@ -8,6 +8,7 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Club.ViewModels;
 using Microsoft.AspNet.Mvc.ModelBinding.Metadata;
+using Microsoft.AspNet.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -74,16 +75,29 @@ namespace Club.Controllers.Web
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(int problemId, SubmissionViewModel viewModel)
+        public IActionResult Create(int problemId, SubmissionViewModel viewModel, ICollection<IFormFile> files)
         {
             var problem = _mapper.Map<SubmissionViewModel>(_submissionsRepo.GetSubmissionForProblem(problemId));
-
-            if (ModelState.IsValid)
+            var file = files.FirstOrDefault();
+            if (file != null || !String.IsNullOrEmpty(viewModel.GistUrl))
             {
-                var m = _mapper.Map<Models.Entities.Submission>(viewModel);
-                _submissionsRepo.AddOrUpdateSubmission(m, problem != null);
-                _submissionsRepo.SaveAll();
-                return RedirectToAction("details", new { problemId });
+                if (ModelState.IsValid)
+                {
+                    var maxKbSize = Int32.Parse(Startup.Configuration["AppSettings:MaxKbFileSize"]);
+                    var m = _mapper.Map<Models.Entities.Submission>(viewModel);
+                    if (file!= null && file.Length / 1000 < maxKbSize)
+                    {
+                        // Upload file here:
+                        m.File = new byte[file.Length];
+                        using (var stream = file.OpenReadStream())
+                        {
+                            stream.Read(m.File, 0, (int)file.Length);
+                        }
+                    }
+                    _submissionsRepo.AddOrUpdateSubmission(m, problem != null);
+                    _submissionsRepo.SaveAll();
+                    return RedirectToAction("details", new { problemId });
+                }
             }
             ViewBag.Problem = _mapper.Map<ProblemViewModel>(_problemsRepo.GetProblemById(problemId));
             return View(problem);

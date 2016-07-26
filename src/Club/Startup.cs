@@ -36,6 +36,15 @@ namespace Club
         public static IConfigurationRoot Configuration;
         public static IDataProtectionProvider DataProtectionProvider { get; set; }
 
+        public static String HtmlFooter = "<p class=\"text-muted credit\">Example courtesy <a href=\"http://martinbean.co.uk\">Martin Bean</a> and <a href=\"http://ryanfait.com/sticky-footer/\">Ryan Fait</a>.</p>";
+        public static String Theme = "cosmo";
+
+        public static Club.ViewModels.SettingsViewModel Settings = new ViewModels.SettingsViewModel
+        {
+            HtmlFooter = HtmlFooter,
+            Theme = Theme
+        };
+
         public Startup(IApplicationEnvironment appEnv, IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()

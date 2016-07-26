@@ -1,0 +1,67 @@
+﻿@model Club.ViewModels.SettingsViewModel
+
+@{
+}
+
+
+<div>
+    <form method="post" asp-action="index" enctype="multipart/form-data">
+        <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+        <div class="form-group">
+            <label for="theme">Tema</label>
+            <select name="theme" id="theme" class="form-control">
+                <option value="cerulean">Cerulean</option>
+                <option value="cosmo">Cosmo</option>
+                <option value="cyborg">Cyborg</option>
+                <option value="darkly">Darkly</option>
+                <option value="flatly">Flatly</option>
+                <option value="journal">Journal</option>
+                <option value="lumen">Lumen</option>
+                <option value="paper">Paper</option>
+                <option value="sandstone">Sandstone</option>
+                <option value="simplex">Simplex</option>
+                <option value="spacelab">Spacelab</option>
+                <option value="superhero">Superhero</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="htmlFooter">Footer</label>
+            <textarea name="htmlFooter" id="htmlFooter" class="form-control">@Model.HtmlFooter</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
+    <br />
+    <br />
+    <form method="post" asp-action="carta" enctype="multipart/form-data">
+        <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+        <div class="form-group">
+            <label for="carta">Carta de créditos</label>
+            <input type="file" class="form-control" name="carta" id="carta" />
+        </div>
+        <div class="row">
+            <div class="form-group col-md-1">
+                <button type="submit" class="btn btn-success">Cargar</button>
+            </div>
+            <div class="form-group col-md-1">
+                <a asp-action="carta" class="btn btn-default">Descargar</a>
+            </div>
+        </div>
+    </form>
+    <br />
+    <br />
+    <form method="post" asp-action="header" enctype="multipart/form-data">
+        <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+        <div class="form-group">
+            <label for="header">Imagen de encabezado</label>
+            <input type="file" class="form-control" name="header" id="header" />
+        </div>
+        <div class="row">
+            <div class="form-group col-md-1">
+                <button type="submit" class="btn btn-success">Cargar</button>
+            </div>
+            <div class="form-group col-md-1">
+                <a asp-action="header" class="btn btn-default">Descargar</a>
+            </div>
+        </div>
+    </form>
+</div>

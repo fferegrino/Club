@@ -110,12 +110,28 @@ namespace Club.Models.Repositories
         {
             item.CreatedOn = _date.UtcNow;
             item.ClubUserHostId = _user.Id;
-            var t = _termsRepo.GetCurrentTerm();
+            var t = _termsRepo.GetTermById(item.TermId);
 
             item.TermId = t.Id;
             item.Term = t;
 
             _context.Add(item);
+        }
+
+        public void UpdateEvent(Event item)
+        {
+            var oldEvent = _context.Events.FirstOrDefault(ev => ev.Id == item.Id);
+
+            oldEvent.IsPrivate = item.IsPrivate;
+            oldEvent.Name = item.Name;
+            oldEvent.Location = item.Location;
+            oldEvent.Description = item.Description;
+            oldEvent.Type = item.Type;
+
+            oldEvent.Term = _termsRepo.GetTermById(item.TermId);
+            oldEvent.TermId = item.TermId;
+
+            _context.Update(oldEvent);
         }
 
         public bool SaveAll()
