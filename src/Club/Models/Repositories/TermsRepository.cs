@@ -35,12 +35,12 @@ namespace Club.Models.Repositories
 
         public Term GetCurrentTerm()
         {
-            var term = _context.Terms.FirstOrDefault(t => t.Start <= _date.UtcNow && _date.UtcNow <= t.End);
+            var term = _context.Terms.FirstOrDefault(t => t.Start <= _date.Now && _date.Now <= t.End);
             return term;
         }
         public List<Term> GetCurrentAndNextTerms()
         {
-            var term = _context.Terms.Where(t => _date.UtcNow <= t.End);
+            var term = _context.Terms.Where(t => _date.Now <= t.End);
             return term.ToList();
         }
 

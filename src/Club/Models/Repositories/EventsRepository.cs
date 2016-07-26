@@ -72,7 +72,7 @@ namespace Club.Models.Repositories
             return _context.Events
                 .Include(evt => evt.ClubUserHost)
                 .Include(evt => evt.Term)
-                .FirstOrDefault(evt => evt.Start > _date.UtcNow);
+                .FirstOrDefault(evt => evt.Start > _date.Now);
         }
 
         public Event GetEventById(int eventId)
@@ -108,7 +108,7 @@ namespace Club.Models.Repositories
 
         public void AddEvent(Event item)
         {
-            item.CreatedOn = _date.UtcNow;
+            item.CreatedOn = _date.Now;
             item.ClubUserHostId = _user.Id;
             var t = _termsRepo.GetTermById(item.TermId);
 

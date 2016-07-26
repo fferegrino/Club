@@ -69,7 +69,7 @@ namespace Club.Models.Repositories
 
         public void AddAnnouncement(Announcement item)
         {
-            item.CreatedOn = _date.UtcNow;
+            item.CreatedOn = _date.Now;
             item.ClubUserCreatorId = _user.Id;
             _context.Add(item);
         }

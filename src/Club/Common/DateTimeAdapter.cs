@@ -7,11 +7,21 @@ namespace Club.Common
 {
     public interface IDateTime
     {
-        DateTime UtcNow { get; }
+        DateTime Now { get; }
     }
 
     public class DateTimeAdapter : IDateTime
     {
-        public DateTime UtcNow => DateTime.UtcNow;
+        private readonly DateTime utcDateTime;
+        private readonly TimeZoneInfo _timeZone;
+
+        public DateTimeAdapter()
+        {
+            // Central Standard Time(Mexico)
+            var tz = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)");
+            _timeZone = tz;
+        }
+        public DateTime Now => TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
+               _timeZone);
     }
 }

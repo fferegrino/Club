@@ -82,7 +82,7 @@ namespace Club.Controllers.Web
                 _qrCodeApi.GetQrUrl(uri.ToString(), 500)
                 : "/img/defaults/eventcode.png";
 
-            var now = _dateTime.UtcNow;
+            var now = _dateTime.Now;
             if (eventViewModel.Start <= now && now <= eventViewModel.End)
             {
                 eventViewModel.Status = EventStatus.Underway;
@@ -112,7 +112,7 @@ namespace Club.Controllers.Web
 
             var eventViewModel = _mapper.Map<ViewModels.EventViewModel>(queriedEvent);
 
-            var now = _dateTime.UtcNow;
+            var now = _dateTime.Now;
             if (eventViewModel.Start <= now && now <= eventViewModel.End)
             {
                 eventViewModel.Status = EventStatus.Underway;

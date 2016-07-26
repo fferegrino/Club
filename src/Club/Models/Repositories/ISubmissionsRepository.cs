@@ -41,7 +41,7 @@ namespace Club.Models.Repositories
             {
                 var ss = GetSubmissionForProblem(s.ProblemId, _user.Id);
                 ss.GistUrl = s.GistUrl;
-                ss.LastAttemptDate = _date.UtcNow;
+                ss.LastAttemptDate = _date.Now;
                 ss.Accepted = null;
                 ss.File = s.File;
                 ss.Attempts++;
@@ -54,7 +54,7 @@ namespace Club.Models.Repositories
 
                 var problem = _context.Problems.First(p => p.Id == s.ProblemId);
                 s.Problem = problem;
-                s.LastAttemptDate = _date.UtcNow;
+                s.LastAttemptDate = _date.Now;
                 s.Accepted = null;
                 s.Attempts++;
                 _context.Update(s);
@@ -102,7 +102,7 @@ namespace Club.Models.Repositories
                 _context.Submissions
                 .Include(s => s.User)
                 .Include(s => s.Problem)
-                .Where(pr => pr.LastAttemptDate >= _date.UtcNow.AddMonths(-6));
+                .Where(pr => pr.LastAttemptDate >= _date.Now.AddMonths(-6));
 
             return problem;
         }
@@ -112,7 +112,7 @@ namespace Club.Models.Repositories
             var problem =
                 _context.Submissions
                 .Where(s=> s.Accepted == null)
-                .Where(pr => pr.LastAttemptDate >= _date.UtcNow.AddMonths(-6));
+                .Where(pr => pr.LastAttemptDate >= _date.Now.AddMonths(-6));
 
             var rcount = problem.Count();
 

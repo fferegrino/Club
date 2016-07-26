@@ -72,7 +72,7 @@ namespace Club.Controllers.Web
 
             var eventViewModel = _mapper.Map<ViewModels.AnnouncementViewModel>(queriedEvent);
 
-            ViewBag.EditAllowed = _dateTime.UtcNow < eventViewModel.DueDate;
+            ViewBag.EditAllowed = _dateTime.Now < eventViewModel.DueDate;
             return View(eventViewModel);
         }
 
@@ -108,7 +108,7 @@ namespace Club.Controllers.Web
             var eventViewModel = _mapper.Map<ViewModels.AnnouncementViewModel>(queriedEvent);
 
 
-            ViewBag.EditAllowed = _dateTime.UtcNow < eventViewModel.DueDate;
+            ViewBag.EditAllowed = _dateTime.Now < eventViewModel.DueDate;
 
             return View(eventViewModel);
         }

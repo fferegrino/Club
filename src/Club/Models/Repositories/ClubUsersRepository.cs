@@ -160,7 +160,7 @@ namespace Club.Models.Repositories
                 {
                     EventId = attendedEvent.Id,
                     ClubUserId = user.Id,
-                    AttendedOn = _date.UtcNow
+                    AttendedOn = _date.Now
                 };
                 user.EventsAttended.Add(eventAttendance);
             }
