@@ -3,6 +3,7 @@ using Club.Common.Security;
 using Microsoft.AspNet.Mvc;
 using Club.ViewModels;
 using Club.Services;
+using Microsoft.Extensions.Localization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +13,10 @@ namespace Club.Controllers.Web
     {
         readonly IMailService _mailService;
         private readonly IWebUserSession _userSession;
-
-        public HomeController(IMailService mailService, IWebUserSession userSession)
+        private readonly IStringLocalizer<HomeController> _localizer;
+        public HomeController(IMailService mailService, IWebUserSession userSession, IStringLocalizer<HomeController> localizer)
         {
+            _localizer = localizer;
             _mailService = mailService;
             _userSession = userSession;
         }
@@ -22,6 +24,8 @@ namespace Club.Controllers.Web
         public IActionResult Index()
         {
             string user = "";
+            ViewBag.Hello = _localizer["Hello"];
+
             if (User.Identity.IsAuthenticated)
                 user = _userSession.Id;
             return View();

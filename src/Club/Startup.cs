@@ -25,6 +25,9 @@ using Microsoft.AspNet.DataProtection;
 using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNet.Localization;
+using System.Globalization;
+using Microsoft.AspNet.Mvc.Razor;
 
 namespace Club
 {
@@ -57,7 +60,11 @@ namespace Club
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddLocalization();
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
 
 
             services.Configure<MvcOptions>(options =>
@@ -124,6 +131,9 @@ namespace Club
             services.AddScoped<ITermsRepository, TermsRepository>();
             services.AddScoped<IAnnouncementsRepository, AnnouncementsRepository>();
 
+
+
+
             services.AddScoped<IDateTime, DateTimeAdapter>();
 
             services.AddSingleton<IPagedDataRequestFactory, PagedDataRequestFactory>();
@@ -135,6 +145,7 @@ namespace Club
         public async void Configure(IApplicationBuilder app, ClubContextSeedData seeder)
         {
             //app.UseDefaultFiles();
+            app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
 
             app.UseIdentity();
@@ -143,6 +154,29 @@ namespace Club
             app.UseStatusCodePages();
 
             app.UseMvc(RouteConfig.Configure);
+
+
+            var mexCulture = new CultureInfo("es-ES");
+            mexCulture.DateTimeFormat.FullDateTimePattern = "dd/MM/yyyy hh:mm";
+            mexCulture.DateTimeFormat.LongDatePattern = "dd/MM/yyyy hh:mm";
+            mexCulture.DateTimeFormat.DateSeparator = "/";
+            mexCulture.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+
+
+            var supportedCultures = new[]
+       {
+          new CultureInfo("en-US"),
+          new CultureInfo("es-MX")
+      };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            }, defaultRequestCulture: new RequestCulture("es-MX"));
+
 
             await seeder.EnsureSeedData();
         }
