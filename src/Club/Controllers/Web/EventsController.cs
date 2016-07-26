@@ -67,8 +67,6 @@ namespace Club.Controllers.Web
                 return new HttpNotFoundResult();
             }
 
-
-
             var eventViewModel = _mapper.Map<ViewModels.EventViewModel>(queriedEvent);
             string attendanceUrl = Url.Action("attend", new { eventCode = eventViewModel.EventCode });
             var requestUri = Request.ToUri();
@@ -97,23 +95,6 @@ namespace Club.Controllers.Web
             {
                 eventViewModel.Status = EventStatus.Past;
             }
-
-
-            var now = _dateTime.UtcNow;
-
-            if (now > eventViewModel.End && now > eventViewModel.Start)
-            {
-                eventViewModel.TimeStatus = EventStatus.Past;
-            }
-            else if (eventViewModel.Start <= now && now <= eventViewModel.End)
-            {
-                eventViewModel.TimeStatus = EventStatus.Ongoing;
-            }
-            else
-            {
-                eventViewModel.TimeStatus = EventStatus.Future;
-            }
-
 
             return View(eventViewModel);
         }

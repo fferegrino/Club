@@ -28,6 +28,7 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNet.Localization;
 using System.Globalization;
 using Microsoft.AspNet.Mvc.Razor;
+using Club.Filters;
 
 namespace Club
 {
@@ -38,6 +39,8 @@ namespace Club
 
         public static String HtmlFooter = "<p class=\"text-muted credit\">Example courtesy <a href=\"http://martinbean.co.uk\">Martin Bean</a> and <a href=\"http://ryanfait.com/sticky-footer/\">Ryan Fait</a>.</p>";
         public static String Theme = "cosmo";
+
+        public const string CultureCookieName = "_cultureLocalizationClub";
 
         public static Club.ViewModels.SettingsViewModel Settings = new ViewModels.SettingsViewModel
         {
@@ -69,11 +72,15 @@ namespace Club
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLocalization();
-            services.AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+
+            services
+                .AddMvc()
+                .AddViewLocalization(options => options.ResourcesPath = "Resources")
                 .AddDataAnnotationsLocalization();
 
+            services.AddScoped<LanguageCookieActionFilter>();
 
 
             services.Configure<MvcOptions>(options =>
@@ -173,20 +180,30 @@ namespace Club
 
 
             var supportedCultures = new[]
-       {
-          new CultureInfo("en-US"),
-          new CultureInfo("es-MX")
-      };
-
-            app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                // Formatting numbers, dates, etc.
+                new CultureInfo("es-MX"),
+                new CultureInfo("en-US")
+            };
+            var requestLocalizationOptions = new RequestLocalizationOptions
+            {
+                // Set options here to change middleware behavior
                 SupportedCultures = supportedCultures,
-                // UI strings that we have localized.
-                SupportedUICultures = supportedCultures
-            }, defaultRequestCulture: new RequestCulture("es-MX"));
+                SupportedUICultures = supportedCultures,
+                RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                    new CookieRequestCultureProvider
+                    {
+                        CookieName = CultureCookieName
+                    },
+                    new AcceptLanguageHeaderRequestCultureProvider
+                    {
 
+                    }
 
+                }
+            };
+
+            app.UseRequestLocalization(requestLocalizationOptions, defaultRequestCulture: new RequestCulture("es-MX"));
             await seeder.EnsureSeedData();
         }
 

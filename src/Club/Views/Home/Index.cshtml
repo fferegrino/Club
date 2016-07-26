@@ -1,3 +1,12 @@
 ﻿@{
 }
-<h1>@ViewBag.Hello</h1>
+<h1>@TranslateLocalizer["Hello"]</h1>
+<form asp-antiforgery="true" asp-controller="Home" asp-action="SetCulture">
+
+    <select name="culture" id="culture">
+        <option value="c=es-MX|uic=es-MX">ES</option>
+        <option value="c=en-US|uic=en-US">EN</option>
+    </select>
+
+    <button class="btn" type="submit">Change</button>
+</form>

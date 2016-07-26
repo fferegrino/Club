@@ -4,6 +4,7 @@ using Microsoft.AspNet.Mvc;
 using Club.ViewModels;
 using Club.Services;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNet.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,6 +35,19 @@ namespace Club.Controllers.Web
         public IActionResult Contact()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult SetCulture(string culture)
+        {
+
+            HttpContext.Response.Cookies.Append(Startup.CultureCookieName, culture, new CookieOptions
+            {
+                Expires = DateTime.Now.AddYears(1),
+                Secure = false,
+
+            });
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
