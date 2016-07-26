@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Club.Enums;
+using Club.Validation;
 
 namespace Club.ViewModels
 {
@@ -25,6 +26,7 @@ namespace Club.ViewModels
         [Required]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
+        [IsDateAfterAttribute(nameof(Start), ErrorMessage = "Debe ser mayor a la fecha de inicio")]
         public DateTime End { get; set; }
     }
 }
