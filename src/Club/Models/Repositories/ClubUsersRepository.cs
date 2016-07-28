@@ -29,6 +29,7 @@ namespace Club.Models.Repositories
         int CountUnapprovedUsers();
         void AttendEvent(string id, Event attendedEvent);
         Task ModifyUser(ClubUser entity, bool modifyNotes = false);
+        List<ClubUser> GetAllActiveUsers();
     }
 
     public class ClubUsersRepository : IClubUsersRepository
@@ -209,6 +210,15 @@ namespace Club.Models.Repositories
             }
 
             _context.Update(realEntity);
+        }
+
+        public List<ClubUser> GetAllActiveUsers()
+        {
+            var users = _context.Users.Where(user => user.Approved == true && user.EmailConfirmed)
+                .Include(u => u.EventsAttended)
+                .Include(u => u.Submissions);
+
+            return users.ToList();
         }
     }
 }

@@ -144,6 +144,15 @@
           "lib/dnx451/EntityFramework.Relational.Design.dll": {}
         }
       },
+      "EPPlus/4.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/EPPlus.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EPPlus.dll": {}
+        }
+      },
       "Humanizer/2.0.0-beta0001": {
         "type": "package",
         "dependencies": {
@@ -2341,6 +2350,15 @@
         },
         "runtime": {
           "lib/dnx451/EntityFramework.Relational.Design.dll": {}
+        }
+      },
+      "EPPlus/4.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/EPPlus.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EPPlus.dll": {}
         }
       },
       "Humanizer/2.0.0-beta0001": {
@@ -4545,6 +4563,15 @@
           "lib/dnx451/EntityFramework.Relational.Design.dll": {}
         }
       },
+      "EPPlus/4.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/EPPlus.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EPPlus.dll": {}
+        }
+      },
       "Humanizer/2.0.0-beta0001": {
         "type": "package",
         "dependencies": {
@@ -6736,6 +6763,20 @@
         "lib/net451/EntityFramework.Relational.Design.dll",
         "lib/net451/EntityFramework.Relational.Design.xml",
         "lib/netcore50/_._"
+      ]
+    },
+    "EPPlus/4.1.0": {
+      "type": "package",
+      "sha512": "HP6B2Df/CnCLM6pBqexCpGH+oj4oa5WcU8miaw7SkwIlDcGf1FiL1u/tH6kwwHKxlQXnksNJSPjTXR9Cp86QRw==",
+      "files": [
+        "EPPlus.4.1.0.nupkg",
+        "EPPlus.4.1.0.nupkg.sha512",
+        "EPPlus.nuspec",
+        "lib/net35/EPPlus.dll",
+        "lib/net35/EPPlus.XML",
+        "lib/net40/EPPlus.dll",
+        "lib/net40/EPPlus.XML",
+        "lib/readme.txt"
       ]
     },
     "Humanizer/2.0.0-beta0001": {
@@ -8959,7 +9000,8 @@
       "Microsoft.Extensions.Logging.Console >= 1.0.0-rc1-final",
       "Microsoft.Owin.Security >= 3.0.1",
       "Sendgrid >= 6.3.4",
-      "Newtonsoft.Json >= 9.0.1"
+      "Newtonsoft.Json >= 9.0.1",
+      "EPPlus >= 4.1.0"
     ],
     "DNX,Version=v4.5.1": [
       "Humanizer >= 2.0.0-beta0001"

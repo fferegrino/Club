@@ -4,6 +4,7 @@ using Club.Common;
 using Club.Common.Security;
 using Club.Models.Entities;
 using System.Collections.Generic;
+using Microsoft.Data.Entity;
 
 namespace Club.Models.Repositories
 {
@@ -44,6 +45,12 @@ namespace Club.Models.Repositories
             return term.ToList();
         }
 
+        public List<Term> GetAllTerms()
+        {
+            var term = _context.Terms.Include(t => t.Events);
+            return term.ToList();
+        }
+
         public bool SaveAll()
         {
             return _context.SaveChanges() > 0;
@@ -54,6 +61,5 @@ namespace Club.Models.Repositories
             var term = _context.Terms.First(t => t.Id == termId);
             return term;
         }
-
     }
 }

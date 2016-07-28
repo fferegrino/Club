@@ -99,7 +99,7 @@
 
 
         </header>
-
+        <button id="btn-back" class="btn btn-default">Volver</button>
         <div class="container-fluid" id="main">
 
             <div class="row">
@@ -117,6 +117,13 @@
     @* Scripts *@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#btn-back").click(function () {
+                window.history.back();
+            });
+        });
+    </script>
     @RenderSection("Scripts", false)
 
 </body>

@@ -18,6 +18,7 @@ namespace Club.Models.Repositories
         void UpdateAnnoucement(Announcement item);
         bool SaveAll();
         void DeleteById(int id);
+        IEnumerable<Announcement> GetAnnouncementsByDate(DateTime start, DateTime end);
     }
 
     public class AnnouncementsRepository : IAnnouncementsRepository
@@ -65,6 +66,12 @@ namespace Club.Models.Repositories
 
             return betweenBoundsAnnouncements.Where(evt => evt.IsPrivate == false).ToList();
 
+        }
+
+        public IEnumerable<Announcement> GetAnnouncementsByDate(DateTime start, DateTime end)
+        {
+            var betweenBoundsAnnouncements = _context.Announcements.Where(a => start <= a.CreatedOn && a.CreatedOn < end);
+            return betweenBoundsAnnouncements;
         }
 
         public void AddAnnouncement(Announcement item)
