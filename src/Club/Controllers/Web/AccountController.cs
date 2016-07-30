@@ -55,7 +55,7 @@ namespace Club.Controllers.Web
         public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl)
         {
             if (!ModelState.IsValid) return View();
-            
+
             var signInResult = await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, false, false);
 
             if (signInResult.Succeeded)
@@ -72,7 +72,7 @@ namespace Club.Controllers.Web
                 User.AddIdentity(new ClaimsIdentity(claims));
                 if (!String.IsNullOrEmpty(returnUrl)) return Redirect(returnUrl);
 
-                return RedirectToAction("index", User.IsInRole("admin") ? "dashboard" : "home");
+                return RedirectToAction("index", User.IsInRole("Admin") ? "dashboard" : "home");
 
             }
             ModelState.AddModelError("", "Invalid credentials");
@@ -123,6 +123,32 @@ namespace Club.Controllers.Web
             var viewModel = _mapper.Map<ViewModels.SimpleUserViewModel>(model);
             ViewBag.Approved = model.Approved;
             ViewBag.EmailConfirmed = model.EmailConfirmed;
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResendConfirmationEmail(string username)
+        {
+            var model = _clubUsersRepository.GetUserByUserName(username);
+            var viewModel = _mapper.Map<ViewModels.SimpleUserViewModel>(model);
+            ViewBag.Approved = model.Approved;
+            ViewBag.EmailConfirmed = model.EmailConfirmed;
+
+            if (!model.Approved && !model.EmailConfirmed)
+            {
+                string code = await _userManager.GenerateEmailConfirmationTokenAsync(model);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                        new { userId = model.Id, code = code },
+                                protocol: Request.ToUri().Scheme);
+
+
+                await
+                    _mailService.SendMail(model.Email, "mail@hola.com", "Confirmación de email",
+                        "Confirma tu correo " + "<a href =\""
+                        + callbackUrl + "\">link</a>");
+                return RedirectToAction("pendingapproval", new { username = model.UserName });
+            }
+
             return View(viewModel);
         }
 

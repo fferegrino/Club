@@ -37,11 +37,7 @@ namespace Club.Models.Context
 
         public async Task EnsureSeedData()
         {
-
-            if (!_context.UserLevels.Any())
-            {
-                AddUserLevels();
-            }
+            AddOrGetUserLevels();
 
             AddTerm();
 
@@ -53,14 +49,6 @@ namespace Club.Models.Context
                 var roleresult = await _roleManager.CreateAsync(adminRole);
             }
 
-            const string superAdminRoleName = "SuperAdmin";
-            var superAdminRole = await _roleManager.FindByNameAsync(superAdminRoleName);
-            if (superAdminRole == null)
-            {
-                superAdminRole = new IdentityRole(superAdminRoleName);
-                var roleresult = await _roleManager.CreateAsync(superAdminRole);
-            }
-
             const string memberRoleName = "Member";
             var memberRole = await _roleManager.FindByNameAsync(memberRoleName);
             if (memberRole == null)
@@ -69,34 +57,31 @@ namespace Club.Models.Context
                 var roleresult = await _roleManager.CreateAsync(memberRole);
             }
 
-            var admin = await GetOrCreateAdmin(adminRole, superAdminRole);
-            await CreateAditionalUsers(memberRole);
+            var admin = await GetOrCreateAdmin(adminRole);
+            //await CreateAditionalUsers(memberRole);
 
+            //if (!_context.Announcements.Any())
+            //{
+            //    AddAnnouncements(admin);
+            //}
 
-            if (!_context.Announcements.Any())
-            {
-                AddAnnouncements(admin);
-            }
+            //if (!_context.Events.Any())
+            //{
+            //    AddEvents(admin);
+            //}
 
-            if (!_context.Events.Any())
-            {
-                AddEvents(admin);
-            }
+            //if (!_context.EventAttendance.Any())
+            //    AddUsersEventsAttendance();
 
-            if (!_context.EventAttendance.Any())
-                AddUsersEventsAttendance();
+            //if (!_context.Topics.Any())
+            //{
+            //    AddTopics();
+            //}
 
-            if (!_context.Topics.Any())
-            {
-                AddTopics();
-            }
-
-            if (!_context.Problems.Any())
-            {
-                AddProblems(admin);
-            }
-
-
+            //if (!_context.Problems.Any())
+            //{
+            //    AddProblems(admin);
+            //}
         }
 
         private UserLevel basicUserLevel,
@@ -146,14 +131,43 @@ namespace Club.Models.Context
             _context.SaveChanges();
         }
 
-        private void AddUserLevels()
+        private void AddOrGetUserLevels()
         {
-            basicUserLevel = new UserLevel { Level = "Basico" };
-            basicIntermediateUserLevel = new UserLevel { Level = "Basico-Intermedio" };
-            intermediateUserLevel = new UserLevel { Level = "Intermedio" };
-            advancedIntermediateUserLevel = new UserLevel { Level = "Intermedio-Avanzado" };
-            advancedUserLevel = new UserLevel { Level = "Avanzado" };
-            _context.AddRange(basicUserLevel, basicIntermediateUserLevel, intermediateUserLevel, advancedIntermediateUserLevel, advancedUserLevel);
+            basicUserLevel = _context.UserLevels.FirstOrDefault(ul => ul.Level == "Basico");
+            if (basicUserLevel == null)
+            {
+                basicUserLevel = new UserLevel { Level = "Basico" };
+                _context.Add(basicUserLevel);
+            }
+
+            basicIntermediateUserLevel = _context.UserLevels.FirstOrDefault(ul => ul.Level == "Basico-Intermedio");
+            if (basicIntermediateUserLevel == null)
+            {
+                basicIntermediateUserLevel = new UserLevel { Level = "Basico-Intermedio" };
+                _context.Add(basicIntermediateUserLevel);
+            }
+
+            intermediateUserLevel = _context.UserLevels.FirstOrDefault(ul => ul.Level == "Intermedio");
+            if (intermediateUserLevel == null)
+            {
+                intermediateUserLevel = new UserLevel { Level = "Intermedio" };
+                _context.Add(intermediateUserLevel);
+            }
+
+            advancedIntermediateUserLevel = _context.UserLevels.FirstOrDefault(ul => ul.Level == "Intermedio-Avanzado");
+            if (advancedIntermediateUserLevel == null)
+            {
+                advancedIntermediateUserLevel = new UserLevel { Level = "Intermedio-Avanzado" };
+                _context.Add(advancedIntermediateUserLevel);
+            }
+
+            advancedUserLevel = _context.UserLevels.FirstOrDefault(ul => ul.Level == "Avanzado");
+            if (advancedUserLevel == null)
+            {
+                advancedUserLevel = new UserLevel { Level = "Avanzado" };
+                _context.Add(advancedUserLevel);
+            }
+
             _context.SaveChanges();
         }
 
@@ -330,6 +344,7 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
             {
                 int r = Random.Next(1, 65465465) % 365;
                 announcement.ClubUserCreatorId = creator.Id;
+                announcement.ClubUserCreator = creator;
                 announcement.Type = r % 2 == 0
                     ? Club.Models.Enums.AnnouncementType.Info
                     : announcement.IsPrivate ? Club.Models.Enums.AnnouncementType.Warning : Club.Models.Enums.AnnouncementType.Danger;
@@ -340,7 +355,7 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
             _context.SaveChanges();
         }
 
-        private async Task<ClubUser> GetOrCreateAdmin(IdentityRole adminRole, IdentityRole superAdminRole)
+        private async Task<ClubUser> GetOrCreateAdmin(IdentityRole adminRole)
         {
 
             var admin = await _userManager.FindByEmailAsync("antonio.feregrino@gmail.com");
@@ -359,16 +374,10 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
 
                 await _userManager.CreateAsync(admin, "P@sword1");
 
-
                 var rolesForUser = await _userManager.GetRolesAsync(admin);
                 if (!rolesForUser.Contains(adminRole.Name))
                 {
                     var result = await _userManager.AddToRoleAsync(admin, adminRole.Name);
-                }
-
-                if (!rolesForUser.Contains(superAdminRole.Name))
-                {
-                    var result = await _userManager.AddToRoleAsync(admin, superAdminRole.Name);
                 }
             }
             return admin;
@@ -377,14 +386,18 @@ new Problem {Name="Mecho", Link="http://www.spoj.com/problems/CTOI09_1/", Diffic
         private async Task CreateAditionalUsers(IdentityRole memberRole)
         {
             const string defaultPassword = "@Abc1234";
-            
+
             foreach (var sampleUser in SampleData.SampleClubUsers)
             {
-                var r = Random.Next(0, 10);
-                sampleUser.EmailConfirmed = sampleUser.Approved;
-                sampleUser.UserLevel = r%2 == 0 ? basicIntermediateUserLevel : advancedIntermediateUserLevel;
-                await _userManager.CreateAsync(sampleUser, defaultPassword);
-                await _userManager.AddToRoleAsync(sampleUser, memberRole.Name);
+                var user = await _userManager.FindByEmailAsync(sampleUser.Email);
+                if (user == null)
+                {
+                    var r = Random.Next(0, 10);
+                    sampleUser.EmailConfirmed = sampleUser.Approved;
+                    sampleUser.UserLevel = r % 2 == 0 ? basicIntermediateUserLevel : advancedIntermediateUserLevel;
+                    await _userManager.CreateAsync(sampleUser, defaultPassword);
+                    await _userManager.AddToRoleAsync(sampleUser, memberRole.Name);
+                }
             }
         }
     }

@@ -1,12 +1,15 @@
 ﻿@model System.Collections.Generic.List<Club.ViewModels.TermViewModel>
 
 @{
-
+    var now = (DateTime)ViewBag.Now;
 }
 
 <table class="table table-responsive">
     <tr>
-        <td>Name</td><td>Start</td><td>End</td>
+        <td>Nombre</td>
+        <td>Inicio</td>
+        <td>Fin</td>
+        <td>Acción</td>
     </tr>
     @foreach (var item in Model)
     {
@@ -15,10 +18,19 @@
                 @item.Name
             </td>
             <td>
-                @item.Start
+                @item.Start.ToShortDateString()
             </td>
             <td>
-                @item.End
+                @item.End.ToShortDateString()
+            </td>
+            <td>
+                <div class="btn-group">
+                    @if (now <= item.End)
+                    {
+                        <a class="btn btn-primary" asp-action="edit" asp-route-id="@item.Id">Editar</a>
+                    }
+                    <a class="btn btn-danger" asp-action="delete" asp-route-id="@item.Id">Eliminar</a>
+                </div>
             </td>
         </tr>
     }

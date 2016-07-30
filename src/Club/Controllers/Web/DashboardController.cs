@@ -6,6 +6,7 @@ using Club.Common.TypeMapping;
 using Club.Models.Repositories;
 using Club.ViewModels;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Authorization;
 
 namespace Club.Controllers.Web
 {
@@ -30,6 +31,7 @@ namespace Club.Controllers.Web
             _submissionsRepository = submissionsRepository;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var userDashboard = new DashboardViewModel();

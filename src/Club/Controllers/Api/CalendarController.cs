@@ -41,6 +41,34 @@ namespace Club.Controllers.Api
                 var year = Int32.Parse(dates[0]);
                 var month = Int32.Parse(dates[1]);
                 var day = Int32.Parse(dates[2]);
+                result = new DateTime(year, month, day);
+            }
+
+            var announcements = _announcementsRepository.GetAnnouncementsForPeriod(result, result.AddDays(7),
+                User.Identity.IsAuthenticated);
+            var calendarAnnouncements = (_mapper.Map<IEnumerable<ApiModels.CalendarEntryApiModel>>(announcements)).ToList();
+            calendarAnnouncements.ForEach(a => a.Url = Request.GetBaseUrl() + Url.Action("detail", "announcements", new { id = a.Id }));
+
+            var events = _eventsRepository.GetEventsForPeriod(result, result.AddDays(7), User.Identity.IsAuthenticated);
+            var calendarEvents = (_mapper.Map<IEnumerable<ApiModels.CalendarEntryApiModel>>(events)).ToList();
+            calendarEvents.ForEach(a => a.Url = Request.GetBaseUrl() + Url.Action("detail", "events", new { id = a.Id }));
+
+            calendarEvents.AddRange(calendarAnnouncements);
+
+            return Json(calendarEvents);
+        }
+
+        [Route("month")]
+        public JsonResult GetMonth(string start)
+        {
+            DateTime result = DateTime.Now;
+
+            var dates = start?.Split('-');
+            if (dates != null)
+            {
+                var year = Int32.Parse(dates[0]);
+                var month = Int32.Parse(dates[1]);
+                var day = Int32.Parse(dates[2]);
                 result = new DateTime(year, month, 1)
                     .AddMonths(day == 1 ? 0 : 1);
             }

@@ -30,7 +30,7 @@
         {
             <div class="form-group col-md-2">
                 <label asp-for="IsAdmin"></label>
-                <input asp-for="IsAdmin" class="form-control"/>
+                <input asp-for="IsAdmin" class="form-control" />
             </div>
         }
     </div>
@@ -39,11 +39,14 @@
         <input class="form-control" asp-for="Email" type="email" />
         <span class="text-muted" asp-validation-for="Email"></span>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(i => i.Notes)
-        <textarea class="form-control" name="notes" id="notes">@Model.Notes</textarea>
-        <span class="text-muted" asp-validation-for="Notes"></span>
-    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="form-group">
+            @Html.LabelFor(i => i.Notes)
+            <textarea class="form-control" name="notes" id="notes">@Model.Notes</textarea>
+            <span class="text-muted" asp-validation-for="Notes"></span>
+        </div>
+    }
     <div class="form-group">
         <input type="submit" class="btn btn-success" value="Guardar" />
         <a class="btn btn-success" asp-action="details" asp-route-username="@Model.Username">Cancelar</a>

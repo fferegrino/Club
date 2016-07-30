@@ -61,5 +61,24 @@ namespace Club.Models.Repositories
             var term = _context.Terms.First(t => t.Id == termId);
             return term;
         }
+
+        public void DeleteTerm(int termId)
+        {
+            if(!_context.Events.Where(e => e.TermId == termId).Any())
+            {
+                var toErase = _context.Terms.First(t=> t.Id == termId);
+                _context.Remove(toErase);
+            }
+        }
+
+        public void UpdateTerm(Term term)
+        {
+            var oldTerm = _context.Terms.First(t => t.Id == term.Id);
+            oldTerm.Name = term.Name;
+            oldTerm.Start = term.Start;
+            oldTerm.End = term.End;
+
+            _context.Update(oldTerm);
+        }
     }
 }

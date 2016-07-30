@@ -27,6 +27,7 @@ namespace Club.Controllers.Web
         private readonly IAnnouncementsRepository _announcementsRepo;
         private readonly IClubUsersRepository _usersRepo;
         private readonly IProblemsRepository _problemsRepo;
+        private readonly IEventsRepository _eventsRepo;
 
         public SettingsController(IApplicationEnvironment appEnv,
             ITermsRepository termsRepository,
@@ -88,6 +89,14 @@ namespace Club.Controllers.Web
         [Authorize(Roles = "Admin")]
         public IActionResult Export()
         {
+            if(TempData["Delete"] != null)
+            {
+                ViewBag.Delete = (bool)TempData["Delete"];
+            }
+            else
+            {
+                ViewBag.Delete = false;
+            }
             return View();
         }
 
@@ -288,6 +297,22 @@ namespace Club.Controllers.Web
             Startup.Settings.HtmlFooter = settings.HtmlFooter;
             Startup.Settings.Theme = settings.Theme;
             return View(Startup.Settings);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteAll(bool trueDelete)
+        {
+            if (trueDelete)
+            {
+                await _usersRepo.DropTheBomb();
+                return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                TempData["Delete"]= true;
+                return RedirectToAction("Export");
+            }
         }
     }
 }

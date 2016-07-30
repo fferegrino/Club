@@ -36,7 +36,7 @@ namespace Club
         public static IConfigurationRoot Configuration;
         public static IDataProtectionProvider DataProtectionProvider { get; set; }
 
-        public static String HtmlFooter = "<p class=\"text-muted credit\">Example courtesy <a href=\"http://martinbean.co.uk\">Martin Bean</a> and <a href=\"http://ryanfait.com/sticky-footer/\">Ryan Fait</a>.</p>";
+        public static String HtmlFooter = "© 2016 ESCOM - IPN ACM Student Chapter";
         public static String Theme = "cosmo";
 
         public const string CultureCookieName = "_cultureLocalizationClub";
@@ -71,6 +71,8 @@ namespace Club
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCaching();
+            services.AddSession();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 
@@ -168,8 +170,9 @@ namespace Club
 
             app.UseStatusCodePages();
 
+            app.UseSession();
+            //app.UseInMemorySession(configure: s => s.IdleTimeout = TimeSpan.FromMinutes(30));
             app.UseMvc(RouteConfig.Configure);
-
 
             var mexCulture = new CultureInfo("es-ES");
             mexCulture.DateTimeFormat.FullDateTimePattern = "dd/MM/yyyy HH:mm";

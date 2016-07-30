@@ -8,10 +8,12 @@ namespace Club.Models.Repositories
     {
         void AddTerm(Term item);
         Term GetTermById(int termId);
+        void DeleteTerm(int termId);
         Term GetLastTerm();
         Term GetCurrentTerm();
         List<Term> GetCurrentAndNextTerms();
         List<Term> GetAllTerms();
         bool SaveAll();
+        void UpdateTerm(Term term);
     }
 }

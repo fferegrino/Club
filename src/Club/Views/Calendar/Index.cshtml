@@ -21,7 +21,7 @@
             'danger': 'exclamation',
 
             'contest': 'sort-numeric-asc',
-            'workshop': 'hand-lizard',
+            'workshop': 'hand-lizard',  
             'conference': 'microphone',
             'class': 'book'
         };
@@ -33,7 +33,7 @@
                 defaultDate: '@($"{year}-{month:D2}")',
                 timezone: 'America/Mexico_City',
                 events: {
-                    url: '/api/calendar',
+                    url: '/api/calendar/month',
                     type: 'GET',
                     success: function (a, b, c) {
                     },

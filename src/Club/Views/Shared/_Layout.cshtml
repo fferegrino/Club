@@ -74,7 +74,7 @@
                         <ul class="nav navbar-nav">
                             <li><a asp-controller="calendar" asp-action="index">Calendario</a></li>
                             <li><a asp-controller="announcements" asp-action="index">Avisos</a></li>
-                            <li><a asp-controller="home" asp-action="contact">Contacto</a></li>
+                            <li><a href="http://escom-ipn.acm.org/blog/">Blog</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             @if (User.Identity.IsAuthenticated)
@@ -96,14 +96,13 @@
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
             </nav>
-
-
         </header>
-        <button id="btn-back" class="btn btn-default">Volver</button>
         <div class="container-fluid" id="main">
-
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
+                    <ol class="breadcrumb">
+                        <li><a id="btn-back" href="#">Volver</a></li>
+                    </ol>
                     @RenderBody()
                 </div>
             </div>
@@ -111,7 +110,11 @@
     </div>
     <footer id="footer">
         <div class="container">
-            @Html.Raw(Club.Startup.Settings.HtmlFooter)
+            <div class="row">
+                <div style="margin-top: 10px" class="col-lg-6 col-lg-offset-3">
+                    <p class="text-center">@Club.Startup.Settings.HtmlFooter</p>
+                </div>
+            </div>
         </div>
     </footer>
     @* Scripts *@

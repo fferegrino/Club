@@ -11,6 +11,7 @@ namespace Club.Models.Repositories
 {
     public interface IAnnouncementsRepository
     {
+        IEnumerable<Announcement> GetAnnouncementsForPeriod(DateTime start, DateTime end, bool showPrivate);
         IEnumerable<Announcement> GetAnnouncementsForMonth(int year, int month, bool showPrivate);
         IEnumerable<Announcement> GetAllAnnouncements();
         Announcement GetAnnouncementById(int announcementId);
@@ -47,17 +48,12 @@ namespace Club.Models.Repositories
         }
 
 
-        public IEnumerable<Announcement> GetAnnouncementsForMonth(int year, int month, bool showPrivate)
+        public IEnumerable<Announcement> GetAnnouncementsForPeriod(DateTime start, DateTime end, bool showPrivate)
         {
-
-            DateTime start = new DateTime(year, month, 1);
-            DateTime end = start.AddMonths(1);
-
             var betweenBoundsAnnouncements = _context.Announcements.Include(evt => evt.ClubUserCreator)
                 .Where(
                     evnt => ((start < evnt.CreatedOn && evnt.CreatedOn < end) || (start < evnt.DueDate && evnt.DueDate < end))
                 );
-
 
             if (showPrivate)
             {
@@ -65,7 +61,14 @@ namespace Club.Models.Repositories
             }
 
             return betweenBoundsAnnouncements.Where(evt => evt.IsPrivate == false).ToList();
+        }
 
+        public IEnumerable<Announcement> GetAnnouncementsForMonth(int year, int month, bool showPrivate)
+        {
+
+            DateTime start = new DateTime(year, month, 1);
+            DateTime end = start.AddMonths(1);
+            return GetAnnouncementsForPeriod(start, end, showPrivate);
         }
 
         public IEnumerable<Announcement> GetAnnouncementsByDate(DateTime start, DateTime end)

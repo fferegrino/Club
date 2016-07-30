@@ -5,7 +5,7 @@
 @{
     ViewBag.Title = "Nuevo periodo";
     var lastTerm = ViewBag.LastTerm as TermViewModel;
-    var lastTermDate = lastTerm?.End.ToString("dd/MM/yyyy");
+    var lastTermDate = lastTerm?.End.ToString("dd/MM/yyyy") ?? "\"\"";
 }
 
 
@@ -20,10 +20,10 @@
             <span asp-validation-for="Name"></span>
 
         </div>
-    </div> 
+    </div>
     <div class="row">
         <div class="form-group col-md-6">
-            
+
             <label asp-for="Start"></label>
             <input asp-for="Start" class="form-control" value="@lastTermDate" />
             <span asp-validation-for="Start"></span>
@@ -65,20 +65,17 @@
             });
 
             $("#Start").on("dp.change", function (e) {
+                $('#End').data("DateTimePicker").minDate(e.date);
                 var sixMonths  = moment.duration({'months' : 6});
                 var newDate = e.date;
                 newDate.add(sixMonths);
-                $('#End').data("DateTimePicker").minDate(e.date);
                 $('#End').data("DateTimePicker").defaultDate(newDate);
-                console.log("Start:");
-                console.log(e.date);
-                console.log("End:");
-                console.log(newDate);
+                $('#End').data("DateTimePicker").date(newDate);
             });
 
-            if (@lastTermDate !== "") {
-                $('#Start').data("DateTimePicker").minDate("@lastTermDate");
-                console.log("@lastTermDate");
+            if (@Html.Raw(lastTermDate) !== "") {
+                $('#Start').data("DateTimePicker").defaultDate("@lastTermDate");
+                
             }
 
         });

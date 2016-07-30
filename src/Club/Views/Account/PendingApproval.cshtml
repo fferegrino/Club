@@ -27,6 +27,10 @@ else
     <div class="jumbotron">
         <h1>Email pendiente de confirmación</h1>
         <p>Hola @Model.Username, hemos enviado un correo electrónico con un enlace de confirmación.</p>
+        <form asp-action="resendconfirmationemail" method="post">
+            <input type="hidden" value="@Model.Username" />
+            <button class="btn btn-default" type="submit">Reenviar</button>
+        </form>
     </div>
 
 }

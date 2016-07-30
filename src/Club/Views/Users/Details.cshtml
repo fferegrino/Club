@@ -116,7 +116,7 @@
                 </div>
                 @if (User.IsInRole("Admin"))
                 {
-                    <div id="notes">
+                    <div role="tabpanel" class="tab-pane"  id="notes">
                         <p>@Model.Notes</p>
                     </div>
                 }

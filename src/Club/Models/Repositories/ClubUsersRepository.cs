@@ -30,6 +30,8 @@ namespace Club.Models.Repositories
         void AttendEvent(string id, Event attendedEvent);
         Task ModifyUser(ClubUser entity, bool modifyNotes = false);
         List<ClubUser> GetAllActiveUsers();
+
+        Task DropTheBomb();
     }
 
     public class ClubUsersRepository : IClubUsersRepository
@@ -201,11 +203,13 @@ namespace Club.Models.Repositories
                     if (adminUsers.Count > 1)
                     {
                         await _userManager.RemoveFromRoleAsync(realEntity, "Admin");
+                        await _userManager.AddToRoleAsync(realEntity, "Member");
                     }
                 }
                 else if (entity.IsAdmin)
                 {
                     await _userManager.AddToRoleAsync(realEntity, "Admin");
+                    await _userManager.RemoveFromRoleAsync(realEntity, "Member");
                 }
             }
 
@@ -219,6 +223,33 @@ namespace Club.Models.Repositories
                 .Include(u => u.Submissions);
 
             return users.ToList();
+        }
+
+        public async Task DropTheBomb()
+        {
+            _context.EventAttendance.RemoveRange(_context.EventAttendance);
+            SaveAll();
+            _context.Submissions.RemoveRange(_context.Submissions);
+            SaveAll();
+            _context.Events.RemoveRange(_context.Events);
+            SaveAll();
+            _context.Announcements.RemoveRange(_context.Announcements);
+            SaveAll();
+            _context.Problems.RemoveRange(_context.Problems);
+            SaveAll();
+            _context.Topics.RemoveRange(_context.Topics);
+            SaveAll();
+            _context.Terms.RemoveRange(_context.Terms);
+            SaveAll();
+
+            // Bye bye non admin users:
+            var nonAdminUsers = await _userManager.GetUsersInRoleAsync("Member");
+            foreach (var naUser in nonAdminUsers)
+            {
+                await _userManager.RemoveFromRoleAsync(naUser, "Member");
+                _context.Users.Remove(naUser);
+            }
+            SaveAll();
         }
     }
 }

@@ -77,9 +77,10 @@ namespace Club.Controllers.Web
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> Edit(string username)
         {
-            if (User.IsInRole("Admin") || User.Identity.Name.Equals(username))
+            if (User.IsInRole("Admin") || username.Equals(User.Identity.Name))
             {
                 var entity = _usersRepository.GetFullUserByUserName(username);
                 var vm = _mapper.Map<EditUserViewModel>(entity);
@@ -91,11 +92,11 @@ namespace Club.Controllers.Web
             return RedirectToAction("details", new { username });
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(EditUserViewModel vm)
         {
-            if (User.IsInRole("Admin") || User.Identity.Name.Equals(vm.Username))
+            if (User.IsInRole("Admin") || vm.Username.Equals(User.Identity.Name))
             {
                 //var entity = _usersRepository.GetFullUserByUserName(vm.Username);
                 var entity = _mapper.Map<ClubUser>(vm);

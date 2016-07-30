@@ -36,7 +36,13 @@
         {
             <div role="tabpanel" class="tab-pane @(group.Key == userLevelId?"active" : "")" id="problems-@group.Key">
                 <table class="table table-bordered table-striped">
-
+                    <thead>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Tema</td>
+                            <td>Acción</td>
+                        </tr>
+                    </thead>
                     @foreach (var problemViewModel in group)
                     {
                         <tr>

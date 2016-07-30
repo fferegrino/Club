@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Club.Models.Entities;
-
+using System;
 
 namespace Club.Models.Repositories
 {
@@ -11,6 +11,8 @@ namespace Club.Models.Repositories
         QueryResult<Event> GetPagedEventsAttendedByUsername(PagedDataRequest request, string username);
 
         IEnumerable<Event> GetAllEvents();
+
+        IEnumerable<Event> GetEventsForPeriod(DateTime start, DateTime end, bool showPrivate);
 
         IEnumerable<Event> GetEventsForMonth(int year, int month, bool showPrivate);
 

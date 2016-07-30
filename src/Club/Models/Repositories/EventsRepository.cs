@@ -46,11 +46,8 @@ namespace Club.Models.Repositories
             return _context.Events.ToList();
         }
 
-        public IEnumerable<Event> GetEventsForMonth(int year, int month, bool showPrivate)
+        public IEnumerable<Event> GetEventsForPeriod(DateTime start, DateTime end, bool showPrivate)
         {
-            DateTime start = new DateTime(year, month, 1);
-            DateTime end = start.AddMonths(1);
-
             var betweenBoundsEvents = _context.Events
                 .Include(evt => evt.ClubUserHost)
                 .Include(evt => evt.Term)
@@ -64,6 +61,14 @@ namespace Club.Models.Repositories
             }
 
             return betweenBoundsEvents.Where(evt => evt.IsPrivate == false).ToList();
+
+        }
+        public IEnumerable<Event> GetEventsForMonth(int year, int month, bool showPrivate)
+        {
+            DateTime start = new DateTime(year, month, 1);
+            DateTime end = start.AddMonths(1);
+
+            return GetEventsForPeriod(start, end, showPrivate);
 
         }
 
