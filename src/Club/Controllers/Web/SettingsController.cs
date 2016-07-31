@@ -12,6 +12,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.AspNet.Http;
 using System.IO;
 using OfficeOpenXml;
+using Microsoft.AspNet.Hosting;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,12 +31,13 @@ namespace Club.Controllers.Web
         private readonly IEventsRepository _eventsRepo;
 
         public SettingsController(IApplicationEnvironment appEnv,
+            IHostingEnvironment hostEnv,
             ITermsRepository termsRepository,
             IAnnouncementsRepository announcementsRepo,
             IClubUsersRepository usersRepo,
             IProblemsRepository problemsRepo)
         {
-            _assetsFolder = appEnv.ApplicationBasePath + "\\wwwroot\\assets\\";
+            _assetsFolder = hostEnv.MapPath("assets");
 
             _problemsRepo = problemsRepo;
             _usersRepo = usersRepo;
@@ -46,7 +48,7 @@ namespace Club.Controllers.Web
         [Authorize(Roles = "Admin")]
         public IActionResult Carta()
         {
-            var bytes = System.IO.File.ReadAllBytes(_assetsFolder + "carta.docx");
+            var bytes = System.IO.File.ReadAllBytes(_assetsFolder + "\\carta.docx");
             return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "carta.docx");
         }
 
@@ -56,7 +58,7 @@ namespace Club.Controllers.Web
         {
             if (carta.Any())
             {
-                carta.First().SaveAs(_assetsFolder + "carta.docx");
+                carta.First().SaveAs(_assetsFolder + "\\carta.docx");
             }
             return RedirectToAction(nameof(Index));
         }
@@ -64,7 +66,7 @@ namespace Club.Controllers.Web
         [Authorize(Roles = "Admin")]
         public IActionResult Header()
         {
-            var bytes = System.IO.File.ReadAllBytes(_assetsFolder + "headerbg.png");
+            var bytes = System.IO.File.ReadAllBytes(_assetsFolder + "\\headerbg.png");
             return File(bytes, "image/png", "headerbg.png");
         }
 
@@ -74,7 +76,7 @@ namespace Club.Controllers.Web
         {
             if (header.Any())
             {
-                header.First().SaveAs(_assetsFolder + "headerbg.png");
+                header.First().SaveAs(_assetsFolder + "\\headerbg.png");
             }
             return RedirectToAction(nameof(Index));
         }
@@ -112,7 +114,7 @@ namespace Club.Controllers.Web
             {
                 var workbook = excel.Workbook;
 
-                #region Periodos
+#region Periodos
                 var termsSheet = workbook.Worksheets.Add("Periodos");
 
                 var terms = _termsRepository.GetAllTerms();
@@ -130,9 +132,9 @@ namespace Club.Controllers.Web
                     termsSheet.Cells[$"C{i + 2}"].Value = term.Start;
                     termsSheet.Cells[$"D{i + 2}"].Value = term.End;
                 }
-                #endregion
+#endregion
 
-                #region Sesiones
+#region Sesiones
                 var sessionsSheet = workbook.Worksheets.Add("Sesiones");
 
                 var sessions = terms.SelectMany(t => t.Events).ToList();
@@ -155,9 +157,9 @@ namespace Club.Controllers.Web
                     sessionsSheet.Cells[$"E{i + 2}"].Value = session.Start;
                     sessionsSheet.Cells[$"F{i + 2}"].Value = session.End;
                 }
-                #endregion
+#endregion
 
-                #region Avisos
+#region Avisos
                 var announcementsSheet = workbook.Worksheets.Add("Anuncios");
 
                 var announcementsTuples = new List<Tuple<int, IEnumerable<Announcement>>>();
@@ -185,9 +187,9 @@ namespace Club.Controllers.Web
                         row++;
                     }
                 }
-                #endregion
+#endregion
 
-                #region Problemas
+#region Problemas
                 var problemsSheet = workbook.Worksheets.Add("Problemas");
 
                 var problems = _problemsRepo.GetAllCurrentProblems();
@@ -209,7 +211,7 @@ namespace Club.Controllers.Web
                     row++;
                 }
 
-                #endregion
+#endregion
 
                 excel.SaveAs(fi);
             }
@@ -230,7 +232,7 @@ namespace Club.Controllers.Web
             {
                 var workbook = excel.Workbook;
 
-                #region Usuarios
+#region Usuarios
                 var usersSheet = workbook.Worksheets.Add("Usuarios");
 
                 var users = _usersRepo.GetAllActiveUsers();
@@ -248,9 +250,9 @@ namespace Club.Controllers.Web
                     usersSheet.Cells[$"D{i + 2}"].Value = term.Email;
                     usersSheet.Cells[$"E{i + 2}"].Value = term.Notes;
                 }
-                #endregion
+#endregion
 
-                #region Problemas resueltos
+#region Problemas resueltos
                 var problemsSolvedSheet = workbook.Worksheets.Add("Envíos");
                 var submissions = users.SelectMany(u => u.Submissions).ToList();
                 problemsSolvedSheet.Cells["A1"].Value = "ID problema";
@@ -268,9 +270,9 @@ namespace Club.Controllers.Web
                     problemsSolvedSheet.Cells[$"D{i + 2}"].Value = submission.Attempts;
                     problemsSolvedSheet.Cells[$"E{i + 2}"].Value = submission.LastAttemptDate;
                 }
-                #endregion
+#endregion
 
-                #region Eventos asistidos
+#region Eventos asistidos
                 var eventsAttendendSheet = workbook.Worksheets.Add("Asistencias");
                 var attendance = users.SelectMany(u => u.EventsAttended).ToList();
                 eventsAttendendSheet.Cells["A1"].Value = "ID evento";
@@ -281,7 +283,7 @@ namespace Club.Controllers.Web
                     eventsAttendendSheet.Cells[$"A{i + 2}"].Value = att.EventId;
                     eventsAttendendSheet.Cells[$"B{i + 2}"].Value = att.ClubUserId;
                 }
-                #endregion
+#endregion
 
                 excel.SaveAs(fi);
             }

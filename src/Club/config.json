@@ -3,6 +3,6 @@
     "MaxKbFileSize": 100
   },
   "Data": {
-    "ClubContextConnection": "connectionstring"
+    "ClubContextConnection": "CONNECTION_STRING"
   }
 }

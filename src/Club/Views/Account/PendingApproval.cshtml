@@ -3,6 +3,7 @@
     ViewBag.Title = "Solicitud pendiente";
     var approved = (bool)ViewBag.Approved;
     var emailConfirmed = (bool)ViewBag.EmailConfirmed;
+    var email = ViewBag.Email;
 }
 @if (emailConfirmed)
 {
@@ -26,7 +27,7 @@ else
 {
     <div class="jumbotron">
         <h1>Email pendiente de confirmación</h1>
-        <p>Hola @Model.Username, hemos enviado un correo electrónico con un enlace de confirmación.</p>
+        <p>Hola @Model.Username, hemos enviado un correo electrónico a @email con un enlace de confirmación.</p>
         <form asp-action="resendconfirmationemail" method="post">
             <input type="hidden" value="@Model.Username" />
             <button class="btn btn-default" type="submit">Reenviar</button>

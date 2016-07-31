@@ -99,8 +99,10 @@ namespace Club.Controllers.Web
             var userModel = _mapper.Map<Models.Entities.ClubUser>(viewModel);
             userModel.UserLevelId = 1;
             var result = await _userManager.CreateAsync(userModel, viewModel.Password);
+            
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(userModel, "Member");
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync(userModel);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account",
                         new { userId = userModel.Id, code = code },
@@ -122,6 +124,7 @@ namespace Club.Controllers.Web
             var model = _clubUsersRepository.GetUserByUserName(username);
             var viewModel = _mapper.Map<ViewModels.SimpleUserViewModel>(model);
             ViewBag.Approved = model.Approved;
+            ViewBag.Email = model.Email;
             ViewBag.EmailConfirmed = model.EmailConfirmed;
             return View(viewModel);
         }
@@ -173,7 +176,7 @@ namespace Club.Controllers.Web
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account",
                 new { UserId = user.Id, code = code }, protocol: Request.ToUri().Scheme);
-                await _mailService.SendMail(user.Email, "mail@hola.com", "Reset Password",
+               var sent = await _mailService.SendMail(user.Email, "mail@hola.com", "Reset Password",
                 "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
                 return View("ForgottenConfirmation");
             }

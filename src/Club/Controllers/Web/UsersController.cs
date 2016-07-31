@@ -14,6 +14,7 @@ using Novacode;
 using Humanizer;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.AspNet.Hosting;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,11 +26,14 @@ namespace Club.Controllers.Web
         private readonly IAutoMapper _mapper;
         private readonly IUserLevelsRepository _usersLevelRepo;
         private readonly IApplicationEnvironment _appEnv;
+        private readonly IHostingEnvironment _hostEnv;
 
         public UsersController(IClubUsersRepository usersRepository,
+            IHostingEnvironment hostEnv,
             IAutoMapper mapper, IApplicationEnvironment appEnv,
             IUserLevelsRepository usersLevelRepo)
         {
+            _hostEnv = hostEnv;
             _usersRepository = usersRepository;
             _mapper = mapper;
             _appEnv = appEnv;
@@ -45,7 +49,7 @@ namespace Club.Controllers.Web
         [Authorize(Roles = "Admin")]
         public IActionResult Letter(string id)
         {
-            string cartaDoc = _appEnv.ApplicationBasePath + "\\wwwroot\\assets\\carta.docx";
+            string cartaDoc = _hostEnv.MapPath("assets\\carta.docx");
             var temp = System.IO.Path.GetTempFileName();
             temp = System.IO.Path.ChangeExtension(temp, "docx");
 

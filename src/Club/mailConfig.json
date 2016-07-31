@@ -1,5 +1,5 @@
 ﻿{
   "Mail": {
-    "SendGrid": "from|sendgriduser|sendgridpass"
-  }
+    "SendGrid": "MAIL_FROM|SENDGRID_USER|SEND_GRID_PASSWORD"
+  }											 
 }
