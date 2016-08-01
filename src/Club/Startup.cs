@@ -53,16 +53,12 @@ namespace Club
                 .SetBasePath(appEnv.ApplicationBasePath)
                 .AddJsonFile("config.json")
                 .AddJsonFile("mailConfig.json")
-                .AddJsonFile($"mailConfig{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
-            //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                //builder.AddUserSecrets();
+                builder.AddUserSecrets();
             }
-
 
             Configuration = builder.Build();
         }
@@ -77,7 +73,8 @@ namespace Club
 
 
             services
-                .AddMvc(opy => {
+                .AddMvc(opy =>
+                {
                     opy.Filters.Add(typeof(LanguageCookieActionFilter));
                 })
                 .AddViewLocalization(options => options.ResourcesPath = "Resources")

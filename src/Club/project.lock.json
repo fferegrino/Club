@@ -1664,6 +1664,24 @@
           "lib/net451/Microsoft.Extensions.Configuration.Json.dll": {}
         }
       },
+      "Microsoft.Extensions.Configuration.UserSecrets/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.Extensions.Configuration.UserSecrets.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Extensions.Configuration.UserSecrets.dll": {}
+        }
+      },
       "Microsoft.Extensions.DependencyInjection/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -1881,6 +1899,27 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Extensions.Primitives.dll": {}
+        }
+      },
+      "Microsoft.Extensions.SecretManager/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "6.0.6"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.Extensions.SecretManager.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.Extensions.SecretManager.dll": {}
         }
       },
       "Microsoft.Extensions.WebEncoders/1.0.0-rc1-final": {
@@ -3896,6 +3935,24 @@
           "lib/net451/Microsoft.Extensions.Configuration.Json.dll": {}
         }
       },
+      "Microsoft.Extensions.Configuration.UserSecrets/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.Extensions.Configuration.UserSecrets.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Extensions.Configuration.UserSecrets.dll": {}
+        }
+      },
       "Microsoft.Extensions.DependencyInjection/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -4113,6 +4170,27 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Extensions.Primitives.dll": {}
+        }
+      },
+      "Microsoft.Extensions.SecretManager/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "6.0.6"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.Extensions.SecretManager.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.Extensions.SecretManager.dll": {}
         }
       },
       "Microsoft.Extensions.WebEncoders/1.0.0-rc1-final": {
@@ -6128,6 +6206,24 @@
           "lib/net451/Microsoft.Extensions.Configuration.Json.dll": {}
         }
       },
+      "Microsoft.Extensions.Configuration.UserSecrets/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.Extensions.Configuration.UserSecrets.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Extensions.Configuration.UserSecrets.dll": {}
+        }
+      },
       "Microsoft.Extensions.DependencyInjection/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -6345,6 +6441,27 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Extensions.Primitives.dll": {}
+        }
+      },
+      "Microsoft.Extensions.SecretManager/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "6.0.6"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.Extensions.SecretManager.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.Extensions.SecretManager.dll": {}
         }
       },
       "Microsoft.Extensions.WebEncoders/1.0.0-rc1-final": {
@@ -7537,7 +7654,6 @@
     },
     "Microsoft.AspNet.Session/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "nMImkPMx/z4YL/bCBaTywQZD28sg6IvWMRckzY4hMZuhhRWr4z3HHYgORCaKbJQH3nJkfL6rb+TpmWobN9gKpw==",
       "files": [
         "lib/dotnet5.4/Microsoft.AspNet.Session.dll",
@@ -7689,7 +7805,6 @@
     },
     "Microsoft.Extensions.Caching.Abstractions/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "WlNfPuf/8Q7DzMiOHjiT9Ha2IYdguLGfHT/2C/p9KzviCKXaqfrIdI6X9w5MmCuiYRucqK+iM5cIWKHQ1mmZrg==",
       "files": [
         "lib/dotnet5.4/Microsoft.Extensions.Caching.Abstractions.dll",
@@ -7705,7 +7820,6 @@
     },
     "Microsoft.Extensions.Caching.Memory/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "KQFkXdBieLObHr1+ld0FVOLQLgVFcrhn6qIixsmP09TyEw2VaGPrzIiBVJSzyKfaE2MVJlshDvfdvcfSE/zl3g==",
       "files": [
         "lib/dotnet5.4/Microsoft.Extensions.Caching.Memory.dll",
@@ -7721,7 +7835,6 @@
     },
     "Microsoft.Extensions.CodeGeneration/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "Mkld1xqSkU1CuMtMlbKMPwzoXMXBzC/SdOiRLutd632mGrQCDwhBgrxiBDfFDD63OxWt24TjMZkqlxmRRTm7zQ==",
       "files": [
         "lib/dnx451/Microsoft.Extensions.CodeGeneration.dll",
@@ -7735,7 +7848,6 @@
     },
     "Microsoft.Extensions.CodeGeneration.Core/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "uQe19xMM4ymoC9uU/rLZTkbSH8n/CVKEjw4jbLfoFq179+LH4IxDRqPqidEMQUF6ON4jYVwhexuAMPJdQ5ewjQ==",
       "files": [
         "lib/dnx451/Microsoft.Extensions.CodeGeneration.Core.dll",
@@ -7749,7 +7861,6 @@
     },
     "Microsoft.Extensions.CodeGeneration.EntityFramework/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "Bs5bPxbPlTYAB5d1+bPjnAZqQyQMueg0orED8boIlwb66he5pFO7LuQ3Q+BNTUB4x3M1q1U7L1L469tllVtGZg==",
       "files": [
         "lib/dnx451/Microsoft.Extensions.CodeGeneration.EntityFramework.dll",
@@ -7764,7 +7875,6 @@
     },
     "Microsoft.Extensions.CodeGeneration.Templating/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "d20Suo15M+sNS5QBYMfJpBgSUFclVSeIU06Y/snnmKdNjAiQfbKkW0bG8ryBw8zn29KXHcK39DwUpkrFvphQIg==",
       "files": [
         "lib/dnx451/Microsoft.Extensions.CodeGeneration.Templating.dll",
@@ -7778,7 +7888,6 @@
     },
     "Microsoft.Extensions.CodeGenerators.Mvc/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "rkec5T1UW17vRb6rPWEDOq4WHj7+mu8IKWuea9I05YKDACo/EBgDhqp4aoZrOsNzoEH6k+NlL0FRa3o5s9vglA==",
       "files": [
         "lib/dnx451/Microsoft.Extensions.CodeGenerators.Mvc.dll",
@@ -7929,6 +8038,20 @@
         "Microsoft.Extensions.Configuration.Json.nuspec"
       ]
     },
+    "Microsoft.Extensions.Configuration.UserSecrets/1.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "m2WaXGNWRrbpWquen8PS1oB8GdG5tCSWhXAmFbhacj1mhz3ojFy0TDUZPbx87TX2ZQNNp6MYfzO5Z73hlM47Bw==",
+      "files": [
+        "lib/dotnet5.4/Microsoft.Extensions.Configuration.UserSecrets.dll",
+        "lib/dotnet5.4/Microsoft.Extensions.Configuration.UserSecrets.xml",
+        "lib/net451/Microsoft.Extensions.Configuration.UserSecrets.dll",
+        "lib/net451/Microsoft.Extensions.Configuration.UserSecrets.xml",
+        "Microsoft.Extensions.Configuration.UserSecrets.1.0.0-rc1-final.nupkg",
+        "Microsoft.Extensions.Configuration.UserSecrets.1.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.Extensions.Configuration.UserSecrets.nuspec"
+      ]
+    },
     "Microsoft.Extensions.DependencyInjection/1.0.0-rc1-final": {
       "type": "package",
       "sha512": "S/+s3fq85j21H5nYOvh1fIt1arl8F5lZ7Ryiw/qend83yHQwIQbBs+dip9FhqiPmAn6Dz3UhW0likQQurfEsLQ==",
@@ -7946,7 +8069,6 @@
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/1.0.0-rc1-final": {
       "type": "package",
-      "serviceable": true,
       "sha512": "MUKexXAsRZ55C7YZ26ShePZgBeW+6FbasxeIVmZ/BZIgiG4uw6yPOdfl9WvTaUL9SFK2sEPcYLatWmLfTpsOAA==",
       "files": [
         "lib/dotnet5.4/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
@@ -8112,6 +8234,23 @@
         "Microsoft.Extensions.Primitives.1.0.0-rc1-final.nupkg",
         "Microsoft.Extensions.Primitives.1.0.0-rc1-final.nupkg.sha512",
         "Microsoft.Extensions.Primitives.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.SecretManager/1.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "UzdKhl1+uMMhnENh1bNUH0Yr4gqtXExsfZJsSR272RbSMhHDLdpm7ChsNEYjl6BrMf8nFf+S0qdPC+z0fdxLSw==",
+      "files": [
+        "app/project.json",
+        "app/user-secret",
+        "app/user-secret.cmd",
+        "lib/dnx451/Microsoft.Extensions.SecretManager.dll",
+        "lib/dnx451/Microsoft.Extensions.SecretManager.xml",
+        "lib/dnxcore50/Microsoft.Extensions.SecretManager.dll",
+        "lib/dnxcore50/Microsoft.Extensions.SecretManager.xml",
+        "Microsoft.Extensions.SecretManager.1.0.0-rc1-final.nupkg",
+        "Microsoft.Extensions.SecretManager.1.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.Extensions.SecretManager.nuspec"
       ]
     },
     "Microsoft.Extensions.WebEncoders/1.0.0-rc1-final": {
@@ -9086,7 +9225,8 @@
       "Sendgrid >= 6.3.4",
       "Newtonsoft.Json >= 9.0.1",
       "EPPlus >= 4.1.0",
-      "Microsoft.AspNet.Session >= 1.0.0-rc1-final"
+      "Microsoft.AspNet.Session >= 1.0.0-rc1-final",
+      "Microsoft.Extensions.SecretManager >= 1.0.0-rc1-final"
     ],
     "DNX,Version=v4.5.1": [
       "Humanizer >= 2.0.0-beta0001"

@@ -84,6 +84,7 @@ namespace Club.Controllers.Web
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
+            ViewBag.ConfigSource = Startup.Configuration["ConfigSource"];
             return View(Startup.Settings);
         }
 
