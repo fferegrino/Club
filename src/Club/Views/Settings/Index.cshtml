@@ -1,11 +1,13 @@
 ﻿@model Club.ViewModels.SettingsViewModel
 
 @{
+    var configSource = (string)ViewBag.ConfigSource;
 }
 
 
 <div class="row">
     <div class="col-lg-12">
+        <input type="hidden" value="@configSource" />
         <form method="post" asp-action="index">
             <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
             <div class="form-group">
