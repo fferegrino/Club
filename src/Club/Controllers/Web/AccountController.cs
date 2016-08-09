@@ -99,7 +99,7 @@ namespace Club.Controllers.Web
             var userModel = _mapper.Map<Models.Entities.ClubUser>(viewModel);
             userModel.UserLevelId = 1;
             var result = await _userManager.CreateAsync(userModel, viewModel.Password);
-            
+
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(userModel, "Member");
@@ -176,8 +176,8 @@ namespace Club.Controllers.Web
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account",
                 new { UserId = user.Id, code = code }, protocol: Request.ToUri().Scheme);
-               var sent = await _mailService.SendMail(user.Email, "mail@hola.com", "Reset Password",
-                "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                var sent = await _mailService.SendMail(user.Email, "mail@hola.com", "Reset Password",
+                 "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
                 return View("ForgottenConfirmation");
             }
 
@@ -230,6 +230,78 @@ namespace Club.Controllers.Web
                 return View("ConfirmEmail");
             }
             return View();
+        }
+
+
+        //
+        // POST: /Account/ExternalLogin
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            // Request a redirect to the external login provider.
+            var redirectUrl = Url.Action("gitlogin", "Account", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, null);
+            return new ChallengeResult(provider, properties);
+        }
+        
+        public async Task<IActionResult> GitLogin()
+        {
+            string returnUrl = null;
+            string remoteError = null;
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                return View(nameof(Login));
+            }
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            // Sign in the user with this external login provider if the user already has a login.
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            if (result.Succeeded)
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction(nameof(Login));
+        }
+
+        //
+        // POST: /Account/ExternalLoginConfirmation
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl = null)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get the information about the user from the external login provider
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    return View("ExternalLoginFailure");
+                }
+                var user = new ClubUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    result = await _userManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        //// _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
+                        return Redirect(returnUrl);
+                    }
+                }
+                //AddErrors(result);
+            }
+
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(model);
         }
     }
 }

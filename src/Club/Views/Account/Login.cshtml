@@ -1,27 +1,66 @@
 ﻿@model Club.ViewModels.LoginViewModel
+@using System.Collections.Generic
+@using Microsoft.AspNet.Http
+@using Microsoft.AspNet.Http.Authentication
+@inject  Microsoft.AspNet.Identity.SignInManager<Club.Models.Entities.ClubUser> SignInManager
+
+
 @{
     ViewBag.Title = "Iniciar sesión";
+    var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
 }
 
 <h3>@ViewBag.Title</h3>
-<form method="post" novalidate>
-    <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
-    <div class="form-group">
-        <label asp-for="Username"></label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username"></span>
+
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" novalidate>
+            <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Acceder" class="btn btn-success" />
+                <a asp-action="forgotten" class="btn btn-link">Olvidé mi contraseña</a>
+                <a asp-action="signup" class="btn btn-link">Crear una cuenta</a>
+            </div>
+        </form>
+
     </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password"></span>
+
+    <div class="col-md-4">
+        <section>
+            @{
+                if (loginProviders.Count != 0)
+                {
+                    <h4>Use another service to log in.</h4>
+                    <hr />
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in loginProviders)
+                                {
+                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account">@provider.AuthenticationScheme</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Acceder" class="btn btn-success" />
-        <a asp-action="forgotten" class="btn btn-link">Olvidé mi contraseña</a>
-        <a asp-action="signup" class="btn btn-link">Crear una cuenta</a>
-    </div>
-</form>
+</div>
+
+
+
+
 
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
