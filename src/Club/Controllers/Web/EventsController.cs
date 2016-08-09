@@ -78,11 +78,14 @@ namespace Club.Controllers.Web
                 Port = requestUri.Port
             };
 
-            eventViewModel.EventCodeUrl = User.IsInRole("Admin") ?
-                _qrCodeApi.GetQrUrl(uri.ToString(), 500)
-                : "/img/defaults/eventcode.png";
-
             var now = _dateTime.Now;
+            eventViewModel.EventCodeUrl = "/img/defaults/eventcode.png";
+            if (eventViewModel.Start.AddDays(-1) <= now && now <= eventViewModel.End
+                && User.IsInRole("Admin"))
+            {
+                eventViewModel.EventCodeUrl = _qrCodeApi.GetQrUrl(uri.ToString(), 500);
+            }
+            
             if (eventViewModel.Start <= now && now <= eventViewModel.End)
             {
                 eventViewModel.Status = EventStatus.Underway;
