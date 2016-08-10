@@ -46,29 +46,65 @@ namespace Club.Models.Repositories
 
         public Problem GetProblemById(int problemId)
         {
-            return _context.Problems
+            var problem = _context.Problems
                 .Include(pr => pr.Topic)
                 .Include(pr => pr.Topic.Level)
                 .FirstOrDefault(pr => pr.Id == problemId);
+
+            if (!_user.IsAuthenticated) return problem;
+
+            var submission = _context.Submissions.FirstOrDefault(s => s.ProblemId == problem.Id && s.UserId == _user.Id);
+            if (submission != null)
+            {
+                problem.Attempted = true;
+                problem.Accepted = submission.Accepted;
+            }
+
+            return problem;
         }
 
         public List<Problem> GetProblemsForLevel(int userLevelId)
         {
             var query = from problem in _context.Problems.Include(pr => pr.Topic).Include(p => p.Topic.Level)
-                join topic in _context.Topics
-                    on problem.TopicId equals topic.Id
-                join userLevel in _context.UserLevels
-                    on topic.UserLevelId equals userLevel.Id
-                select problem;
+                        select problem;
 
-            return query.ToList();
+            var problems = query.ToList();
+
+            if (!_user.IsAuthenticated) return problems;
+
+            foreach (var problem in problems)
+            {
+                var submission = _context.Submissions.FirstOrDefault(s => s.ProblemId == problem.Id && s.UserId == _user.Id);
+                if (submission != null)
+                {
+                    problem.Attempted = true;
+                    problem.Accepted = submission.Accepted;
+                }
+            }
+
+            return problems;
         }
 
         public List<Problem> GetAllCurrentProblems()
         {
             var query = from problem in _context.Problems.Include(pr => pr.Topic).Include(p => p.Topic.Level)
-                select problem;
-            return query.ToList();
+                        select problem;
+
+            var problems = query.ToList();
+
+            if (!_user.IsAuthenticated) return problems;
+
+            foreach (var problem in problems)
+            {
+                var submission = _context.Submissions.FirstOrDefault(s => s.ProblemId == problem.Id && s.UserId == _user.Id);
+                if (submission != null)
+                {
+                    problem.Attempted = true;
+                    problem.Accepted = submission.Accepted;
+                }
+            }
+
+            return problems;
         }
 
         public List<Topic> GetTopics()

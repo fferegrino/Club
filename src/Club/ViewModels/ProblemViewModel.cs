@@ -34,6 +34,11 @@ namespace Club.ViewModels
         [Range(1, 10)]
         public int Difficulty { get; set; }
 
+        
+        public bool Attempted { get; set; }
+        
+        public bool? Accepted { get; set; }
+
         [Display(Name = "Notas")]
         public string Notes { get; set; }
     }

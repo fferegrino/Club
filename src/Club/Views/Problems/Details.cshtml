@@ -4,14 +4,27 @@
 
 @{
     ViewBag.Title = Model.Name;
+    string estatusClass = "";
+    string estatus = "";
+    if (Model.Attempted)
+    {
+        estatusClass = Model.Accepted == null ? "info" : (Model.Accepted.Value ? "success" : "danger");
+        estatus = Model?.Accepted == null ? "está pendiente de revisión" : (Model.Accepted.Value ? "fue aceptado" : "fue rechazado");
+    }
 }
 
+@if (Model.Attempted)
+{
+    <div class="alert alert-@estatusClass" role="alert">
+        Ya has intentado este y tu último intento @estatus
+    </div>
+}
 
 <div class="row">
     <div class="col-md-12 ">
         <div class="jumbotron">
             <h1>@Model.Name <small><a href="@Model.Link"><i class="fa fa-link" style="font-size: 30px;"></i>@Model.Site</a></small></h1>
-            <h3>@Model.Topic — @Model.Level — <span style="font-size: 15px;" ><input type="hidden" value="@Model.Difficulty" class="rating" data-start="0" data-stop="10" data-filled="fa fa-check-circle fa-2x" data-empty="fa fa-circle fa-2x" data-readonly /></span></h3>
+            <h3>@Model.Topic — @Model.Level — <span style="font-size: 15px;"><input type="hidden" value="@Model.Difficulty" class="rating" data-start="0" data-stop="10" data-filled="fa fa-check-circle fa-2x" data-empty="fa fa-circle fa-2x" data-readonly /></span></h3>
             @if (User.Identity.IsAuthenticated)
             {
                 <a asp-action="create" asp-controller="submit" asp-route-problemId="@Model.Id" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Enviar solución</a>

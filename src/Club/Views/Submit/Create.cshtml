@@ -5,7 +5,7 @@
     var problema = ViewBag.Problem as Club.ViewModels.ProblemViewModel;
 
     var estatusClass = Model?.Accepted == null ? "info" : (Model.Accepted.Value ? "success" : "danger");
-    var estauts = Model?.Accepted == null ? "pendiente" : (Model.Accepted.Value ? "aceptada" : "rechazada");
+    var estauts = Model?.Accepted == null ? "está pendiente de revisión" : (Model.Accepted.Value ? "fue aceptado" : "fue rechazado");
 }
 
 
@@ -13,7 +13,7 @@
 @if (Model != null)
 {
     <div class="alert alert-@estatusClass" role="alert">
-        Has intentado este problema @Model.Attempts veces y tu último intento fue @estauts
+        Has intentado este problema @Model.Attempts veces y tu último intento @estauts
     </div>
 }
 <form method="post" enctype="multipart/form-data">

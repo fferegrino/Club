@@ -21,6 +21,12 @@ namespace Club.Models.Entities
         public ClubUser ClubUserCreator { get; set; }
         public DateTime AddedOn { get; set; }
 
+        [NotMapped]
+        public bool Attempted { get; set; }
+
+        [NotMapped]
+        public bool? Accepted { get; set; }
+
         public ICollection<Submission> Submissions { get; set; }
 
         public Problem()

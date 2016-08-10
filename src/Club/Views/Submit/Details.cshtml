@@ -4,7 +4,7 @@
     var problema = ViewBag.Problem as Club.ViewModels.ProblemViewModel;
     ViewBag.Title = "Solución a " + problema.Name;
     var estatusClass = Model.Accepted == null ? "info" : (Model.Accepted.Value ? "success" : "danger");
-    var estauts = Model.Accepted == null ? "pendiente" : (Model.Accepted.Value ? "aceptada" : "rechazada");
+    var estauts = Model?.Accepted == null ? "pendiente de revisión" : (Model.Accepted.Value ? "aceptado" : "rechazado");
 }
 
 <div class="row">

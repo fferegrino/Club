@@ -12,5 +12,7 @@ namespace Club.Common.Security
         string Id { get; }
 
         bool IsInRole(string roleName);
+
+        bool IsAuthenticated { get; }
     }
 }

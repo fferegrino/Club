@@ -45,6 +45,9 @@
                     </thead>
                     @foreach (var problemViewModel in group)
                     {
+                        var estatusClass = problemViewModel.Accepted == null ? "info" : (problemViewModel.Accepted.Value ? "success" : "danger");
+                        var estatus = problemViewModel?.Accepted == null ? "Pendiente de revisión" : (problemViewModel.Accepted.Value ? "Aceptado" : "Rechazado");
+
                         <tr>
                             <td>
                                 @problemViewModel.Name
@@ -53,8 +56,23 @@
                                 @problemViewModel.Topic
                             </td>
                             <td>
-                                <a asp-controller="problems" asp-action="details" asp-route-id="@problemViewModel.Id">Ver</a>
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <a asp-controller="problems" asp-action="details" class="btn btn-default" asp-route-id="@problemViewModel.Id">Ver</a>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        if (problemViewModel.Attempted)
+                                        {
+                                            <a asp-action="details" asp-controller="submit" asp-route-problemId="@problemViewModel.Id" class="btn btn-@estatusClass"><i class="fa fa-paper-plane"></i>&nbsp;@estatus</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="create" asp-controller="submit" asp-route-problemId="@problemViewModel.Id" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Enviar</a>
+                                        }
+                                    }
+                                </div>
                             </td>
+
+
                         </tr>
                     }
                 </table>

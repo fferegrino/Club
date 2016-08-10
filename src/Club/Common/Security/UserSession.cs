@@ -27,5 +27,6 @@ namespace Club.Common.Security
 
         public string HttpRequestMethod => _contextAccessor.HttpContext.Request.Method;
 
+        public bool IsAuthenticated => _contextAccessor.HttpContext.User.Identity.IsAuthenticated;
     }
 }

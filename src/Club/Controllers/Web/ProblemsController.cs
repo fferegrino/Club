@@ -19,12 +19,16 @@ namespace Club.Controllers.Web
         private readonly IProblemsRepository _problemsRepository;
         private readonly IClubUsersRepository _usersRepo;
         private readonly IAutoMapper _mapper;
+        private readonly ISubmissionsRepository _submissionsRepo;
         private IWebUserSession _userSession;
 
         public ProblemsController(IProblemsRepository problemsRepository,
             IClubUsersRepository usersRepo,
+            ISubmissionsRepository submissionsRepo,
+
             IAutoMapper mapper, IWebUserSession userSession)
         {
+            _submissionsRepo = submissionsRepo;
             _problemsRepository = problemsRepository;
             _usersRepo = usersRepo;
             _mapper = mapper;
@@ -34,6 +38,14 @@ namespace Club.Controllers.Web
 
         public IActionResult Details(int id)
         {
+
+            if (User.Identity.IsAuthenticated)
+            {
+               ViewBag.Submission = _mapper.Map<SubmissionViewModel>(
+                    _submissionsRepo.GetSubmissionForProblem(id));
+
+            }
+
             var queriedProblem = _problemsRepository.GetProblemById(id);
             var eventViewModel = _mapper.Map<ProblemViewModel>(queriedProblem);
             return View(eventViewModel);
@@ -94,7 +106,7 @@ namespace Club.Controllers.Web
                 var user = _usersRepo.GetUserByUserName(User.Identity.Name);
                 userLevelId = user.UserLevelId;
             }
-            var problemsRepo = _mapper.Map<List< ProblemViewModel>>( _problemsRepository.GetAllCurrentProblems());
+            var problemsRepo = _mapper.Map<List<ProblemViewModel>>(_problemsRepository.GetAllCurrentProblems());
             var split = problemsRepo.GroupBy(t => t.LevelId).OrderBy(gr => gr.Key);
             ViewBag.UserLevelId = userLevelId;
             return View(split);

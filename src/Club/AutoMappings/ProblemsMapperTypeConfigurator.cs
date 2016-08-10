@@ -24,6 +24,8 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.ViewModels.ProblemViewModel, Club.Models.Entities.Problem>()
                 //.IgnoreAllUnmapped()
                 //.ForMember(entity => entity.TopicId, opt => opt.MapFrom(m => m.TopicId))
+                .ForMember(entity => entity.Attempted, opt => opt.Ignore())
+                .ForMember(entity => entity.Accepted, opt => opt.Ignore())
                 .ForMember(entity => entity.AddedOn, opt => opt.Ignore())
                 .ForMember(entity => entity.ClubUserCreator, opt => opt.Ignore())
                 .ForMember(entity => entity.Submissions, opt => opt.Ignore())
