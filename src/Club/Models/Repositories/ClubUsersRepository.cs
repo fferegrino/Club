@@ -173,6 +173,13 @@ namespace Club.Models.Repositories
         {
             var realEntity = GetUserByUserName(entity.UserName);
 
+
+            realEntity.StudentId = entity.StudentId;
+            realEntity.Phone = entity.Phone;
+            realEntity.FacebookProfile = entity.FacebookProfile;
+            realEntity.TwitterProfile = entity.TwitterProfile;
+            realEntity.GitHubProfile = entity.GitHubProfile;
+
             realEntity.FirstName = entity.FirstName;
             realEntity.LastName = entity.LastName;
             realEntity.Email = entity.Email;

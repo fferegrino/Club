@@ -22,5 +22,20 @@ namespace Club.ViewModels
 
         [Display(Name = "Notas")]
         public string Notes { get; set; }
+
+        [Display(Name = "Boleta")]
+        public string StudentId { get; set; }
+
+        [Display(Name = "Teléfono")]
+        public string Phone { get; set; }
+
+        [Display(Name = "GitHub")]
+        public string GitHubProfile { get; set; }
+
+        [Display(Name = "Twitter")]
+        public string TwitterProfile { get; set; }
+
+        [Display(Name = "Facebook")]
+        public string FacebookProfile { get; set; }
     }
 }

@@ -39,6 +39,35 @@
         <input class="form-control" asp-for="Email" type="email" />
         <span class="text-muted" asp-validation-for="Email"></span>
     </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label asp-for="StudentId"></label>
+            <input asp-for="StudentId" class="form-control" />
+            <span asp-validation-for="StudentId"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Phone"></label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label asp-for="TwitterProfile"></label>
+            <input asp-for="TwitterProfile" class="form-control" />
+            <span asp-validation-for="TwitterProfile"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="FacebookProfile"></label>
+            <input asp-for="FacebookProfile" class="form-control" />
+            <span asp-validation-for="FacebookProfile"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="GitHubProfile"></label>
+            <input asp-for="GitHubProfile" class="form-control" />
+            <span asp-validation-for="GitHubProfile"></span>
+        </div>
+    </div>
     @if (User.IsInRole("Admin"))
     {
         <div class="form-group">

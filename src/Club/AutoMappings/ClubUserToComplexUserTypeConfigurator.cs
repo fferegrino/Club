@@ -37,6 +37,12 @@ namespace Club.AutoMappings
                 .ForMember(model => model.IsAdmin, options => options.MapFrom(viewModel => viewModel.IsAdmin))
                 .ForMember(model => model.UserName, options => options.MapFrom(viewModel => viewModel.Username))
                 .ForMember(model => model.UserLevelId, options => options.MapFrom(viewModel => viewModel.LevelId))
+
+                .ForMember(model => model.FacebookProfile, options => options.MapFrom(viewModel => viewModel.FacebookProfile))
+                .ForMember(model => model.TwitterProfile, options => options.MapFrom(viewModel => viewModel.TwitterProfile))
+                .ForMember(model => model.GitHubProfile, options => options.MapFrom(viewModel => viewModel.GitHubProfile))
+                .ForMember(model => model.StudentId, options => options.MapFrom(viewModel => viewModel.StudentId))
+                .ForMember(model => model.Phone, options => options.MapFrom(viewModel => viewModel.Phone))
                 ;
         }
     }

@@ -35,9 +35,13 @@
                         <div class="carousel-caption">
                             <h1>@announcement.Name</h1>
                             <p class="lead">@announcement.Text</p>
-                            @if(announcement.RelatedUrl != null)
+                            @if (announcement.RelatedUrl != null)
                             {
                                 <a href="@announcement.RelatedUrl" class="btn btn-default">Ver mas</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="announcements" asp-action="detail" asp-route-id="@announcement.Id" class="btn btn-default">Ver aviso</a>
                             }
                             <br />
                             <br />
@@ -61,10 +65,11 @@
     </div>
 </div>
 <style>
-    .carousel-caption .lead{
+    .carousel-caption .lead {
         background-color: rgba(50, 50, 50, 0.7);
     }
-    .carousel-caption h1,.carousel-caption h2, .carousel-caption h3{
+
+    .carousel-caption h1, .carousel-caption h2, .carousel-caption h3 {
         background-color: rgba(50, 50, 50, 0.7);
     }
 </style>

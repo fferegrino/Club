@@ -10,7 +10,7 @@ namespace Club.ViewModels
     {
         [Required]
         [DataType(DataType.Password)]
-        [RegularExpression("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,24}$", ErrorMessage = "La contraseña debe tener 1 letra mayúscula, 1 minúscula y un número")]
+        //[RegularExpression("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,24}$", ErrorMessage = "La contraseña debe tener 1 letra mayúscula, 1 minúscula y un número")]
         public string Password { get; set; }
 
 

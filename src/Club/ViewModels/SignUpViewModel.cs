@@ -11,6 +11,10 @@ namespace Club.ViewModels
         [Required]
         public string Username { get; set; }
 
+        [Display(Name = "Boleta")]
+        [Required]
+        public string StudentId { get; set; }
+
         [Required]
         public string Email { get; set; }
 
@@ -24,7 +28,7 @@ namespace Club.ViewModels
         public string LastName { get; set; }
 
         [DataType(DataType.Password)]
-        [RegularExpression("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,24}$", ErrorMessage = "La contraseña debe tener 1 letra mayúscula, 1 minúscula y un número")]
+        //[RegularExpression("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,24}$", ErrorMessage = "La contraseña debe tener 1 letra mayúscula, 1 minúscula y un número")]
         public string Password { get; set; }
 
         [Display(Name = "Confirmación")]
