@@ -5,6 +5,9 @@ using Club.ViewModels;
 using Club.Services;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNet.Http;
+using Club.Models.Repositories;
+using Club.Common.TypeMapping;
+using System.Collections.Generic;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,8 +18,17 @@ namespace Club.Controllers.Web
         readonly IMailService _mailService;
         private readonly IWebUserSession _userSession;
         private readonly IStringLocalizer<HomeController> _localizer;
-        public HomeController(IMailService mailService, IWebUserSession userSession, IStringLocalizer<HomeController> localizer)
+        private readonly IAnnouncementsRepository _announcementsRepo;
+        private readonly IAutoMapper _mapper;
+
+        public HomeController(IMailService mailService, 
+            IWebUserSession userSession, 
+            IStringLocalizer<HomeController> localizer,
+            IAnnouncementsRepository announcementsRepo,
+            IAutoMapper mapper)
         {
+            _mapper = mapper;
+            _announcementsRepo = announcementsRepo;
             _localizer = localizer;
             _mailService = mailService;
             _userSession = userSession;
@@ -24,12 +36,10 @@ namespace Club.Controllers.Web
 
         public IActionResult Index()
         {
-            string user = "";
-            ViewBag.Hello = _localizer["Hello"];
 
-            if (User.Identity.IsAuthenticated)
-                user = _userSession.Id;
-            return View();
+            var announcements = _announcementsRepo.GetAnnouncementsForCarousel(User.Identity.IsAuthenticated);
+            var a = _mapper.Map<List<AnnouncementCarouselViewModel>>(announcements);
+            return View(a);
         }
 
         public IActionResult Contact()
