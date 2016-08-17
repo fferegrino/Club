@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-md-12 ">
         <div class="jumbotron">
-            <h1>@Model.Name <small><a href="@Model.Link"><i class="fa fa-link" style="font-size: 30px;"></i>@Model.Site</a></small></h1>
+            <h1>@Model.Name <small><a href="@Model.Link" target="_blank"><i class="fa fa-link" style="font-size: 30px;"></i>@Model.Site</a></small></h1>
             <h3>@Model.Topic — @Model.Level — <span style="font-size: 15px;"><input type="hidden" value="@Model.Difficulty" class="rating" data-start="0" data-stop="10" data-filled="fa fa-check-circle fa-2x" data-empty="fa fa-circle fa-2x" data-readonly /></span></h3>
             @if (User.Identity.IsAuthenticated)
             {
