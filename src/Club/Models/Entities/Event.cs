@@ -20,7 +20,11 @@ namespace Club.Models.Entities
         public DateTime End { get; set; }
         public DateTime CreatedOn { get; set; }
         public EventType Type { get; set; }
+
+        public int? ParentEventId { get; set; }
+
         public ICollection<EventAttendance> UsersAttending { get; set; }
+
         public Event()
         {
             UsersAttending = new HashSet<EventAttendance>();

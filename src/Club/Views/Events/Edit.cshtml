@@ -75,9 +75,44 @@
             <span asp-validation-for="End"></span>
         </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Guardar" class="btn btn-success" />
-    </div>
+    @if (Model.HasSimilar)
+    {
+
+        <div class="form-group">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Guardar
+            </button>
+        </div>
+
+    <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Sesiones similares</h4>
+                    </div>
+                    <div class="modal-body">
+                        Esta sesión está asociada con otras sesiones, ¿deseas cambiar solo esta, esta y los siguientes o todos en la serie?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" value="all" name="editopt" class="btn btn-default">Todos</button>
+                        <button type="submit" value="thisAndNext" name="editopt" class="btn btn-default">Este y los siguientes</button>
+                        <button type="submit" value="justThis" name="editopt" class="btn btn-primary">Solo este</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <button type="submit" value="justThis" name="editopt" class="btn btn-primary">Guardar</button>
+        </div>
+    }
+
 </form>
 
 

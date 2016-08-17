@@ -4,10 +4,17 @@ using System;
 
 namespace Club.Models.Repositories
 {
+    public enum EventEditOption
+    {
+        All,
+        Single,
+        SingleAndNext
+    }
+
     public interface IEventsRepository
     {
         void AddEvent(Event item);
-        void UpdateEvent(Event item);
+        void UpdateEvent(Event item, EventEditOption option = EventEditOption.Single);
         QueryResult<Event> GetPagedEventsAttendedByUsername(PagedDataRequest request, string username);
 
         IEnumerable<Event> GetAllEvents();
@@ -24,7 +31,7 @@ namespace Club.Models.Repositories
 
         IEnumerable<EventAttendance> GetAllEventAttendance();
 
-        void DeleteById(int id);
+        void DeleteById(int id, EventEditOption option = EventEditOption.Single);
 
         bool SaveAll();
     }

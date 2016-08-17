@@ -103,7 +103,45 @@ namespace Club.Models.Repositories
                 .Include(ev => ev.Event.ClubUserHost);
         }
 
-        public void DeleteById(int id)
+
+        public void DeleteById(int id, EventEditOption option = EventEditOption.Single)
+        {
+
+            if (option == EventEditOption.Single)
+            {
+                DeleteSingleById(id);
+            }
+            else if (option == EventEditOption.All)
+            {
+                var parentEventId = _context.Events.FirstOrDefault(ev => ev.Id == id).ParentEventId;
+
+                var originalEvent = _context.Events.FirstOrDefault(ev => ev.Id == id);
+
+                var events = new List<Event> { originalEvent };
+                var pass = _context.Events.Where(ev => ev.ParentEventId == parentEventId && ev.Start > _date.Now && ev.Id != id).ToList();
+                events.AddRange(pass);
+                foreach (var evt in events)
+                {
+                    DeleteSingleById(evt.Id);
+                }
+            }
+            else if (option == EventEditOption.SingleAndNext)
+            {
+
+                var originalEvent = _context.Events.FirstOrDefault(ev => ev.Id == id);
+                var parentEventId = originalEvent.Id;
+                var events = new List<Event> { originalEvent };
+                var pass = _context.Events.Where(ev => ev.ParentEventId == originalEvent.ParentEventId && ev.Start > originalEvent.End && ev.Id != id).ToList();
+                events.AddRange(pass);
+                foreach (var evt in events)
+                {
+                    DeleteSingleById(evt.Id);
+                }
+            }
+        }
+
+
+        private void DeleteSingleById(int id)
         {
             var @event = _context.Events
                 .FirstOrDefault(e => e.Id == id);
@@ -123,7 +161,86 @@ namespace Club.Models.Repositories
             _context.Add(item);
         }
 
-        public void UpdateEvent(Event item)
+
+        public void UpdateEvent(Event item, EventEditOption option = EventEditOption.Single)
+        {
+
+            if (option == EventEditOption.Single)
+            {
+                UpdateSingleEvent(item);
+            }
+            else if (option == EventEditOption.All)
+            {
+                var parentEventId = _context.Events.FirstOrDefault(ev => ev.Id == item.Id).ParentEventId;
+
+                var originalEvent = _context.Events.FirstOrDefault(ev => ev.Id == item.Id);
+
+
+                originalEvent.Start = item.Start;
+                originalEvent.End = item.End;
+
+
+                var events = new List<Event> { originalEvent };
+                var pass = _context.Events.Where(ev => ev.ParentEventId == parentEventId && ev.Start > _date.Now && ev.Id != item.Id).ToList();
+                events.AddRange(pass);
+
+                var eventDuration = originalEvent.End - originalEvent.Start;
+                var start = originalEvent.Start;
+                foreach (var evt in events)
+                {
+
+                    evt.IsPrivate = item.IsPrivate;
+                    evt.Name = item.Name;
+                    evt.Location = item.Location;
+                    evt.Description = item.Description;
+                    evt.Type = item.Type;
+                    evt.Term = _termsRepo.GetTermById(item.TermId);
+                    evt.TermId = item.TermId;
+
+                    evt.ParentEventId = parentEventId;
+                    evt.Start = start;
+                    evt.End = start + eventDuration;
+                    UpdateSingleEvent(evt);
+                    start = start.AddDays(7);
+                }
+            }
+            else if (option == EventEditOption.SingleAndNext)
+            {
+
+                var originalEvent = _context.Events.FirstOrDefault(ev => ev.Id == item.Id);
+                var parentEventId = originalEvent.Id;
+
+                originalEvent.Start = item.Start;
+                originalEvent.End = item.End;
+
+
+                var events = new List<Event> { originalEvent };
+                var pass = _context.Events.Where(ev => ev.ParentEventId == originalEvent.ParentEventId && ev.Start >  originalEvent.End && ev.Id != item.Id).ToList();
+                events.AddRange(pass);
+
+                var eventDuration = originalEvent.End - originalEvent.Start;
+                var start = originalEvent.Start;
+                foreach (var evt in events)
+                {
+
+                    evt.IsPrivate = item.IsPrivate;
+                    evt.Name = item.Name;
+                    evt.Location = item.Location;
+                    evt.Description = item.Description;
+                    evt.Type = item.Type;
+                    evt.Term = _termsRepo.GetTermById(item.TermId);
+                    evt.TermId = item.TermId;
+
+                    evt.ParentEventId = parentEventId;
+                    evt.Start = start;
+                    evt.End = start + eventDuration;
+                    UpdateSingleEvent(evt);
+                    start = start.AddDays(7);
+                }
+            }
+        }
+
+        private void UpdateSingleEvent(Event item)
         {
             var oldEvent = _context.Events.FirstOrDefault(ev => ev.Id == item.Id);
 
@@ -138,6 +255,10 @@ namespace Club.Models.Repositories
 
             oldEvent.Term = _termsRepo.GetTermById(item.TermId);
             oldEvent.TermId = item.TermId;
+
+
+            oldEvent.ParentEventId = item.ParentEventId;
+
 
             _context.Update(oldEvent);
         }

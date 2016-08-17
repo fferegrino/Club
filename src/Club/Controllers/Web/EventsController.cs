@@ -140,20 +140,17 @@ namespace Club.Controllers.Web
             if (ModelState.IsValid)
             {
                 var eventEntity = _mapper.Map<Models.Entities.Event>(viewModel);
-                _eventsRepository.UpdateEvent(eventEntity);
+                System.Diagnostics.Debug.WriteLine("Opt: " + viewModel.EditOpt);
 
-                if (viewModel.Repeat && viewModel.RepeatUntil.HasValue)
+                var editOption = EventEditOption.Single;
+                switch (viewModel.EditOpt)
                 {
-                    var eventDuration = eventEntity.End - eventEntity.Start;
-                    for (var start = eventEntity.Start.AddDays(7); start < viewModel.RepeatUntil; start = start.AddDays(7))
-                    {
-                        var repeatedEvent = _mapper.Map<Models.Entities.Event>(viewModel);
-                        repeatedEvent.Start = start;
-                        repeatedEvent.End = start + eventDuration;
-                        repeatedEvent.EventCode = _eventCodeGenerator.GetCode();
-                        _eventsRepository.UpdateEvent(repeatedEvent);
-                    }
+                    case "all": editOption = EventEditOption.All; break;
+                    case "thisAndNext": editOption = EventEditOption.SingleAndNext; break;
+                    case "justThis": editOption = EventEditOption.Single; break;
                 }
+
+                _eventsRepository.UpdateEvent(eventEntity, editOption);
 
                 _eventsRepository.SaveAll();
 
@@ -202,6 +199,10 @@ namespace Club.Controllers.Web
                 eventEntity.EventCode = _eventCodeGenerator.GetCode();
                 _eventsRepository.AddEvent(eventEntity);
 
+                _eventsRepository.SaveAll();
+                eventEntity.ParentEventId = eventEntity.Id;
+                _eventsRepository.UpdateEvent(eventEntity);
+
                 if (viewModel.Repeat && viewModel.RepeatUntil.HasValue)
                 {
                     var eventDuration = eventEntity.End - eventEntity.Start;
@@ -211,6 +212,7 @@ namespace Club.Controllers.Web
                         repeatedEvent.Start = start;
                         repeatedEvent.End = start + eventDuration;
                         repeatedEvent.EventCode = _eventCodeGenerator.GetCode();
+                        repeatedEvent.ParentEventId = eventEntity.Id;
                         _eventsRepository.AddEvent(repeatedEvent);
                     }
                 }
@@ -237,11 +239,19 @@ namespace Club.Controllers.Web
         // POST: dummy/Delete/5
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, string editOpt)
         {
             try
             {
-                _eventsRepository.DeleteById(id);
+                var editOption = EventEditOption.Single;
+                switch (editOpt)
+                {
+                    case "all": editOption = EventEditOption.All; break;
+                    case "thisAndNext": editOption = EventEditOption.SingleAndNext; break;
+                    case "justThis": editOption = EventEditOption.Single; break;
+                    default: editOption = EventEditOption.Single; break;
+                }
+                _eventsRepository.DeleteById(id, editOption);
                 _eventsRepository.SaveAll();
                 return RedirectToAction("index", "calendar");
             }

@@ -49,6 +49,9 @@ namespace Club.ViewModels
 
         public string EventCodeUrl { get; set; }
 
+        public bool HasSimilar { get; set; }
+        public string EditOpt { get; set; }
+
         [Display(Name = "Duración")]
         public string Duration { get; set; }
 

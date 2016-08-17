@@ -13,7 +13,9 @@ namespace Club.AutoMappings
         public void Config()
         {
             Mapper.CreateMap<Club.Models.Entities.Event, Club.ViewModels.EventViewModel>()
-                .ForMember(vm=> vm.Host, opt => opt.ResolveUsing(m=> m.ClubUserHost.UserName))
+                .ForMember(vm => vm.Host, opt => opt.ResolveUsing(m => m.ClubUserHost.UserName))
+                .ForMember(vm => vm.HasSimilar, opt => opt.ResolveUsing(m => m.ParentEventId.HasValue))
+                .ForMember(vm => vm.EditOpt, opt => opt.Ignore())
                 .ForMember(vm => vm.EventCodeUrl, opt => opt.Ignore())
                 .ForMember(vm => vm.Status, opt => opt.Ignore())
                 .ForMember(vm => vm.Repeat, opt => opt.Ignore())
@@ -45,6 +47,7 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.ViewModels.EventViewModel, Club.Models.Entities.Event>()
                 .ForMember(m => m.UsersAttending, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHost, opt => opt.Ignore())
+                .ForMember(m => m.ParentEventId, opt => opt.Ignore())
                 .ForMember(m => m.Term, opt => opt.Ignore())
                 .ForMember(m => m.ClubUserHostId, opt => opt.Ignore());
 
