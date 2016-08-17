@@ -31,6 +31,11 @@ namespace Club.ViewModels
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime DueDate { get; set; }
+
+        public bool IsCarousel { get; set; }
+        public string ImageUrl { get; set; }
+        public string RelatedUrl { get; set; }
+
         public string HumanizedDueDate { get; set; }
         public DateTime CreatedOn { get; set; }
     }

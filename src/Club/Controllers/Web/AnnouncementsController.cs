@@ -9,6 +9,11 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http.Internal;
 using Microsoft.AspNet.Mvc;
 using Club.Common;
+using Microsoft.AspNet.Http;
+using ImageProcessor;
+using ImageProcessor.Imaging.Formats;
+using Microsoft.AspNet.Hosting;
+using ImageProcessor.Imaging;
 
 namespace Club.Controllers.Web
 {
@@ -17,11 +22,14 @@ namespace Club.Controllers.Web
         private readonly IAnnouncementsRepository _announcementsRepository;
         private readonly IAutoMapper _mapper;
         private readonly IDateTime _dateTime;
+        private string _assetsFolder;
 
         public AnnouncementsController(IAutoMapper mapper,
             IAnnouncementsRepository announcementsRepository,
+            IHostingEnvironment hostEnv,
             IDateTime dateTime)
         {
+            _assetsFolder = hostEnv.MapPath("assets/a");
             _dateTime = dateTime;
             _mapper = mapper;
             _announcementsRepository = announcementsRepository;
@@ -42,14 +50,36 @@ namespace Club.Controllers.Web
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create(AnnouncementViewModel viewModel)
+        public IActionResult Create(AnnouncementViewModel viewModel, ICollection<IFormFile> announcementImage)
         {
-            if (ModelState.IsValid)
+            bool isAValidCarousel = announcementImage.Any();
+            
+            if (ModelState.IsValid )
             {
                 var model = _mapper.Map<Models.Entities.Announcement>(viewModel);
                 model.ClubUserCreatorId = User.Identity.Name;
-                _announcementsRepository.AddAnnouncement(model);
 
+                if(isAValidCarousel)
+                {
+                    var fileImage = Guid.NewGuid().ToString("N");
+                    var realFileName = $"{viewModel.DueDate:yyyyMMdd}-" + fileImage.Substring(7);
+                    string file = _assetsFolder + $"\\{realFileName}.png";
+                    var image = announcementImage.First();
+                    using (var inStream = image.OpenReadStream())
+                    {
+                        ISupportedImageFormat format = new PngFormat { Quality = 100 };
+                        using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                        {
+
+                            imageFactory.Load(inStream)
+                                        .Format(format)
+                                        .Save(file);
+                            model.ImageUrl = realFileName;
+                        }
+                    }
+                }
+
+                _announcementsRepository.AddAnnouncement(model);
                 _announcementsRepository.SaveAll();
 
                 return RedirectToAction("detail", new { id = model.Id });

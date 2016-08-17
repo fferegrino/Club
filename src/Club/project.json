@@ -27,7 +27,8 @@
     "Newtonsoft.Json": "9.0.1",
     "EPPlus": "4.1.0",
     "Microsoft.AspNet.Session": "1.0.0-rc1-final",
-    "Microsoft.Extensions.SecretManager": "1.0.0-rc1-final"
+    "Microsoft.Extensions.SecretManager": "1.0.0-rc1-final",
+    "ImageProcessor": "2.4.4"
   },
 
   "commands": {

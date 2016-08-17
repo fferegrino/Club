@@ -12,6 +12,9 @@ namespace Club.Models.Entities
         public ClubUser ClubUserCreator { get; set; }
         public AnnouncementType Type { get; set; }
         public bool IsPrivate { get; set; }
+        public bool IsCarousel { get; set; }
+        public string ImageUrl { get; set; }
+        public string RelatedUrl { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime CreatedOn { get; set; }
     }

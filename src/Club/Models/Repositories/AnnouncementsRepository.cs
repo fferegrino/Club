@@ -13,6 +13,7 @@ namespace Club.Models.Repositories
     {
         IEnumerable<Announcement> GetAnnouncementsForPeriod(DateTime start, DateTime end, bool showPrivate);
         IEnumerable<Announcement> GetAnnouncementsForMonth(int year, int month, bool showPrivate);
+        IEnumerable<Announcement> GetAnnouncementsForCarousel(bool showPrivate);
         IEnumerable<Announcement> GetAllAnnouncements();
         Announcement GetAnnouncementById(int announcementId);
         void AddAnnouncement(Announcement item);
@@ -47,6 +48,16 @@ namespace Club.Models.Repositories
             return _context.Announcements.Include(evt => evt.ClubUserCreator).FirstOrDefault(ann => ann.Id == announcementId);
         }
 
+        public IEnumerable<Announcement> GetAnnouncementsForCarousel(bool showPrivate)
+        {
+            var results = _context.Announcements.Include(evt => evt.ClubUserCreator).Where(ann => ann.IsCarousel);
+
+
+            if (showPrivate)
+                return results;
+
+            return results.Where(a => a.IsPrivate == false);
+        }
 
         public IEnumerable<Announcement> GetAnnouncementsForPeriod(DateTime start, DateTime end, bool showPrivate)
         {
