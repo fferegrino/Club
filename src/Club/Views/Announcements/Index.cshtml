@@ -15,7 +15,12 @@
         </div>
         <div class="panel-footer">
             <span title="@announcement.DueDate">Vencimiento en @announcement.HumanizedDueDate</span> por <i class="fa fa-user"></i> @announcement.Creator
-            <a asp-action="edit" asp-route-id="@announcement.Id">Editar</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <hr />
+                <a asp-action="edit" class="btn btn-default" asp-route-id="@announcement.Id">Editar</a>
+                <a asp-action="delete" class="btn btn-danger" asp-route-id="@announcement.Id">Eliminar</a>
+            }
         </div>
     </div>
 }

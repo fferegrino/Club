@@ -120,7 +120,14 @@ namespace Club.Controllers.Web
             return View(viewModel);
         }
 
+        public IActionResult Top(int? id)
+        {
+            // id is count
 
+            var entity = _usersRepository.GetMostActiveUsers(id ?? 10);
+            var viewModel = _mapper.Map<IEnumerable<ViewModels.ComplexUserViewModel>>(entity);
+            return View(viewModel);
+        }
 
         public IEnumerable<SelectListItem> GetAllUserLevelsSelectList(int selectedTopicId = 0)
         {

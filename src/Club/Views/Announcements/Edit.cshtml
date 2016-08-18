@@ -5,7 +5,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<form method="post" novalidate>
+<form method="post"  enctype="multipart/form-data">
     <div asp-validation-sumnmary="ValidationSummary.ModelOnly"></div>
 
     <div class="row">
@@ -56,6 +56,21 @@
             <label asp-for="DueDate"></label>
             <input asp-for="DueDate" class="form-control"/>
             <span asp-validation-for="DueDate"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group  col-md-2">
+            <label asp-for="IsCarousel"></label>
+            <input asp-for="IsCarousel" class="form-control" />
+        </div>
+        <div class="form-group  col-md-5">
+            <label asp-for="ImageUrl"></label>
+            <input type="file" class="form-control" name="announcementImage" id="announcementImage" />
+        </div>
+        <div class="form-group  col-md-5">
+            <label asp-for="RelatedUrl"></label>
+            <input asp-for="RelatedUrl" class="form-control" />
         </div>
     </div>
 

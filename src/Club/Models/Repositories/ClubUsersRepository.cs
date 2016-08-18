@@ -18,7 +18,7 @@ namespace Club.Models.Repositories
     {
         QueryResult<ClubUser> GetPagedUsersWithAttendance(PagedDataRequest request);
         QueryResult<ClubUser> GetPagedUnapprovedUsers(PagedDataRequest request);
-        IEnumerable<ClubUser> GetMostActiveUsers(int count = 5);
+        IEnumerable<ClubUser> GetMostActiveUsers(int count = 10);
         IEnumerable<ClubUser> GetUnapprovedUsers(int count = 0);
         ClubUser GetUserByUserName(string username);
         ClubUser GetFullUserByUserName(string username);
@@ -103,7 +103,7 @@ namespace Club.Models.Repositories
             return new QueryResult<ClubUser>(request.PageSize, totalItemCount, toReturnUsers);
         }
 
-        public IEnumerable<ClubUser> GetMostActiveUsers(int count = 5)
+        public IEnumerable<ClubUser> GetMostActiveUsers(int count = 10)
         {
 
             var attendance = from submissions in _context.Submissions
@@ -117,7 +117,7 @@ namespace Club.Models.Repositories
                          select usr);
 
 
-            var mostActiveUsers = users.Take(5).ToList();
+            var mostActiveUsers = users.Take(count).ToList();
             // Ugly hack around not being able to load EventsAttendedCount at the previous query
             mostActiveUsers.ForEach(u => u.EventsAttendedCount = _context.EventAttendance.Count(c => c.ClubUserId == u.Id));
             mostActiveUsers.ForEach(u => u.SubmissionsCount = _context.Submissions.Count(c => c.UserId == u.Id));

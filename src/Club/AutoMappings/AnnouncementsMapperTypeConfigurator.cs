@@ -19,6 +19,7 @@ namespace Club.AutoMappings
 
             Mapper.CreateMap<Club.Models.Entities.Announcement, Club.ViewModels.AnnouncementCarouselViewModel>()
                 .ForMember(vm => vm.ImageUrl, opt => opt.ResolveUsing<AnnouncementImageResolver>())
+                .ForMember(vm=> vm.Text , opt => opt.ResolveUsing(m=> m.Text.Truncate(160)))
                 //.ForMember(vm => vm.RelatedUrl, opt => opt.ResolveUsing<AnnouncementImageResolver>())
                 .ForMember(vm => vm.Creator, opt => opt.ResolveUsing(m => m.ClubUserCreator.UserName))
                 .ForMember(vm => vm.HumanizedDueDate, opt => opt.ResolveUsing(

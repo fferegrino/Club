@@ -34,6 +34,7 @@ namespace Club.AutoMappings
             Mapper.CreateMap<Club.Models.Entities.Submission, Club.ApiModels.SubmissionApiModel>()
                 .ForMember(en => en.User, opt => opt.ResolveUsing(ent => ent.User.UserName))
                 .ForMember(en => en.ProblemId, opt => opt.ResolveUsing(ent => ent.Problem.Id))
+                //.ForMember(en => en.Status, opt => opt.ResolveUsing(ent => ent.Accepted.HasValue == false ? "Pendiente" : (ent.Accepted.GetValueOrDefault() ? "Aceptado" : "Rechazado")))
                 .ForMember(en => en.ProblemName, opt => opt.ResolveUsing(ent => ent.Problem.Name))
                 ;
 

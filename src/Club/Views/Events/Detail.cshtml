@@ -8,6 +8,13 @@
         <strong>Esta es una sesión privada</strong>, lo cual significa que solo es visible para los miembros
     </div>
 }
+
+@if (Model.HasSimilar)
+{
+    <div class="alert alert-info" role="alert">
+        <strong>Hay eventos similares</strong>
+    </div>
+}
 <div class="row">
     <div class="col-md-10 col-md-pull-1 text-center visible-print-block">
         <img class="img-responsive img-thumbnail" src="@Model.EventCodeUrl" alt="Código QR de la sesión" />

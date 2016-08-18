@@ -103,6 +103,13 @@ namespace Club.Models.Repositories
             oldItem.Text = item.Text;
             oldItem.DueDate = item.DueDate;
 
+            oldItem.IsCarousel = item.IsCarousel;
+            if (!String.IsNullOrEmpty(item.ImageUrl))
+            {
+                oldItem.ImageUrl = item.ImageUrl;
+            }
+            oldItem.RelatedUrl = item.RelatedUrl;
+
             _context.Update(oldItem);
         }
 

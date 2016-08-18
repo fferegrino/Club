@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Club.ViewModels.ComplexUserViewModel>
+@{
+    ViewBag.Title = "Top 10";
+    var first = Model.Take(1).FirstOrDefault();
+    var second = Model.Skip(1).Take(1).FirstOrDefault();
+    var third = Model.Skip(2).Take(1).FirstOrDefault();
+    int place = 4;
+}
+
+<div class="row">
+    <div style="text-align: center" class="col-md-6 col-md-push-3">
+        @if (first != null)
+        {
+            <h1><small>1</small> @first.Username</h1>
+        }
+        @if (second != null)
+        {
+            <h2> <small>2</small> @second.Username</h2>
+        }
+        @if (third != null)
+        {
+            <h3> <small>3</small> @third.Username</h3>
+        }
+        @if (Model.Skip(3).Any())
+        {
+            @foreach (var usuario in Model.Skip(3))
+            {
+                <p class="lead"> <small>@(place++)</small> @usuario.Username</p>
+            }
+        }
+    </div>
+</div>

@@ -79,19 +79,28 @@ namespace Club.Controllers.Web
         {
             var problem = _mapper.Map<SubmissionViewModel>(_submissionsRepo.GetSubmissionForProblem(problemId));
             var file = files.FirstOrDefault();
+            ViewBag.Problem = _mapper.Map<ProblemViewModel>(_problemsRepo.GetProblemById(problemId));
             if (file != null || !String.IsNullOrEmpty(viewModel.GistUrl))
             {
                 if (ModelState.IsValid)
                 {
                     var maxKbSize = Int32.Parse(Startup.Configuration["AppSettings:MaxKbFileSize"]);
                     var m = _mapper.Map<Models.Entities.Submission>(viewModel);
-                    if (file!= null && file.Length / 1000 < maxKbSize)
+                    if (file != null && file.Length / 1000 < maxKbSize)
                     {
-                        // Upload file here:
-                        m.File = new byte[file.Length];
-                        using (var stream = file.OpenReadStream())
+                        if (file.ContentType.StartsWith("text/"))
                         {
-                            stream.Read(m.File, 0, (int)file.Length);
+                            // Upload file here:
+                            m.File = new byte[file.Length];
+                            using (var stream = file.OpenReadStream())
+                            {
+                                stream.Read(m.File, 0, (int)file.Length);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "El archivo debe ser de texto plano");
+                            return View(problem);
                         }
                     }
                     _submissionsRepo.AddOrUpdateSubmission(m, problem != null);
@@ -99,7 +108,6 @@ namespace Club.Controllers.Web
                     return RedirectToAction("details", new { problemId });
                 }
             }
-            ViewBag.Problem = _mapper.Map<ProblemViewModel>(_problemsRepo.GetProblemById(problemId));
             return View(problem);
         }
 

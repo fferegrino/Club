@@ -109,14 +109,37 @@ namespace Club.Controllers.Web
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Edit(AnnouncementViewModel viewModel)
+        public IActionResult Edit(AnnouncementViewModel viewModel, ICollection<IFormFile> announcementImage)
         {
+            bool isAValidCarousel = announcementImage.Any();
+
             if (ModelState.IsValid)
             {
                 var model = _mapper.Map<Models.Entities.Announcement>(viewModel);
                 model.ClubUserCreatorId = User.Identity.Name;
-                _announcementsRepository.UpdateAnnoucement(model);
 
+
+                if (isAValidCarousel)
+                {
+                    var fileImage = Guid.NewGuid().ToString("N");
+                    var realFileName = $"{viewModel.DueDate:yyyyMMdd}-" + fileImage.Substring(7);
+                    string file = _assetsFolder + $"\\{realFileName}.png";
+                    var image = announcementImage.First();
+                    using (var inStream = image.OpenReadStream())
+                    {
+                        ISupportedImageFormat format = new PngFormat { Quality = 100 };
+                        using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                        {
+
+                            imageFactory.Load(inStream)
+                                        .Format(format)
+                                        .Save(file);
+                            model.ImageUrl = realFileName;
+                        }
+                    }
+                }
+
+                _announcementsRepository.UpdateAnnoucement(model);
                 _announcementsRepository.SaveAll();
 
                 return RedirectToAction("detail", new { id = model.Id });

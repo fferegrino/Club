@@ -10,6 +10,7 @@ namespace Club.ApiModels
         public string User { get; set; }
         public int ProblemId { get; set; }
         public string ProblemName { get; set; }
+        //public string Status { get; set; }
         public bool? Accepted { get; set; }
         public DateTime LastAttemptDate { get; set; }
     }
