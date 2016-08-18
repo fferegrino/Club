@@ -74,11 +74,14 @@ namespace Club.Models.Repositories
 
         public QueryResult<ClubUser> GetPagedUsersWithAttendance(PagedDataRequest request)
         {
+            var attendance = from ea in _context.Submissions
+                             group ea by ea.UserId into u
+                             select u;
 
-            var users = (from ea in _context.EventAttendance
-                         group ea by ea.ClubUserId into u
-                         join usr in _context.Users on u.Key equals usr.Id
-                         orderby u.Count() descending
+            var users = (from usr in _context.Users
+                         join att in attendance on usr.Id equals att.Key into mixedAttendance
+                         from OD in mixedAttendance.DefaultIfEmpty()
+                         orderby (OD != null ? OD.Count() : 0) descending
                          select usr);
 
             var totalItemCount = users.Count();
@@ -87,6 +90,7 @@ namespace Club.Models.Repositories
 
             // Ugly hack around not being able to load EventsAttendedCount at the previous query
             toReturnUsers.ForEach(u => u.EventsAttendedCount = _context.EventAttendance.Count(c => c.ClubUserId == u.Id));
+            toReturnUsers.ForEach(u => u.SubmissionsCount = _context.Submissions.Count(c => c.UserId == u.Id));
             return new QueryResult<ClubUser>(request.PageSize, totalItemCount, toReturnUsers);
         }
 
@@ -101,16 +105,22 @@ namespace Club.Models.Repositories
 
         public IEnumerable<ClubUser> GetMostActiveUsers(int count = 5)
         {
-            var users = (from ea in _context.EventAttendance
-                         group ea by ea.ClubUserId into u
-                         join usr in _context.Users on u.Key equals usr.Id
-                         orderby u.Count() descending
+
+            var attendance = from submissions in _context.Submissions
+                             group submissions by submissions.UserId into u
+                             select u;
+
+            var users = (from usr in _context.Users
+                         join att in attendance on usr.Id equals att.Key into mixedAttendance
+                         from OD in mixedAttendance.DefaultIfEmpty()
+                         orderby (OD != null ? OD.Count() : 0) descending
                          select usr);
 
 
             var mostActiveUsers = users.Take(5).ToList();
             // Ugly hack around not being able to load EventsAttendedCount at the previous query
             mostActiveUsers.ForEach(u => u.EventsAttendedCount = _context.EventAttendance.Count(c => c.ClubUserId == u.Id));
+            mostActiveUsers.ForEach(u => u.SubmissionsCount = _context.Submissions.Count(c => c.UserId == u.Id));
             return mostActiveUsers;
         }
 

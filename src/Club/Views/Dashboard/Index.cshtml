@@ -116,10 +116,48 @@
 </nav>
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-8">
         <div id="calendar" class="calendar">
         </div>
     </div>
+
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 10</h3>
+
+            </div>
+            <div class="panel-body">
+                @if (Model.MostActiveUsers.Any())
+                {
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Problemas</th>
+                                <th>Sesiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var usuario in Model.MostActiveUsers)
+                            {
+                                <tr>
+                                    <td><a asp-controller="users" asp-action="details" asp-route-username="@usuario.Username">@usuario.Username</a></td>
+                                    <td>@usuario.SubmissionsCount</td>
+                                    <td>@usuario.EventsAttendedCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="panel-footer">
+                <a asp-action="index" asp-controller="users">Ver todos</a>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 

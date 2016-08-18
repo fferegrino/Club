@@ -12,5 +12,6 @@ namespace Club.ApiModels
         public string LastName { get; set; }
         public string Username { get; set; }
         public int EventsAttendedCount { get; set; }
+        public int SubmissionsCount { get; set; }
     }
 }

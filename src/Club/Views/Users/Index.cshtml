@@ -14,6 +14,7 @@
                     <th>Usuario</th>
                     <th>Nombre</th>
                     <th>Apellidos</th>
+                    <th>Problemas resueltos</th>
                     <th>Sesiones</th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
                     </td>
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.lastName }}</td>
+                    <td>{{ user.submissionsCount }}</td>
                     <td>{{ user.eventsAttendedCount }}</td>
                 </tr>
             </tbody>

@@ -31,6 +31,9 @@ namespace Club.Models.Entities
 
         public string Notes { get; set; }
 
+        [NotMapped]
+        public int SubmissionsCount { get; internal set; }
+
         public ClubUser()
         {
             EventsAttended = new HashSet<EventAttendance>();

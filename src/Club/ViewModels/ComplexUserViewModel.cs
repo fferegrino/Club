@@ -8,5 +8,6 @@ namespace Club.ViewModels
     public class ComplexUserViewModel : SimpleUserViewModel
     {
         public int EventsAttendedCount { get; set; }
+        public int SubmissionsCount { get; set; }
     }
 }

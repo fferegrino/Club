@@ -42,7 +42,7 @@ namespace Club.Controllers.Web
             userDashboard.UsersAwaitingApproval = _mapper.Map<IEnumerable<ViewModels.SimpleUserViewModel>>(n);
             userDashboard.UsersAwaitingApprovalCount = _clubUsersRepository.CountUnapprovedUsers();
             userDashboard.NextEvent = _mapper.Map<ViewModels.EventViewModel>(_eventsRepository.GetNextEvent());
-            var mostActiveUsers = _clubUsersRepository.GetMostActiveUsers();
+            var mostActiveUsers = _clubUsersRepository.GetMostActiveUsers(10);
             userDashboard.MostActiveUsers = _mapper.Map<IEnumerable<ViewModels.ComplexUserViewModel>>(mostActiveUsers);
 
             userDashboard.PendingSubmissionsCount = _submissionsRepository.GetAllPendingSubmissionsCount();

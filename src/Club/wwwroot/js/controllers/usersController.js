@@ -17,7 +17,7 @@
             var url = "/api/users?pageSize=" + vm.pageSize + "&pageNumber=" + vm.currentPage;
             $http.get(url)
                 .then(function (response) {
-                    //console.log(response.data);
+                    console.log(response.data);
                     angular.copy(response.data.items, vm.queriedUsers);
                     vm.totalPages = response.data.totalPages;
                 },
