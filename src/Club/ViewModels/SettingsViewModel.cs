@@ -9,5 +9,7 @@ namespace Club.ViewModels
     {
         public string HtmlFooter { get; set; }
         public string Theme { get; set; }
+        public string CallToActionText { get; set; }
+        public string CallToActionLink { get; set; }
     }
 }

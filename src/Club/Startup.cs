@@ -37,6 +37,8 @@ namespace Club
         public static IDataProtectionProvider DataProtectionProvider { get; set; }
 
         public static String HtmlFooter = "© 2016 ESCOM - IPN ACM Student Chapter";
+        public static String CallToActionText = "Blog";
+        public static String CallToActionLink = "http://escom-ipn.acm.org/blog/";
         public static String Theme = "cosmo";
 
         public const string CultureCookieName = "_cultureLocalizationClub";
@@ -44,7 +46,9 @@ namespace Club
         public static Club.ViewModels.SettingsViewModel Settings = new ViewModels.SettingsViewModel
         {
             HtmlFooter = HtmlFooter,
-            Theme = Theme
+            Theme = Theme,
+            CallToActionLink = CallToActionLink,
+            CallToActionText = CallToActionText
         };
 
         public Startup(IApplicationEnvironment appEnv, IHostingEnvironment env)

@@ -86,7 +86,7 @@
                         <ul class="nav navbar-nav">
                             <li><a asp-controller="calendar" asp-action="index">Calendario</a></li>
                             <li><a asp-controller="announcements" asp-action="index">Avisos</a></li>
-                            <li><a href="http://escom-ipn.acm.org/blog/">Blog</a></li>
+                            <li><a href="@Club.Startup.Settings.CallToActionLink">@Club.Startup.Settings.CallToActionText</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             @if (User.Identity.IsAuthenticated)

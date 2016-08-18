@@ -299,6 +299,8 @@ namespace Club.Controllers.Web
         {
             Startup.Settings.HtmlFooter = settings.HtmlFooter;
             Startup.Settings.Theme = settings.Theme;
+            Startup.Settings.CallToActionLink = settings.CallToActionLink;
+            Startup.Settings.CallToActionText = settings.CallToActionText;
             return View(Startup.Settings);
         }
 

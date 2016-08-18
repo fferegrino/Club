@@ -14,7 +14,7 @@
                 <label for="theme">Tema</label>
                 <select name="theme" id="theme" class="form-control">
                     <option value="cerulean">Cerulean</option>
-                    <option value="cosmo">Cosmo</option>
+                    <option value="cosmo" selected>Cosmo</option>
                     <option value="cyborg">Cyborg</option>
                     <option value="darkly">Darkly</option>
                     <option value="flatly">Flatly</option>
@@ -26,6 +26,16 @@
                     <option value="spacelab">Spacelab</option>
                     <option value="superhero">Superhero</option>
                 </select>
+            </div>
+            <div class="row">
+                <div class="form-group  col-md-4">
+                    <label for="htmlFooter">Texto enlace superior</label>
+                    <input asp-for="CallToActionText" class="form-control" />
+                </div>
+                <div class="form-group  col-md-8">
+                    <label for="htmlFooter">Enlace superior</label>
+                    <input asp-for="CallToActionLink" class="form-control" />
+                </div>
             </div>
             <div class="form-group">
                 <label for="htmlFooter">Footer</label>

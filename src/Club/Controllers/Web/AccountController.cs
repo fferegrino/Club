@@ -193,9 +193,10 @@ namespace Club.Controllers.Web
 
         public IActionResult ResetPassword(string userId, string code)
         {
+            ViewBag.Succeeded = false;
             if (userId == null || code == null)
             {
-                return View("Error");
+                return View(nameof(Login));
             }
             return View(new ResetPasswordViewModel() { UserId = userId, Code = code });
         }
@@ -211,10 +212,16 @@ namespace Club.Controllers.Web
             var result = await _userManager.ResetPasswordAsync(user, vm.Code, vm.Password);
 
 
+            ViewBag.Succeeded = false;
             if (result.Succeeded)
-                return RedirectToAction("Login");
+            {
+                ViewBag.Succeeded = true;
+                return View();
+            }
             else
+            {
                 return View(vm);
+            }
         }
 
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
