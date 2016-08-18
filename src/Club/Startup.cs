@@ -90,7 +90,7 @@ namespace Club
                 var formatter = options.OutputFormatters.First(f => f is JsonOutputFormatter) as JsonOutputFormatter;
 
                 formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                formatter.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
+                //formatter.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
                 formatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
@@ -99,7 +99,11 @@ namespace Club
 
 
                 config.User.RequireUniqueEmail = true;
-                config.Password.RequiredLength = 6;
+                config.Password.RequiredLength = 3;
+                config.Password.RequireNonLetterOrDigit = false;
+                config.Password.RequireDigit = false;
+                config.Password.RequireLowercase = false;
+                config.Password.RequireUppercase = false;
                 config.Password.RequireNonLetterOrDigit = false;
                 config.Cookies.ApplicationCookie.LoginPath = "/account/login";
                 config.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents
