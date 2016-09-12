@@ -43,6 +43,7 @@ namespace Club.Controllers.Api
             return Json(attendance);
         }
 
+        [Authorize]
         [HttpGet("attended/{*username}")]
         public JsonResult GetAttendedEvents(string username)
         {

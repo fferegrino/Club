@@ -1,0 +1,22 @@
+﻿@model Club.ViewModels.ComplexUserViewModel
+@{
+}
+
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="jumbotron">
+            <h1>@Model.Username <small>@Model.FirstName @Model.LastName</small></h1>
+            <p class="lead danger">Se borrarán los problemas que ha intentado así como todas sus asistencias.</p>
+            <p class="lead">¿Estás seguro que quieres eliminar a <strong>@Model.Username</strong>? esta acción no puede deshacerse.</p>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <a class="btn btn-info" href="@Url.Action("detail", new {id = Model.Id})">Volver</a> <input type="submit" value="Eliminar" class="btn btn-warning" />
+                </div>
+            }
+        </div>
+    </div>
+</div>

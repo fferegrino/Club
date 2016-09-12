@@ -15,6 +15,7 @@ using Humanizer;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http.Internal;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -127,6 +128,31 @@ namespace Club.Controllers.Web
             var entity = _usersRepository.GetMostActiveUsers(id ?? 10);
             var viewModel = _mapper.Map<IEnumerable<ViewModels.ComplexUserViewModel>>(entity);
             return View(viewModel);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(string username)
+        {
+
+            var queriedEvent = _usersRepository.GetUserByUserName(username);
+            var eventViewModel = _mapper.Map<ViewModels.ComplexUserViewModel>(queriedEvent);
+            return View(eventViewModel);
+        }
+
+        // POST: dummy/Delete/5
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult >Delete(string username, FormCollection collection)
+        {
+            try
+            {
+                await _usersRepository.DeleteUser(username);
+                return RedirectToAction("index", "users");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         public IEnumerable<SelectListItem> GetAllUserLevelsSelectList(int selectedTopicId = 0)

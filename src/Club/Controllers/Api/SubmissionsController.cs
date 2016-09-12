@@ -28,7 +28,7 @@ namespace Club.Controllers.Api
             _mapper = mapper;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("{*username}")]
         public JsonResult GetSubmissionsForUser(string username)
         {

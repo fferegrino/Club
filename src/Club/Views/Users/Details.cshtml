@@ -27,6 +27,9 @@
                         <li>
                             <a asp-action="edit" asp-route-username="@Model.Username">Editar perfil</a>
                         </li>
+                        <li>
+                            <a asp-route-username="@Model.Username" asp-action="delete">Eliminar usuario</a>
+                        </li>
                     }
                     @if (User.IsInRole("Admin"))
                     {
@@ -41,93 +44,97 @@
     }
 </div>
 
-<div ng-app="app-attended-events" class="row">
-    @if (User.IsInRole("Admin"))
-    {
-        <div class="col-md-12">
+@if (User.Identity.IsAuthenticated)
+{
+
+    <div ng-app="app-attended-events" class="row">
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Notas</h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>@Model.Notes</pre>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div ng-controller="attendedEventsController as vm" class="col-md-6" id="events">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Notas</h3>
+                    <h3 class="panel-title">Asistencias</h3>
                 </div>
                 <div class="panel-body">
-                    <pre>@Model.Notes</pre>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Sesión</th>
+                                <th>Ubicación</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="user in vm.queriedUsers">
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.location }}</td>
+                                <td>{{ user.start | date:'medium' }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button ng-click="vm.previousPage();" class="btn btn-default" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </button>
+                                        <button type="button" class="btn btn-default">
+                                            {{ vm.currentPage }} / {{ vm.totalPages }}
+                                        </button>
+                                        <button ng-click="vm.nextPage();" class="btn btn-default" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
-    }
-
-    <div ng-controller="attendedEventsController as vm" class="col-md-6" id="events">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Asistencias</h3>
-            </div>
-            <div class="panel-body">
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <th>Sesión</th>
-                            <th>Ubicación</th>
-                            <th>Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="user in vm.queriedUsers">
-                            <td>{{ user.name }}</td>
-                            <td>{{ user.location }}</td>
-                            <td>{{ user.start | date:'medium' }}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3">
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button ng-click="vm.previousPage();" class="btn btn-default" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </button>
-                                    <button type="button" class="btn btn-default">
-                                        {{ vm.currentPage }} / {{ vm.totalPages }}
-                                    </button>
-                                    <button ng-click="vm.nextPage();" class="btn btn-default" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+        <div ng-controller="submissionsController as tt" class="col-md-6" id="problems">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Problemas intentados</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Problema</th>
+                                <th>Fecha</th>
+                                <th>Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="submission in tt.queriedSubmissions" class="{{ submission.accepted === null ? 'info' : (submission.accepted ? 'success' : 'danger')}}">
+                                <td>{{ submission.problemName }}</td>
+                                <td>{{ submission.lastAttemptDate | date:'medium' }}</td>
+                                <td>
+                                    <a href="/submission/{{submission.problemId}}/{{submission.user}}">
+                                        {{ submission.accepted === null ? 'Pendiente' : (submission.accepted ? 'Aceptado' : 'Rechazado')}}
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <div ng-controller="submissionsController as tt" class="col-md-6" id="problems">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Problemas intentados</h3>
-            </div>
-            <div class="panel-body">
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <th>Problema</th>
-                            <th>Fecha</th>
-                            <th>Estatus</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="submission in tt.queriedSubmissions" class="{{ submission.accepted === null ? 'info' : (submission.accepted ? 'success' : 'danger')}}">
-                            <td>{{ submission.problemName }}</td>
-                            <td>{{ submission.lastAttemptDate | date:'medium' }}</td>
-                            <td>
-                                <a href="/submission/{{submission.problemId}}/{{submission.user}}">
-                                    {{ submission.accepted === null ? 'Pendiente' : (submission.accepted ? 'Aceptado' : 'Rechazado')}}
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+}
 
 @section Scripts{
     <script src="~/lib/angular/angular.min.js"></script>

@@ -75,7 +75,7 @@ namespace Club.Models.Repositories
                 _context.Submissions
                 .Include(s => s.User)
                 .Include(s => s.Problem)
-                .Where(pr =>  pr.UserId == user.Id && pr.Accepted.HasValue && pr.Accepted.Value);
+                .Where(pr =>  pr.UserId == user.Id);
             return problem;
         }
 

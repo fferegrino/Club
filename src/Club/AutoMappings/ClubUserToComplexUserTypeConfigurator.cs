@@ -46,5 +46,35 @@ namespace Club.AutoMappings
                 ;
         }
     }
-    
+
+
+
+    public class TwitterProfileResolver : ValueResolver<Club.Models.Entities.ClubUser, string>
+    {
+        protected override string ResolveCore(Club.Models.Entities.ClubUser source)
+        {
+            if (!String.IsNullOrEmpty(source.TwitterProfile))
+            {
+                string username = null;
+
+                if (source.TwitterProfile.StartsWith("@"))
+                {
+                    username = source.TwitterProfile.Substring(1);
+                }
+                else if(source.TwitterProfile.StartsWith("http"))
+                {
+                    var profileUri = new Uri(source.TwitterProfile);
+                    username = profileUri.Segments.Last();
+                }
+                else
+                {
+                    username = source.TwitterProfile;
+                }
+
+                return $"//twitter.com/{username}";
+            }
+            return null;
+        }
+    }
+
 }

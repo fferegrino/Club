@@ -30,6 +30,7 @@ namespace Club.Models.Repositories
         void AttendEvent(string id, Event attendedEvent);
         Task ModifyUser(ClubUser entity, bool modifyNotes = false);
         List<ClubUser> GetAllActiveUsers();
+        Task DeleteUser(string username);
 
         Task DropTheBomb();
     }
@@ -107,6 +108,7 @@ namespace Club.Models.Repositories
         {
 
             var attendance = from submissions in _context.Submissions
+                             where submissions.Accepted.GetValueOrDefault()
                              group submissions by submissions.UserId into u
                              select u;
 
@@ -120,7 +122,7 @@ namespace Club.Models.Repositories
             var mostActiveUsers = users.Take(count).ToList();
             // Ugly hack around not being able to load EventsAttendedCount at the previous query
             mostActiveUsers.ForEach(u => u.EventsAttendedCount = _context.EventAttendance.Count(c => c.ClubUserId == u.Id));
-            mostActiveUsers.ForEach(u => u.SubmissionsCount = _context.Submissions.Count(c => c.UserId == u.Id));
+            mostActiveUsers.ForEach(u => u.SubmissionsCount = _context.Submissions.Count(c => c.UserId == u.Id && c.Accepted.GetValueOrDefault()));
             return mostActiveUsers;
         }
 
@@ -266,6 +268,27 @@ namespace Club.Models.Repositories
                 await _userManager.RemoveFromRoleAsync(naUser, "Member");
                 _context.Users.Remove(naUser);
             }
+            SaveAll();
+        }
+
+        public async Task DeleteUser(string username)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserName == username);
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                await _userManager.RemoveFromRoleAsync(user, role);
+            }
+
+            var submissions = _context.Submissions.Where(w => w.UserId == user.Id);
+
+            var attendance = _context.EventAttendance.Where(w => w.ClubUserId == user.Id);
+
+
+            _context.Submissions.RemoveRange(submissions);
+            _context.EventAttendance.RemoveRange(attendance);
+            _context.Users.Remove(user);
+
             SaveAll();
         }
     }
