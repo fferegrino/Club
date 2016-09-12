@@ -32,8 +32,13 @@ namespace Club.ViewModels
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime DueDate { get; set; }
 
+        [Display(Name="Aparece en página principal")]
         public bool IsCarousel { get; set; }
+
+        [Display(Name = "Imagen (1000px x 600px)")]
         public string ImageUrl { get; set; }
+
+        [Display(Name = "Url del enlace")]
         public string RelatedUrl { get; set; }
 
         public string HumanizedDueDate { get; set; }
