@@ -91,12 +91,17 @@
     <script>
 
         $(function () {
+            var d = new Date();
             $('#Start').datetimepicker({
                 locale: 'es',
                 sideBySide: true,
                 stepping: 15,
-                useCurrent: true
+                useCurrent: true,
+                minDate: d
             });
+
+            $('#Start').data("DateTimePicker").minDate(d);
+
             $('#End').datetimepicker({
                 locale: 'es',
                 sideBySide: true,

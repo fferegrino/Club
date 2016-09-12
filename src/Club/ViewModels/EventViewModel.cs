@@ -67,6 +67,8 @@ namespace Club.ViewModels
         public bool Repeat { get; set; }
 
         [Display(Name = "Repetir hasta")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
+        [IsDateAfterAttribute(nameof(End), ErrorMessage = "Debe ser mayor a la fecha de finalización")]
         public DateTime? RepeatUntil { get; set; }
 
         [Display(Name = "Estatus")]

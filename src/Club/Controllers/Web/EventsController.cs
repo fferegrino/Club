@@ -200,13 +200,16 @@ namespace Club.Controllers.Web
                 _eventsRepository.AddEvent(eventEntity);
 
                 _eventsRepository.SaveAll();
-                eventEntity.ParentEventId = eventEntity.Id;
-                _eventsRepository.UpdateEvent(eventEntity);
 
                 if (viewModel.Repeat && viewModel.RepeatUntil.HasValue)
                 {
+                    eventEntity.ParentEventId = eventEntity.Id;
+                    _eventsRepository.UpdateEvent(eventEntity);
+
+                    var untilDate = viewModel.RepeatUntil.Value.Date.AddDays(1);
+
                     var eventDuration = eventEntity.End - eventEntity.Start;
-                    for (var start = eventEntity.Start.AddDays(7); start < viewModel.RepeatUntil; start = start.AddDays(7))
+                    for (var start = eventEntity.Start.AddDays(7); start < untilDate; start = start.AddDays(7))
                     {
                         var repeatedEvent = _mapper.Map<Models.Entities.Event>(viewModel);
                         repeatedEvent.Start = start;
