@@ -46,8 +46,16 @@ namespace Club.AutoMappings
         protected override string ResolveCore(Club.Models.Entities.Submission source)
         {
             if (source?.GistUrl == null) return "";
-            var uri = new Uri(source.GistUrl);
-            return uri.Segments.Last();
+            try
+            {
+                var uri = new Uri(source.GistUrl);
+                return uri.Segments.Last();
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
         }
     }
 

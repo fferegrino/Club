@@ -16,7 +16,10 @@ namespace Club.ViewModels
 
         [Display(Name = "Nombre")]
         public string ProblemName { get; set; }
+
+        [Url(ErrorMessage ="Debe ser una dirección web")]
         public string GistUrl { get; set; }
+
         public string GistId { get; set; }
 
         [Display(Name = "Aceptado")]
