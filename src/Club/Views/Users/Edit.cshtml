@@ -1,6 +1,7 @@
 ﻿@model Club.ViewModels.EditUserViewModel
 @{
     ViewBag.Title = Model.Username;
+    var gitHubUser = ViewBag.GitHubUser as String;
 }
 
 <h2>@Model.Username</h2>
@@ -64,9 +65,18 @@
         </div>
         <div class="form-group col-md-4">
             <label asp-for="GitHubProfile"></label>
-            <a class="btn btn-success" asp-action="GitHubAuth" asp-route-username="@Model.Username">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
-            </a>
+            @if (gitHubUser == null)
+            {
+                <a class="btn btn-success" asp-action="GitHubAuth" asp-route-username="@Model.Username">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
+                </a>
+            }
+            else
+            {
+                <a class="btn btn-success" href="#">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span> @gitHubUser
+                </a>
+            }
         </div>
     </div>
     @if (User.IsInRole("Admin"))

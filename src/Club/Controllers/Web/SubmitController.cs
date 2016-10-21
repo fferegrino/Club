@@ -9,6 +9,7 @@ using Microsoft.AspNet.Mvc;
 using Club.ViewModels;
 using Microsoft.AspNet.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNet.Http;
+using Octokit;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -65,10 +66,20 @@ namespace Club.Controllers.Web
 
 
         [Authorize]
-        public IActionResult Create(int problemId)
+        public async Task<IActionResult> Create(int problemId)
         {
+            var usr = _usersRepository.GetUserByUserName(User.Identity.Name);
             var problem = _mapper.Map<SubmissionViewModel>(_submissionsRepo.GetSubmissionForProblem(problemId));
             ViewBag.Problem = _mapper.Map<ProblemViewModel>(_problemsRepo.GetProblemById(problemId));
+
+            if (!String.IsNullOrEmpty(usr.GitHubAccessToken))
+            {
+                var githubClient = new GitHubClient(new ProductHeaderValue("ElClub"));
+                githubClient.Credentials = new Credentials(usr.GitHubAccessToken);
+                var gitHubUser = await githubClient.User.Current();
+                ViewBag.GitHubUser = gitHubUser.Name;
+            }
+
             return View(problem);
         }
 

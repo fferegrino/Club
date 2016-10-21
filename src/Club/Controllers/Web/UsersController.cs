@@ -17,6 +17,7 @@ using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http.Internal;
 using System.Net.Http;
+using Octokit;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -86,9 +87,18 @@ namespace Club.Controllers.Web
         [Authorize]
         public async Task<IActionResult> Edit(string username)
         {
+
             if (User.IsInRole("Admin") || username.Equals(User.Identity.Name))
             {
                 var entity = _usersRepository.GetFullUserByUserName(username);
+                if (!String.IsNullOrEmpty(entity.GitHubAccessToken))
+                {
+                    var githubClient = new GitHubClient(new ProductHeaderValue("ElClub"));
+                    githubClient.Credentials = new Credentials(entity.GitHubAccessToken);
+                    var gitHubUser = await githubClient.User.Current();
+                    ViewBag.GitHubUser = gitHubUser.Name;
+                }
+
                 var vm = _mapper.Map<EditUserViewModel>(entity);
                 vm.IsAdmin = await _usersRepository.IsAdmin(username);
                 ViewBag.SelectUserLevels = GetAllUserLevelsSelectList(vm.LevelId);
@@ -165,7 +175,7 @@ namespace Club.Controllers.Web
             var client_id = Startup.Configuration["Integrations:GitHub:ClientId"];
             var state = Guid.NewGuid().ToString("N");
             var scope = "gist";
-            var redirect_uri = callbackBaseUrl  + "/Users/Link?service=github";
+            var redirect_uri = callbackBaseUrl + "/Users/Link?service=github";
 
             var p = new Dictionary<string, string>
             {
@@ -184,7 +194,7 @@ namespace Club.Controllers.Web
             var queryString = String.Join("&", p.Select(record => record.Key + "=" + Uri.EscapeDataString(record.Value)));
 
             var fullUrl = AuthUrl + "?" + queryString;
-            
+
             return Redirect(fullUrl);
         }
 
@@ -195,7 +205,7 @@ namespace Club.Controllers.Web
 
             var client_id = Startup.Configuration["Integrations:GitHub:ClientId"];
             var client_secret = Startup.Configuration["Integrations:GitHub:ClientSecret"];
-            
+
 
             var p = new Dictionary<string, string>
             {
@@ -208,7 +218,7 @@ namespace Club.Controllers.Web
 
 
             var user = _usersRepository.GetUserByUserName(User.Identity.Name);
-            if(user.GitHubProfile != null 
+            if (user.GitHubProfile != null
                 && user.GitHubProfile.StartsWith("state:")
                 && user.GitHubProfile.Substring(6).Equals(state))
             {
@@ -220,7 +230,7 @@ namespace Club.Controllers.Web
                 if (response.IsSuccessStatusCode)
                 {
                     var strResponse = await response.Content.ReadAsStringAsync();
-                    var dict  = Microsoft.AspNet.WebUtilities.QueryHelpers.ParseQuery(strResponse);
+                    var dict = Microsoft.AspNet.WebUtilities.QueryHelpers.ParseQuery(strResponse);
                     user.GitHubAccessToken = dict["access_token"];
                     user.GitHubProfile = null;
                     _usersRepository.ModifyGitHubStuff(user);

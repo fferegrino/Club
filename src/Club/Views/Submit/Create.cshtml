@@ -6,6 +6,7 @@
 
     var estatusClass = Model?.Accepted == null ? "info" : (Model.Accepted.Value ? "success" : "danger");
     var estauts = Model?.Accepted == null ? "está pendiente de revisión" : (Model.Accepted.Value ? "fue aceptado" : "fue rechazado");
+    var gitHubUser = ViewBag.GitHubUser as string;
 }
 
 
@@ -18,6 +19,16 @@
 }
 <form method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ValidationSummary.ModelOnly"></div>
+    @if (gitHubUser != null)
+    {
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="ddlGists">Busca entre tus Gists, @gitHubUser:</label>
+                <select  id="ddlGists"  name="ddlGists" class="form-control" data-live-search="true">
+                </select>
+            </div>
+        </div>
+    }
     <div class="row">
         <div class="form-group col-md-12">
             <label asp-for="GistUrl"></label>
@@ -40,6 +51,32 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/bootstrap-rating/bootstrap-rating.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+
+    <script>
+        var username = "@User.Identity.Name";
+        $(document).ready(function () {
+            if ($("#ddlGists").length) {
+                $.get("/api/submissions/" + username +"/gists", function (data) {
+                    $.each(data, function (i, item) {
+                        $('#ddlGists').append($('<option>', {
+                            value: item.url,
+                            text: item.name
+                        }));
+                    });
+                    $('#ddlGists').selectpicker();
+                    $("#ddlGists").change(function () {
+                        var end = this.value;
+                        $("#GistUrl").val(end);
+                    });
+                });
+            }
+        });
+    </script>
 }
 
 @section Styles{
