@@ -16,6 +16,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http.Internal;
+using System.Net.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -142,7 +143,7 @@ namespace Club.Controllers.Web
         // POST: dummy/Delete/5
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult >Delete(string username, FormCollection collection)
+        public async Task<ActionResult> Delete(string username, FormCollection collection)
         {
             try
             {
@@ -153,6 +154,81 @@ namespace Club.Controllers.Web
             {
                 return View();
             }
+        }
+
+        [Authorize]
+        public ActionResult GitHubAuth()
+        {
+            var callbackBaseUrl = Startup.Configuration["Integrations:GitHub:ClientSecret"];
+            const string AuthUrl = "https://github.com/login/oauth/authorize";
+
+            var client_id = Startup.Configuration["Integrations:GitHub:ClientId"];
+            var state = Guid.NewGuid().ToString("N");
+            var scope = "gist";
+            var redirect_uri = callbackBaseUrl  + "/Users/Link?service=github";
+
+            var p = new Dictionary<string, string>
+            {
+                { nameof(client_id), client_id },
+                { nameof(state), state },
+                { nameof(scope), scope},
+                { nameof(redirect_uri), redirect_uri },
+            };
+
+
+            var user = _usersRepository.GetUserByUserName(User.Identity.Name);
+            user.GitHubProfile = "state:" + state;
+            _usersRepository.ModifyGitHubState(user);
+            _usersRepository.SaveAll();
+
+            var queryString = String.Join("&", p.Select(record => record.Key + "=" + Uri.EscapeDataString(record.Value)));
+
+            var fullUrl = AuthUrl + "?" + queryString;
+            
+            return Redirect(fullUrl);
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Link(string service, string code, string state)
+        {
+            const string TokenUrl = "https://github.com/login/oauth/access_token";
+
+            var client_id = Startup.Configuration["Integrations:GitHub:ClientId"];
+            var client_secret = Startup.Configuration["Integrations:GitHub:ClientSecret"];
+            
+
+            var p = new Dictionary<string, string>
+            {
+                { nameof(client_id), client_id },
+                { nameof(state), state },
+                { nameof(client_secret), client_secret},
+                { nameof(code), code },
+            };
+
+
+
+            var user = _usersRepository.GetUserByUserName(User.Identity.Name);
+            if(user.GitHubProfile != null 
+                && user.GitHubProfile.StartsWith("state:")
+                && user.GitHubProfile.Substring(6).Equals(state))
+            {
+                var queryString = String.Join("&", p.Select(record => record.Key + "=" + Uri.EscapeDataString(record.Value)));
+
+                HttpClient cl = new HttpClient();
+                var fullUrl = TokenUrl + "?" + queryString;
+                var response = await cl.PostAsync(fullUrl, null);
+                if (response.IsSuccessStatusCode)
+                {
+                    var strResponse = await response.Content.ReadAsStringAsync();
+                    var dict  = Microsoft.AspNet.WebUtilities.QueryHelpers.ParseQuery(strResponse);
+                    user.GitHubAccessToken = dict["access_token"];
+                    user.GitHubProfile = null;
+                    _usersRepository.ModifyGitHubStuff(user);
+                    _usersRepository.SaveAll();
+                };
+            }
+
+            return RedirectToAction(nameof(Edit), new { username = User.Identity.Name });
         }
 
         public IEnumerable<SelectListItem> GetAllUserLevelsSelectList(int selectedTopicId = 0)

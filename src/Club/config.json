@@ -4,5 +4,12 @@
   },
   "Data": {
     "ClubContextConnection": "CONNECTION_STRING"
+  },
+  "Integrations": {
+    "CallbackBaseUrl": "http://localhost:5000",
+    "GitHub": {
+      "ClientId": "GITHUB_CLIENT_ID",
+      "ClientSecret": "GITHUB_CLIENT_SECRET"
+    }
   }
 }

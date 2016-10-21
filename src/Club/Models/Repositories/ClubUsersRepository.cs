@@ -29,6 +29,8 @@ namespace Club.Models.Repositories
         int CountUnapprovedUsers();
         void AttendEvent(string id, Event attendedEvent);
         Task ModifyUser(ClubUser entity, bool modifyNotes = false);
+        void ModifyGitHubState(ClubUser entity);
+        void ModifyGitHubStuff(ClubUser entity);
         List<ClubUser> GetAllActiveUsers();
         Task DeleteUser(string username);
 
@@ -190,7 +192,6 @@ namespace Club.Models.Repositories
             realEntity.Phone = entity.Phone;
             realEntity.FacebookProfile = entity.FacebookProfile;
             realEntity.TwitterProfile = entity.TwitterProfile;
-            realEntity.GitHubProfile = entity.GitHubProfile;
 
             realEntity.FirstName = entity.FirstName;
             realEntity.LastName = entity.LastName;
@@ -290,6 +291,21 @@ namespace Club.Models.Repositories
             _context.Users.Remove(user);
 
             SaveAll();
+        }
+
+        public void ModifyGitHubState(ClubUser entity)
+        {
+            var realEntity = GetUserByUserName(entity.UserName);
+            realEntity.GitHubProfile = entity.GitHubProfile;
+            _context.Update(realEntity);
+        }
+
+        public void ModifyGitHubStuff(ClubUser entity)
+        {
+            var realEntity = GetUserByUserName(entity.UserName);
+            realEntity.GitHubProfile = entity.GitHubProfile;
+            realEntity.GitHubAccessToken = entity.GitHubAccessToken;
+            _context.Update(realEntity);
         }
     }
 }

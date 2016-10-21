@@ -13,6 +13,7 @@ namespace Club.Models.Entities
         public string StudentId { get; set; }
         public string Phone { get; set; }
         public string GitHubProfile { get; set; }
+        public string GitHubAccessToken { get; set; }
         public string TwitterProfile { get; set; }
         public string FacebookProfile { get; set; }
         public UserLevel UserLevel { get; set; }

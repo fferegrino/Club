@@ -64,8 +64,9 @@
         </div>
         <div class="form-group col-md-4">
             <label asp-for="GitHubProfile"></label>
-            <input asp-for="GitHubProfile" class="form-control" />
-            <span asp-validation-for="GitHubProfile"></span>
+            <a class="btn btn-success" asp-action="GitHubAuth" asp-route-username="@Model.Username">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
+            </a>
         </div>
     </div>
     @if (User.IsInRole("Admin"))
